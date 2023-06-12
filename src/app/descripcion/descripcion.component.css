@@ -1,0 +1,15 @@
+.banner2 {
+    background-image: url(../../assets/banner2.jpg);
+    background-position: top center;
+    background-size: cover;
+    background-attachment: fixed;
+    padding: 25%;
+  }
+
+.zoom{
+    transition: transform .2s;
+}
+
+.zoom:hover{
+    transform: scale(1.02);
+}
