@@ -9,7 +9,7 @@
         <div class="col" *ngFor="let habitacion of habitaciones">
             <div class="card h-100 shadow p-3 text-center">
                 <h4>{{habitacion.nombre}}</h4>
-                <img src={{habitacion.foto[0]}} alt=""class="img-fluid w-100 h-100">
+                <img [src]="habitacion.foto[0] || 'https://via.placeholder.com/600x400?text=Sin+imagen'" alt="Habitación" class="img-fluid w-100 h-100">
                 <h6 class="mt-4 ">{{habitacion.descripcion}}</h6>
                 <h6>
                     <i class="bi bi-person-fill"></i>
