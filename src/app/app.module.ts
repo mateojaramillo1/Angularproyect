@@ -12,6 +12,11 @@ import { FooterComponent } from './footer/footer.component';
 import { HabitacionesComponent } from './habitaciones/habitaciones.component';
 import { DescripcionComponent } from './descripcion/descripcion.component';
 import { FormulariohabitacionComponent } from './formulariohabitacion/formulariohabitacion.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './services/token-interceptor.service';
+import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -22,6 +27,7 @@ import { FormulariohabitacionComponent } from './formulariohabitacion/formulario
     HabitacionesComponent,
     DescripcionComponent,
     FormulariohabitacionComponent
+    ,LoginComponent,RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +35,10 @@ import { FormulariohabitacionComponent } from './formulariohabitacion/formulario
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    AuthGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
