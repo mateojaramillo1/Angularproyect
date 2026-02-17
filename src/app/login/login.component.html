@@ -1,6 +1,8 @@
-<div class="container mt-5">
-  <h3>Iniciar sesión</h3>
-  <form [formGroup]="form" (ngSubmit)="submit()">
+<div class="container mt-5" style="max-width: 400px;">
+  <h3 *ngIf="!modoRegistro">Iniciar sesión</h3>
+  <h3 *ngIf="modoRegistro">Registro</h3>
+
+  <form *ngIf="!modoRegistro" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
     <div class="mb-3">
       <label class="form-label">Email</label>
       <input class="form-control" formControlName="email" />
@@ -10,6 +12,35 @@
       <input type="password" class="form-control" formControlName="password" />
     </div>
     <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+    <div *ngIf="success" class="alert alert-success">{{ success }}</div>
     <button class="btn btn-primary" type="submit">Entrar</button>
+    <button class="btn btn-link" type="button" (click)="toggleModo()">¿No tienes cuenta? Regístrate</button>
+  </form>
+
+  <form *ngIf="modoRegistro" [formGroup]="registerForm" (ngSubmit)="submitRegister()">
+    <div class="mb-3">
+      <label class="form-label">Nombre</label>
+      <input class="form-control" formControlName="nombre" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Apellido</label>
+      <input class="form-control" formControlName="apellido" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input class="form-control" formControlName="email" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Teléfono</label>
+      <input class="form-control" formControlName="telefono" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Contraseña</label>
+      <input type="password" class="form-control" formControlName="password" />
+    </div>
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+    <div *ngIf="success" class="alert alert-success">{{ success }}</div>
+    <button class="btn btn-primary" type="submit">Registrar</button>
+    <button class="btn btn-link" type="button" (click)="toggleModo()">¿Ya tienes cuenta? Inicia sesión</button>
   </form>
 </div>
