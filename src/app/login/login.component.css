@@ -66,9 +66,9 @@
 	border-radius: 12px;
 	margin-bottom: 1.5rem;
 	box-shadow: 0 1px 6px rgba(255, 168, 51, 0.13);
-	padding: 0.4rem 1.2rem;
+	padding: 0.1rem 1.2rem;
 	width: 100%;
-	max-width: 520px;
+	max-width: 700px;
 }
 
 .input-icon-home {
@@ -83,8 +83,8 @@
 	outline: none;
 	box-shadow: none;
 	width: 100%;
-	font-size: 1.18rem;
-	padding: 1rem 0.2rem;
+	font-size: 1.08rem;
+	padding: 0.35rem 0.2rem;
 	color: #222;
 	font-family: 'Nunito', 'Lato', sans-serif;
 	letter-spacing: 0.5px;
