@@ -18,12 +18,10 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
           </li>
-          <li class="nav-item" *ngIf="auth.isAdmin()">
-            <a class="nav-link" routerLink="/registrohabitacion">AdminHabitaciones</a>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/registrohabitacion">Registrar Habitación</a>
           </li>
-          <li class="nav-item" *ngIf="!auth.isLoggedIn()">
-            <a class="nav-link" routerLink="/login">Iniciar sesión</a>
-          </li>
+          <!-- Eliminado: opción de iniciar sesión -->
           <!-- Eliminado 'Registrarse' del menú -->
           <li class="nav-item" *ngIf="auth.isLoggedIn()">
             <a class="nav-link" (click)="logout()">Cerrar sesión</a>
