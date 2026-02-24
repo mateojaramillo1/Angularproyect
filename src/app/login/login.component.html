@@ -1,53 +1,58 @@
 
-<div class="login-bg">
-  <div class="login-card">
-    <div class="login-header">
-      <img src="assets/tropical-hotel.png" alt="Hotel" class="login-logo">
-      <h2 *ngIf="!modoRegistro">Bienvenido a Paraíso Hotel</h2>
+
+<div class="login-modern-bg">
+  <div class="login-modern-card animate-pop">
+    <div class="login-modern-header">
+      <img src="assets/tropical-hotel.png" alt="Hotel" class="login-modern-logo">
+      <h2 *ngIf="!modoRegistro">¡Bienvenido!</h2>
       <h2 *ngIf="modoRegistro">Crea tu cuenta</h2>
-      <p class="login-desc">Disfruta de la mejor experiencia de alojamiento tropical</p>
+      <p class="login-modern-desc">Reserva tu habitación en el paraíso tropical</p>
     </div>
 
     <form *ngIf="!modoRegistro" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
-      <div class="input-group">
-        <span class="input-icon"><i class="fa fa-envelope"></i></span>
-        <input class="form-control" placeholder="Email" formControlName="email" />
+      <div class="input-group-modern">
+        <span class="input-icon-modern"><i class="fa fa-envelope"></i></span>
+        <input class="form-control-modern" placeholder="Email" formControlName="email" />
       </div>
-      <div class="input-group">
-        <span class="input-icon"><i class="fa fa-lock"></i></span>
-        <input type="password" class="form-control" placeholder="Contraseña" formControlName="password" />
+      <div class="input-group-modern">
+        <span class="input-icon-modern"><i class="fa fa-lock"></i></span>
+        <input type="password" class="form-control-modern" placeholder="Contraseña" formControlName="password" />
       </div>
-      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-      <div *ngIf="success" class="alert alert-success">{{ success }}</div>
-      <button class="btn-login" type="submit">Entrar</button>
-      <button class="btn-link" type="button" (click)="toggleModo()">¿No tienes cuenta? Regístrate</button>
+      <div *ngIf="error" class="alert alert-danger login-modern-alert">{{ error }}</div>
+      <div *ngIf="success" class="alert alert-success login-modern-alert">{{ success }}</div>
+      <button class="btn-modern-login" type="submit">
+        <i class="fa fa-sign-in"></i> Entrar
+      </button>
+      <button class="btn-modern-link" type="button" (click)="toggleModo()">¿No tienes cuenta? Regístrate</button>
     </form>
 
     <form *ngIf="modoRegistro" [formGroup]="registerForm" (ngSubmit)="submitRegister()">
-      <div class="input-group">
-        <span class="input-icon"><i class="fa fa-user"></i></span>
-        <input class="form-control" placeholder="Nombre" formControlName="nombre" />
+      <div class="input-group-modern">
+        <span class="input-icon-modern"><i class="fa fa-user"></i></span>
+        <input class="form-control-modern" placeholder="Nombre" formControlName="nombre" />
       </div>
-      <div class="input-group">
-        <span class="input-icon"><i class="fa fa-user"></i></span>
-        <input class="form-control" placeholder="Apellido" formControlName="apellido" />
+      <div class="input-group-modern">
+        <span class="input-icon-modern"><i class="fa fa-user"></i></span>
+        <input class="form-control-modern" placeholder="Apellido" formControlName="apellido" />
       </div>
-      <div class="input-group">
-        <span class="input-icon"><i class="fa fa-envelope"></i></span>
-        <input class="form-control" placeholder="Email" formControlName="email" />
+      <div class="input-group-modern">
+        <span class="input-icon-modern"><i class="fa fa-envelope"></i></span>
+        <input class="form-control-modern" placeholder="Email" formControlName="email" />
       </div>
-      <div class="input-group">
-        <span class="input-icon"><i class="fa fa-phone"></i></span>
-        <input class="form-control" placeholder="Teléfono" formControlName="telefono" />
+      <div class="input-group-modern">
+        <span class="input-icon-modern"><i class="fa fa-phone"></i></span>
+        <input class="form-control-modern" placeholder="Teléfono" formControlName="telefono" />
       </div>
-      <div class="input-group">
-        <span class="input-icon"><i class="fa fa-lock"></i></span>
-        <input type="password" class="form-control" placeholder="Contraseña" formControlName="password" />
+      <div class="input-group-modern">
+        <span class="input-icon-modern"><i class="fa fa-lock"></i></span>
+        <input type="password" class="form-control-modern" placeholder="Contraseña" formControlName="password" />
       </div>
-      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-      <div *ngIf="success" class="alert alert-success">{{ success }}</div>
-      <button class="btn-login" type="submit">Registrar</button>
-      <button class="btn-link" type="button" (click)="toggleModo()">¿Ya tienes cuenta? Inicia sesión</button>
+      <div *ngIf="error" class="alert alert-danger login-modern-alert">{{ error }}</div>
+      <div *ngIf="success" class="alert alert-success login-modern-alert">{{ success }}</div>
+      <button class="btn-modern-login" type="submit">
+        <i class="fa fa-user-plus"></i> Registrar
+      </button>
+      <button class="btn-modern-link" type="button" (click)="toggleModo()">¿Ya tienes cuenta? Inicia sesión</button>
     </form>
   </div>
 </div>
