@@ -1,46 +1,53 @@
-<div class="container mt-5" style="max-width: 400px;">
-  <h3 *ngIf="!modoRegistro">Iniciar sesión</h3>
-  <h3 *ngIf="modoRegistro">Registro</h3>
 
-  <form *ngIf="!modoRegistro" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
-    <div class="mb-3">
-      <label class="form-label">Email</label>
-      <input class="form-control" formControlName="email" />
+<div class="login-bg">
+  <div class="login-card">
+    <div class="login-header">
+      <img src="assets/tropical-hotel.png" alt="Hotel" class="login-logo">
+      <h2 *ngIf="!modoRegistro">Bienvenido a Paraíso Hotel</h2>
+      <h2 *ngIf="modoRegistro">Crea tu cuenta</h2>
+      <p class="login-desc">Disfruta de la mejor experiencia de alojamiento tropical</p>
     </div>
-    <div class="mb-3">
-      <label class="form-label">Contraseña</label>
-      <input type="password" class="form-control" formControlName="password" />
-    </div>
-    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-    <div *ngIf="success" class="alert alert-success">{{ success }}</div>
-    <button class="btn btn-primary" type="submit">Entrar</button>
-    <button class="btn btn-link" type="button" (click)="toggleModo()">¿No tienes cuenta? Regístrate</button>
-  </form>
 
-  <form *ngIf="modoRegistro" [formGroup]="registerForm" (ngSubmit)="submitRegister()">
-    <div class="mb-3">
-      <label class="form-label">Nombre</label>
-      <input class="form-control" formControlName="nombre" />
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Apellido</label>
-      <input class="form-control" formControlName="apellido" />
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Email</label>
-      <input class="form-control" formControlName="email" />
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Teléfono</label>
-      <input class="form-control" formControlName="telefono" />
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Contraseña</label>
-      <input type="password" class="form-control" formControlName="password" />
-    </div>
-    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-    <div *ngIf="success" class="alert alert-success">{{ success }}</div>
-    <button class="btn btn-primary" type="submit">Registrar</button>
-    <button class="btn btn-link" type="button" (click)="toggleModo()">¿Ya tienes cuenta? Inicia sesión</button>
-  </form>
+    <form *ngIf="!modoRegistro" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+      <div class="input-group">
+        <span class="input-icon"><i class="fa fa-envelope"></i></span>
+        <input class="form-control" placeholder="Email" formControlName="email" />
+      </div>
+      <div class="input-group">
+        <span class="input-icon"><i class="fa fa-lock"></i></span>
+        <input type="password" class="form-control" placeholder="Contraseña" formControlName="password" />
+      </div>
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+      <div *ngIf="success" class="alert alert-success">{{ success }}</div>
+      <button class="btn-login" type="submit">Entrar</button>
+      <button class="btn-link" type="button" (click)="toggleModo()">¿No tienes cuenta? Regístrate</button>
+    </form>
+
+    <form *ngIf="modoRegistro" [formGroup]="registerForm" (ngSubmit)="submitRegister()">
+      <div class="input-group">
+        <span class="input-icon"><i class="fa fa-user"></i></span>
+        <input class="form-control" placeholder="Nombre" formControlName="nombre" />
+      </div>
+      <div class="input-group">
+        <span class="input-icon"><i class="fa fa-user"></i></span>
+        <input class="form-control" placeholder="Apellido" formControlName="apellido" />
+      </div>
+      <div class="input-group">
+        <span class="input-icon"><i class="fa fa-envelope"></i></span>
+        <input class="form-control" placeholder="Email" formControlName="email" />
+      </div>
+      <div class="input-group">
+        <span class="input-icon"><i class="fa fa-phone"></i></span>
+        <input class="form-control" placeholder="Teléfono" formControlName="telefono" />
+      </div>
+      <div class="input-group">
+        <span class="input-icon"><i class="fa fa-lock"></i></span>
+        <input type="password" class="form-control" placeholder="Contraseña" formControlName="password" />
+      </div>
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+      <div *ngIf="success" class="alert alert-success">{{ success }}</div>
+      <button class="btn-login" type="submit">Registrar</button>
+      <button class="btn-link" type="button" (click)="toggleModo()">¿Ya tienes cuenta? Inicia sesión</button>
+    </form>
+  </div>
 </div>

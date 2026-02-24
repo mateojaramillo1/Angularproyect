@@ -24,8 +24,8 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 ## Credenciales de inicio de sesión
 
-Usuario: admin@hotel.com
-Contraseña: Admin1234
+email: admin@admin.com
+password: admin123
 
 ## Further help
 
