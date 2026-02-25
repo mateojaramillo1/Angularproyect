@@ -19,8 +19,8 @@
 	left: 0;
 	height: 100%;
 	width: 100%;
-	background-color: #fff;
-	opacity: 0.85;
+	background-color: #000000;
+	opacity: 0.70;
 	z-index: 1;
 }
 .nike-form-card {
@@ -43,7 +43,7 @@
 	margin-bottom: 1.2rem;
 }
 .nike-form-logo {
-	width: 48px;
+	width: 200px;
 	margin-bottom: 0.5rem;
 }
 .nike-form-title {
