@@ -134,10 +134,6 @@
 .animate-pop {
 	animation: pop-in 0.7s cubic-bezier(.68,-0.55,.27,1.55);
 }
-	0% { transform: scale(0.7); opacity: 0; }
-	80% { transform: scale(1.05); opacity: 1; }
-	100% { transform: scale(1); }
-}
 .animate-pop {
 	animation: pop-in 0.7s cubic-bezier(.68,-0.55,.27,1.55);
 }
