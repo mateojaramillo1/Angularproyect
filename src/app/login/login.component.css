@@ -6,29 +6,28 @@
 	min-width: 160px;
 	min-height: 38px;
 	font-family: "Nunito", sans-serif;
-	font-size: 16px;
+	font-size: 1.1rem;
 	text-transform: uppercase;
 	letter-spacing: 1.1px;
 	font-weight: 700;
-	color: #ffffff;
-	background: #0000ff;
-	background: linear-gradient(90deg, #0000ff 0%, rgba(0, 13, 255, 0.64) 100%);
-	border: none;
+	color: #fff;
+	background: linear-gradient(90deg, #f9d423 0%, #ff8800 100%);
+	border: none !important;
 	border-radius: 1000px;
-	box-shadow: 8px 8px 18px rgba(0, 13, 255, 0.44);
-	transition: all 0.3s ease-in-out 0s;
+	box-shadow: 0 2px 8px rgba(255, 136, 0, 0.13);
 	cursor: pointer;
+	transition: background 0.2s, color 0.2s;
 	outline: none;
 	position: relative;
-	padding: 6px 0;
+	padding: 0.7rem 2.2rem;
+	z-index: 200;
 }
 .login-action-btn::before {
 	content: "";
 	border-radius: 1000px;
 	min-width: calc(160px + 8px);
 	min-height: calc(38px + 8px);
-	border: 4px solid #0000ff;
-	box-shadow: 0 0 40px rgba(0, 13, 255, 0.44);
+	box-shadow: 0 0 40px rgba(255, 167, 81, 0.25);
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -38,8 +37,8 @@
 }
 .login-action-btn:hover,
 .login-action-btn:focus {
-	color: #fefefe;
-	transform: translateY(-6px);
+	background: linear-gradient(90deg, #ff8800 0%, #f9d423 100%);
+	color: #fff;
 }
 .login-action-btn:hover::before,
 .login-action-btn:focus::before {
@@ -50,7 +49,7 @@
 	width: 30px;
 	height: 30px;
 	border-radius: 100%;
-	border: 6px solid #0000ff;
+	border: 6px solid #ffa751;
 	position: absolute;
 	z-index: -1;
 	top: 50%;
@@ -129,7 +128,9 @@
 	display: block;
 }
 .split-login-right {
-	background: #fff;
+	background: linear-gradient(135deg, #020305 0%, #004dd9 100%);
+	color: #fff;
+	color: #111;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -152,14 +153,14 @@
 	margin-bottom: -0.5rem;
 }
 .split-login-title {
-	color: #111;
+	color: #fff;
 	font-family: 'Lato', sans-serif;
 	font-size: 2rem;
 	font-weight: 700;
 	margin-bottom: 0.2rem;
 }
 .split-login-desc {
-	color: #888;
+	color: #fff;
 	font-size: 1.08rem;
 	margin-bottom: 0.7rem;
 }
@@ -171,13 +172,20 @@
 	margin-bottom: 1.2rem;
 }
 .split-input-group label {
-	color: #222;
+	color: #fff;
 	font-size: 1.01rem;
 	margin-bottom: 0.2rem;
 	font-weight: 500;
 }
 .split-input {
-	width: 100%;
+	background: #222;
+	color: #fff;
+	border: 1px solid #444;
+	width: 96%;
+	max-width: 340px;
+	min-width: 220px;
+	padding: 0.7rem 1.2rem;
+	font-size: 1.08rem;
 	border: 1.5px solid #222;
 	border-radius: 8px;
 	padding: 0.7rem 1rem;
