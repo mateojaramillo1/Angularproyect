@@ -23,7 +23,7 @@
 .nav-nike-menu, .nav-nike-user {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1rem;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -31,7 +31,7 @@
 .nav-nike-menu li a, .nav-nike-user li a {
     color: #fff;
     text-decoration: none;
-    font-size: 1.08rem;
+    font-size: 15px;
     font-weight: 500;
     transition: color 0.2s;
 }
