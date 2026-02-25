@@ -1,9 +1,100 @@
-.menu{
-    background-color:transparent;
-    transition: 1s;
-}
 
-.menu2{
-    background-color:black;
-    transition: 2s;
+.nav-nike {
+    width: 100vw;
+    background: #181818;
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+.nav-nike-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem 2.5rem;
+    background: #111;
+}
+.nav-nike-logo {
+    width: 38px;
+    margin-right: 1.5rem;
+}
+.nav-nike-menu, .nav-nike-user {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.nav-nike-menu li a, .nav-nike-user li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.08rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+.nav-nike-menu li a:hover, .nav-nike-user li a:hover {
+    color: #b3b3b3;
+}
+.nav-nike-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #232323;
+    padding: 0.7rem 2.5rem;
+}
+.nav-nike-logo2 {
+    width: 60px;
+    margin-right: 2rem;
+}
+.nav-nike-menu2 {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.nav-nike-menu2 li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.08rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+.nav-nike-menu2 li a:hover {
+    color: #b3b3b3;
+}
+.nav-nike-search {
+    display: flex;
+    align-items: center;
+    background: #181818;
+    border-radius: 24px;
+    padding: 0.2rem 1rem;
+    margin-left: 2rem;
+}
+.nav-nike-search-input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.08rem;
+    margin-left: 0.7rem;
+    outline: none;
+    width: 120px;
+}
+.nav-nike-bag {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-left: 2rem;
+    cursor: pointer;
+}
+@media (max-width: 900px) {
+    .nav-nike-top, .nav-nike-bottom {
+        padding: 0.7rem 0.5rem;
+    }
+    .nav-nike-menu, .nav-nike-menu2, .nav-nike-user {
+        gap: 1rem;
+    }
 }
