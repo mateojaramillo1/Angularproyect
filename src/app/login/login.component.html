@@ -1,58 +1,56 @@
 
 
 
-<div class="login-banner-bg">
-  <div class="login-overlay"></div>
-  <div class="login-card-home animate-pop">
-    <div class="login-header-home">
-      <h1 class="display-2 fw-bold text-center">Paradisus Cancún</h1>
-      <h3 class="text-center">Cancún | Mexico</h3>
-      <h2 *ngIf="!modoRegistro" class="login-title">Iniciar sesión</h2>
-      <h2 *ngIf="modoRegistro" class="login-title">Registro de usuario</h2>
+
+<div class="nike-form-bg">
+  <div class="nike-form-overlay"></div>
+  <div class="nike-form-card animate-pop">
+    <div class="nike-form-header">
+      <img src="assets/logo.png" alt="Logo" class="nike-form-logo">
+      <h2 *ngIf="!modoRegistro" class="nike-form-title">Iniciar sesión</h2>
+      <h2 *ngIf="modoRegistro" class="nike-form-title">Registro de usuario</h2>
+      <p class="nike-form-desc" *ngIf="!modoRegistro">Accede a tu cuenta para reservar tu experiencia en <b>Paradisus Cancún</b></p>
+      <p class="nike-form-desc" *ngIf="modoRegistro">Crea tu cuenta para disfrutar de beneficios exclusivos</p>
     </div>
     <form *ngIf="!modoRegistro" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
-      <div class="input-group-home">
-        <span class="input-icon-home"><i class="fa fa-envelope"></i></span>
-        <input class="form-control-home" placeholder="Email" formControlName="email" />
+      <div class="nike-input-group">
+        <label>Email*</label>
+        <input class="nike-input" placeholder="Escribe tu email" formControlName="email" />
       </div>
-      <div class="input-group-home">
-        <span class="input-icon-home"><i class="fa fa-lock"></i></span>
-        <input type="password" class="form-control-home" placeholder="Contraseña" formControlName="password" />
+      <div class="nike-input-group">
+        <label>Contraseña*</label>
+        <input type="password" class="nike-input" placeholder="Escribe tu contraseña" formControlName="password" />
       </div>
-      <div *ngIf="error" class="alert alert-danger login-home-alert">{{ error }}</div>
-      <div *ngIf="success" class="alert alert-success login-home-alert">{{ success }}</div>
-      <button class="btn-home-login" type="submit">
-        <i class="fa fa-sign-in"></i> Entrar
-      </button>
-      <button class="btn-home-link" type="button" (click)="toggleModo()">¿No tienes cuenta? Regístrate</button>
+      <div *ngIf="error" class="alert alert-danger nike-form-alert">{{ error }}</div>
+      <div *ngIf="success" class="alert alert-success nike-form-alert">{{ success }}</div>
+      <button class="nike-btn" type="submit">Entrar</button>
+      <button class="nike-btn-link" type="button" (click)="toggleModo()">¿No tienes cuenta? Regístrate</button>
     </form>
     <form *ngIf="modoRegistro" [formGroup]="registerForm" (ngSubmit)="submitRegister()">
-      <div class="input-group-home">
-        <span class="input-icon-home"><i class="fa fa-user"></i></span>
-        <input class="form-control-home" placeholder="Nombre" formControlName="nombre" />
+      <div class="nike-input-group">
+        <label>Nombre*</label>
+        <input class="nike-input" placeholder="Escribe tu nombre" formControlName="nombre" />
       </div>
-      <div class="input-group-home">
-        <span class="input-icon-home"><i class="fa fa-user"></i></span>
-        <input class="form-control-home" placeholder="Apellido" formControlName="apellido" />
+      <div class="nike-input-group">
+        <label>Apellido*</label>
+        <input class="nike-input" placeholder="Escribe tu apellido" formControlName="apellido" />
       </div>
-      <div class="input-group-home">
-        <span class="input-icon-home"><i class="fa fa-envelope"></i></span>
-        <input class="form-control-home" placeholder="Email" formControlName="email" />
+      <div class="nike-input-group">
+        <label>Email*</label>
+        <input class="nike-input" placeholder="Escribe tu email" formControlName="email" />
       </div>
-      <div class="input-group-home">
-        <span class="input-icon-home"><i class="fa fa-phone"></i></span>
-        <input class="form-control-home" placeholder="Teléfono" formControlName="telefono" />
+      <div class="nike-input-group">
+        <label>Teléfono</label>
+        <input class="nike-input" placeholder="Escribe tu número de teléfono" formControlName="telefono" />
       </div>
-      <div class="input-group-home">
-        <span class="input-icon-home"><i class="fa fa-lock"></i></span>
-        <input type="password" class="form-control-home" placeholder="Contraseña" formControlName="password" />
+      <div class="nike-input-group">
+        <label>Contraseña*</label>
+        <input type="password" class="nike-input" placeholder="Crea una contraseña" formControlName="password" />
       </div>
-      <div *ngIf="error" class="alert alert-danger login-home-alert">{{ error }}</div>
-      <div *ngIf="success" class="alert alert-success login-home-alert">{{ success }}</div>
-      <button class="btn-home-login" type="submit">
-        <i class="fa fa-user-plus"></i> Registrar
-      </button>
-      <button class="btn-home-link" type="button" (click)="toggleModo()">¿Ya tienes cuenta? Inicia sesión</button>
+      <div *ngIf="error" class="alert alert-danger nike-form-alert">{{ error }}</div>
+      <div *ngIf="success" class="alert alert-success nike-form-alert">{{ success }}</div>
+      <button class="nike-btn" type="submit">Registrar</button>
+      <button class="nike-btn-link" type="button" (click)="toggleModo()">¿Ya tienes cuenta? Inicia sesión</button>
     </form>
   </div>
 </div>
