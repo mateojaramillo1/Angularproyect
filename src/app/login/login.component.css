@@ -1,20 +1,132 @@
+.login-action-btn {
+	display: block;
+	margin: 0 auto 0.8rem auto;
+}
+.login-action-btn {
+	min-width: 160px;
+	min-height: 38px;
+	font-family: "Nunito", sans-serif;
+	font-size: 16px;
+	text-transform: uppercase;
+	letter-spacing: 1.1px;
+	font-weight: 700;
+	color: #ffffff;
+	background: #0000ff;
+	background: linear-gradient(90deg, #0000ff 0%, rgba(0, 13, 255, 0.64) 100%);
+	border: none;
+	border-radius: 1000px;
+	box-shadow: 8px 8px 18px rgba(0, 13, 255, 0.44);
+	transition: all 0.3s ease-in-out 0s;
+	cursor: pointer;
+	outline: none;
+	position: relative;
+	padding: 6px 0;
+}
+.login-action-btn::before {
+	content: "";
+	border-radius: 1000px;
+	min-width: calc(160px + 8px);
+	min-height: calc(38px + 8px);
+	border: 4px solid #0000ff;
+	box-shadow: 0 0 40px rgba(0, 13, 255, 0.44);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	opacity: 0;
+	transition: all 0.3s ease-in-out 0s;
+}
+.login-action-btn:hover,
+.login-action-btn:focus {
+	color: #fefefe;
+	transform: translateY(-6px);
+}
+.login-action-btn:hover::before,
+.login-action-btn:focus::before {
+	opacity: 1;
+}
+.login-action-btn::after {
+	content: "";
+	width: 30px;
+	height: 30px;
+	border-radius: 100%;
+	border: 6px solid #0000ff;
+	position: absolute;
+	z-index: -1;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	animation: ring 1.5s infinite;
+}
+.login-action-btn:hover::after,
+.login-action-btn:focus::after {
+	animation: none;
+	display: none;
+}
+@keyframes ring {
+	0% {
+		transform: translate(-50%, -50%) scale(1);
+		opacity: 1;
+	}
+	100% {
+		transform: translate(-50%, -50%) scale(1.5);
+		opacity: 0;
+	}
+}
 
 
 
-/* Fondo general */
+/* Fondo general con imagen difuminada */
+/* Fondo general con imagen difuminada */
 .split-login-bg {
 	min-height: 100vh;
 	width: 100vw;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: #0a2342;
 	position: relative;
+	background: #0a2342;
+	overflow: hidden;
+	gap: 0;
+}
+.split-login-bg::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: url('../../assets/banner.jpg') center center/cover no-repeat;
+	filter: blur(8px) brightness(0.7);
+	z-index: 0;
 }
 
-/* El card blanco pequeño y centrado */
+.split-login-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0;
+}
 .split-login-left {
-	display: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(255,255,255,0.10);
+	border-top-left-radius: 1.2rem;
+	border-bottom-left-radius: 1.2rem;
+	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+	z-index: 1;
+	width: 320px;
+	height: 380px;
+	min-width: 220px;
+	min-height: 220px;
+}
+.split-login-left img {
+	width: 380px;
+	height: 540px;
+	object-fit: cover;
+	border-radius: 1.2rem 0 0 1.2rem;
+	display: block;
 }
 .split-login-right {
 	background: #fff;
@@ -23,20 +135,21 @@
 	align-items: center;
 	justify-content: center;
 	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
-	border-radius: 1.2rem;
+	border-radius: 0 1.2rem 1.2rem 0;
 	padding: 2.2rem 1.5rem 1.5rem 1.5rem;
-	max-width: 340px;
-	width: 100%;
-	margin: 0 auto;
-	min-height: unset;
+	width: 380px;
+	height: 540px;
+	min-width: 220px;
+	min-height: 220px;
+	z-index: 1;
 }
 .split-login-header {
 	text-align: center;
 	margin-bottom: 1.2rem;
 }
 .split-login-logo {
-	width: 48px;
-	margin-bottom: 0.5rem;
+	width: 123px;
+	margin-bottom: -0.5rem;
 }
 .split-login-title {
 	color: #111;
@@ -115,10 +228,21 @@
 @media (max-width: 900px) {
 	.split-login-bg {
 		flex-direction: column;
+		align-items: center;
+	}
+	.split-login-container {
+		flex-direction: column;
+	}
+	.split-login-left {
+		display: none;
 	}
 	.split-login-right {
+		border-radius: 1.2rem;
 		padding: 1.2rem 0.5rem;
 		max-width: 98vw;
+		min-height: unset;
+		width: 90vw;
+		height: auto;
 	}
 }
 @keyframes pop-in {

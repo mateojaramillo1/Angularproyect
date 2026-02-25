@@ -1,32 +1,18 @@
-
 <header>
-  <nav class="nav-nike">
-    <div class="nav-nike-top">
-      <img src="assets/logo.png" alt="Logo" class="nav-nike-logo">
-      <ul class="nav-nike-user">
-        <li><a routerLink="/eventos">Eventos</a></li>
-        <li><a routerLink="/ayuda">Ayuda</a></li>
-        <li *ngIf="!auth.isLoggedIn()"><a routerLink="/register">Regístrate</a></li>
-        <li *ngIf="!auth.isLoggedIn()"><a routerLink="/login">Iniciar sesión</a></li>
-        <li *ngIf="auth.isLoggedIn()"><a (click)="logout()">Cerrar sesión</a></li>
-        <li><a routerLink="/buscar-tienda">Buscar tienda</a></li>
-      </ul>
-    </div>
-    <div class="nav-nike-bottom">
-      <img src="assets/logo-nike.png" alt="Nike" class="nav-nike-logo2">
+  <nav class="nav-nike" id="menu">
+    <div class="nav-nike-merged nav-nike-centered">
       <ul class="nav-nike-menu2">
         <li><a routerLink="/novedades">Novedades</a></li>
         <li><a routerLink="/hombre">Hombre</a></li>
         <li><a routerLink="/mujer">Mujer</a></li>
+        <li class="nav-nike-center">
+          <img src="../../assets/LOGO.png" alt="Logo" class="nav-nike-logo">
+        </li>
         <li><a routerLink="/niños">Niños</a></li>
         <li><a routerLink="/deporte">Deporte</a></li>
-        <li><a routerLink="/descuentos">Descuentos</a></li>
+        <li><a routerLink="/login">Check-in</a></li>
       </ul>
-      <div class="nav-nike-search">
-        <i class="fa fa-search"></i>
-        <input type="text" placeholder="Buscar" class="nav-nike-search-input">
-      </div>
-      <i class="fa fa-shopping-bag nav-nike-bag"></i>
+      <button class="nav-nike-reserva-btn">Reserva con nosotros</button>
     </div>
   </nav>
 </header>

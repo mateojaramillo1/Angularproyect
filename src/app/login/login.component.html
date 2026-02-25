@@ -2,10 +2,13 @@
 
 
 <div class="split-login-bg">
-  <div class="split-login-left"></div>
-  <div class="split-login-right">
+  <div class="split-login-container">
+    <div class="split-login-left">
+      <img src="../../assets/banner.jpg" alt="Imagen login" />
+    </div>
+    <div class="split-login-right">
     <div class="split-login-header">
-      <img src="../../assets/logo.png" alt="Logo" class="split-login-logo">
+      <img src="../../assets/LOGO.png" alt="Logo" class="split-login-logo">
       <div class="split-login-title">Bienvenido</div>
       <div class="split-login-desc">
         {{ modoRegistro ? 'Crea tu cuenta para comenzar' : 'Inicia sesión para continuar' }}
@@ -21,7 +24,7 @@
         <input id="password" type="password" class="split-input" formControlName="password" required>
       </div>
       <div *ngIf="error" class="alert alert-danger split-login-alert">{{ error }}</div>
-      <button type="submit" class="split-btn">Iniciar sesión</button>
+      <button type="submit" class="login-action-btn">Iniciar sesión</button>
       <button type="button" class="split-btn-link" (click)="toggleModo()">¿No tienes cuenta? Regístrate</button>
     </form>
     <form [formGroup]="registerForm" (ngSubmit)="submitRegister()" *ngIf="modoRegistro" style="width:100%;">
