@@ -85,6 +85,8 @@
 	justify-content: center;
 	position: relative;
 	background: #0a2342;
+	padding-top: 5.5rem;
+	box-sizing: border-box;
 	overflow: hidden;
 	gap: 0;
 }
