@@ -2,7 +2,7 @@
   <nav class="nav-nike" id="menu">
     <div class="nav-nike-merged nav-nike-centered">
       <ul class="nav-nike-menu2">
-        <li *ngIf="!auth.isLoggedIn() || auth.isAdmin()"><a routerLink="/">Inicio</a></li>
+        <li><a routerLink="/">Inicio</a></li>
         <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/novedades">Novedades</a></li>
         <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/hombre">Hombre</a></li>
         <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/mujer">Mujer</a></li>
