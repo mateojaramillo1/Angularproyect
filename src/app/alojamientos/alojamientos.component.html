@@ -8,6 +8,41 @@
   </div>
 </section>
 
+<section class="alojamientos-search-wrap">
+  <div class="container">
+    <div class="alojamientos-search-card">
+      <h3>Busca tu estadía</h3>
+      <div class="search-grid">
+        <div class="search-field">
+          <label for="entrada">Entrada</label>
+          <input id="entrada" type="date">
+        </div>
+        <div class="search-field">
+          <label for="salida">Salida</label>
+          <input id="salida" type="date">
+        </div>
+        <div class="search-field">
+          <label for="ocupacion">Ocupación</label>
+          <select id="ocupacion">
+            <option value="1">1 persona</option>
+            <option value="2" selected>2 personas</option>
+            <option value="3">3 personas</option>
+            <option value="4">4 personas</option>
+            <option value="5">5+ personas</option>
+          </select>
+        </div>
+        <div class="search-field">
+          <label for="calendario">Calendario de precios</label>
+          <input id="calendario" type="month">
+        </div>
+      </div>
+      <div class="search-footer-note">
+        El calendario de precios quedará conectado a disponibilidad y tarifas dinámicas en la siguiente fase.
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="alojamientos-listado">
   <app-habitaciones></app-habitaciones>
 </section>

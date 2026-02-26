@@ -39,6 +39,64 @@
   padding-bottom: 2rem;
 }
 
+.alojamientos-search-wrap {
+  background: #f4f7ff;
+  margin-top: -56px;
+  position: relative;
+  z-index: 2;
+}
+
+.alojamientos-search-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(17, 36, 179, 0.15);
+  padding: 1.4rem 1.2rem;
+}
+
+.alojamientos-search-card h3 {
+  margin: 0 0 1rem;
+  color: #1124b3;
+  font-weight: 700;
+}
+
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 0.8rem;
+}
+
+.search-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-field label {
+  margin-bottom: 0.3rem;
+  color: #22315d;
+  font-weight: 600;
+}
+
+.search-field input,
+.search-field select {
+  height: 42px;
+  border: 1px solid #d6dff7;
+  border-radius: 10px;
+  padding: 0.45rem 0.7rem;
+  outline: none;
+  color: #1e2c56;
+}
+
+.search-field input:focus,
+.search-field select:focus {
+  border-color: #3d62ff;
+}
+
+.search-footer-note {
+  margin-top: 0.9rem;
+  font-size: 0.95rem;
+  color: #4e5b84;
+}
+
 @media (max-width: 768px) {
   .alojamientos-content h1 {
     font-size: 1.8rem;
@@ -46,5 +104,13 @@
 
   .alojamientos-content p {
     font-size: 1rem;
+  }
+
+  .alojamientos-search-wrap {
+    margin-top: -28px;
+  }
+
+  .search-grid {
+    grid-template-columns: 1fr;
   }
 }

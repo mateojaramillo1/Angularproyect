@@ -1,9 +1,9 @@
 <div class="container my-5">
-    <div class="row row-cols-1 row-cols-md-3 g-4 my-4">
+    <div class="row row-cols-1 g-4 my-4">
         <div class="col" *ngFor="let habitacion of habitaciones">
-            <div class="card h-100 alojamiento-card">
-                <img [src]="habitacion.foto[0] || 'https://via.placeholder.com/600x400?text=Sin+imagen'" alt="Habitación" class="img-fluid alojamiento-image">
-                <div class="alojamiento-body">
+            <div class="card alojamiento-card-horizontal">
+                <img [src]="habitacion.foto[0] || 'https://via.placeholder.com/600x400?text=Sin+imagen'" alt="Habitación" class="img-fluid alojamiento-image-horizontal">
+                <div class="alojamiento-body-horizontal">
                     <h4>{{habitacion.nombre}}</h4>
                     <p class="alojamiento-descripcion">{{habitacion.descripcion}}</p>
                     <h6>
@@ -11,6 +11,7 @@
                         X{{habitacion.numeropersonas}}
                     </h6>
                     <h5 class="fw-bold">Desde: {{habitacion.precio}} USD</h5>
+                    <button type="button" class="alojamiento-reservar-btn">Reservar</button>
                 </div>
             </div>
         </div>
