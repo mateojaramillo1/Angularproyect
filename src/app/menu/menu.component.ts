@@ -9,6 +9,7 @@ import { AuthService } from '../services/auth.service';
 export class MenuComponent {
 
   public navOpacity: number = 0;
+  public isMobileMenuOpen: boolean = false;
 
   constructor(private render: Renderer2, public auth: AuthService) {}
 
@@ -30,7 +31,16 @@ export class MenuComponent {
   // ...existing code...
 
   logout(){
+    this.closeMobileMenu();
     this.auth.logout();
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
   }
 
   get userDisplayName(): string {

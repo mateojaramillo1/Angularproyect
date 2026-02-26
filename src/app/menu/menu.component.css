@@ -23,6 +23,32 @@
     margin: 0 auto;
     padding: 0 1.5rem;
 }
+.nav-mobile-bar {
+    display: none;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+.nav-mobile-logo {
+    width: 72px;
+}
+.nav-mobile-toggle {
+    border: 1px solid #ffffff;
+    background: transparent;
+    color: #ffffff;
+    border-radius: 10px;
+    min-width: 42px;
+    min-height: 38px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+.nav-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+}
 .nav-nike-menu2 {
     display: flex;
     align-items: center;
@@ -104,22 +130,48 @@
 @media (max-width: 900px) {
     .nav-nike-merged.nav-nike-centered {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
+        align-items: stretch;
+        gap: 0.4rem;
         padding: 0.7rem 1rem;
+    }
+    .nav-mobile-bar {
+        display: flex;
+    }
+    .nav-content {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        background: rgba(17, 36, 179, 0.92);
+        border-radius: 12px;
+        padding: 0.8rem 0.75rem;
+        margin-top: 0.2rem;
+    }
+    .nav-content.mobile-open {
+        display: flex;
     }
     .nav-nike-menu2 {
         width: 100%;
         justify-content: flex-start;
-        gap: 0.6rem 1rem;
+        gap: 0.35rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .nav-nike-center {
+        display: none;
     }
     .nav-actions {
         width: 100%;
         justify-content: flex-start;
-        margin-top: 0.3rem;
-        flex-wrap: wrap;
+        margin-top: 0.6rem;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        align-items: flex-start;
         gap: 0.6rem;
         margin-left: 0;
+    }
+    .nav-logout-btn {
+        width: 100%;
     }
     .nav-nike-reserva-btn {
         width: 100%;

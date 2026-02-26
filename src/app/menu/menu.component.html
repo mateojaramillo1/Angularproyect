@@ -1,23 +1,32 @@
 <header>
   <nav class="nav-nike" id="menu">
     <div class="nav-nike-merged nav-nike-centered">
-      <ul class="nav-nike-menu2">
-        <li><a routerLink="/">Inicio</a></li>
-        <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/novedades">Novedades</a></li>
-        <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/hombre">Hombre</a></li>
-        <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/mujer">Mujer</a></li>
-        <li class="nav-nike-center">
-          <img src="../../assets/LOGO.png" alt="Logo" class="nav-nike-logo">
-        </li>
-        <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/niños">Niños</a></li>
-        <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/deporte">Deporte</a></li>
-        <li *ngIf="auth.isLoggedIn() && auth.isAdmin()"><a routerLink="/registrohabitacion">Registrar Habitación</a></li>
-        <li *ngIf="!auth.isLoggedIn()"><a routerLink="/login">Check-in</a></li>
-      </ul>
-      <div class="nav-actions">
-        <span *ngIf="auth.isLoggedIn()" class="nav-user-name">{{ userDisplayName }}</span>
-        <button *ngIf="auth.isLoggedIn()" type="button" class="nav-logout-btn" (click)="logout()">Cerrar sesión</button>
-        <button class="nav-nike-reserva-btn" type="button" routerLink="/alojamientos">Reserva con nosotros</button>
+      <div class="nav-mobile-bar">
+        <img src="../../assets/LOGO.png" alt="Logo" class="nav-mobile-logo">
+        <button type="button" class="nav-mobile-toggle" (click)="toggleMobileMenu()" aria-label="Abrir menú">
+          ☰
+        </button>
+      </div>
+
+      <div class="nav-content" [class.mobile-open]="isMobileMenuOpen">
+        <ul class="nav-nike-menu2">
+          <li><a routerLink="/" (click)="closeMobileMenu()">Inicio</a></li>
+          <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/novedades" (click)="closeMobileMenu()">Novedades</a></li>
+          <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/hombre" (click)="closeMobileMenu()">Hombre</a></li>
+          <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/mujer" (click)="closeMobileMenu()">Mujer</a></li>
+          <li class="nav-nike-center">
+            <img src="../../assets/LOGO.png" alt="Logo" class="nav-nike-logo">
+          </li>
+          <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/niños" (click)="closeMobileMenu()">Niños</a></li>
+          <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/deporte" (click)="closeMobileMenu()">Deporte</a></li>
+          <li *ngIf="auth.isLoggedIn() && auth.isAdmin()"><a routerLink="/registrohabitacion" (click)="closeMobileMenu()">Registrar Habitación</a></li>
+          <li *ngIf="!auth.isLoggedIn()"><a routerLink="/login" (click)="closeMobileMenu()">Check-in</a></li>
+        </ul>
+        <div class="nav-actions">
+          <span *ngIf="auth.isLoggedIn()" class="nav-user-name">{{ userDisplayName }}</span>
+          <button *ngIf="auth.isLoggedIn()" type="button" class="nav-logout-btn" (click)="logout()">Cerrar sesión</button>
+          <button class="nav-nike-reserva-btn" type="button" routerLink="/alojamientos" (click)="closeMobileMenu()">Reserva con nosotros</button>
+        </div>
       </div>
     </div>
   </nav>
