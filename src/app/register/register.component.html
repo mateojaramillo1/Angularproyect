@@ -1,27 +1,35 @@
-<div class="container mt-5">
-  <h3>Registro</h3>
-  <form [formGroup]="form" (ngSubmit)="submit()">
-    <div class="mb-3">
-      <label class="form-label">Nombre</label>
-      <input class="form-control" formControlName="nombre" />
+<div class="register-page-bg">
+  <div class="register-card">
+    <div class="register-header">
+      <img src="../../assets/LOGO.png" alt="Logo" class="register-logo">
+      <h3>Registro</h3>
+      <p>Crea tu cuenta para continuar</p>
     </div>
-    <div class="mb-3">
-      <label class="form-label">Apellido</label>
-      <input class="form-control" formControlName="apellido" />
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Email</label>
-      <input class="form-control" formControlName="email" />
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Teléfono</label>
-      <input class="form-control" formControlName="telefono" />
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Contraseña</label>
-      <input type="password" class="form-control" formControlName="password" />
-    </div>
-    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-    <button class="btn btn-primary" type="submit">Registrar</button>
-  </form>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="register-form">
+      <div class="register-input-group">
+        <label>Nombre</label>
+        <input class="register-input" formControlName="nombre" />
+      </div>
+      <div class="register-input-group">
+        <label>Apellido</label>
+        <input class="register-input" formControlName="apellido" />
+      </div>
+      <div class="register-input-group">
+        <label>Email</label>
+        <input class="register-input" formControlName="email" />
+      </div>
+      <div class="register-input-group">
+        <label>Teléfono</label>
+        <input class="register-input" formControlName="telefono" />
+      </div>
+      <div class="register-input-group">
+        <label>Contraseña</label>
+        <input type="password" class="register-input" formControlName="password" />
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+      <button class="register-submit-btn" type="submit">Registrar</button>
+    </form>
+  </div>
 </div>

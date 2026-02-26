@@ -1,2 +1,89 @@
-/* basic layout */
-.container { max-width: 540px; }
+.register-page-bg {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #0a2342;
+	padding: 1rem;
+}
+
+.register-card {
+	width: 100%;
+	max-width: 500px;
+	background: linear-gradient(135deg, #020305 0%, #004dd9 100%);
+	border-radius: 1.2rem;
+	box-shadow: 0 10px 30px rgba(31, 38, 135, 0.25);
+	padding: 2rem 1.5rem;
+	color: #fff;
+}
+
+.register-header {
+	text-align: center;
+	margin-bottom: 1.5rem;
+}
+
+.register-logo {
+	width: 90px;
+	margin-bottom: 0.4rem;
+}
+
+.register-header h3 {
+	margin: 0;
+	font-size: 2rem;
+	font-weight: 700;
+}
+
+.register-header p {
+	margin-top: 0.4rem;
+	margin-bottom: 0;
+	color: #e0e6ff;
+}
+
+.register-form {
+	width: 100%;
+}
+
+.register-input-group {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 1rem;
+}
+
+.register-input-group label {
+	margin-bottom: 0.3rem;
+	font-weight: 600;
+}
+
+.register-input {
+	width: 100%;
+	border: 1.5px solid #222;
+	border-radius: 8px;
+	padding: 0.7rem 1rem;
+	font-size: 1rem;
+	background: #fff;
+	color: #222;
+	outline: none;
+	transition: border 0.2s;
+}
+
+.register-input:focus {
+	border: 1.5px solid #0000ff;
+}
+
+.register-submit-btn {
+	width: 100%;
+	min-height: 42px;
+	font-size: 1rem;
+	font-weight: 700;
+	color: #fff;
+	background: linear-gradient(90deg, #f9d423 0%, #ff8800 100%);
+	border: none;
+	border-radius: 1000px;
+	box-shadow: 0 2px 8px rgba(255, 136, 0, 0.13);
+	cursor: pointer;
+	transition: background 0.2s;
+}
+
+.register-submit-btn:hover {
+	background: linear-gradient(90deg, #ff8800 0%, #f9d423 100%);
+}
