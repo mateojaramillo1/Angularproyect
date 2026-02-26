@@ -3,8 +3,21 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: #0a2342;
+	position: relative;
+	overflow: hidden;
 	padding: 1rem;
+}
+
+.register-page-bg::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: url('../../assets/banner.jpg') center center/cover no-repeat;
+	filter: blur(8px) brightness(0.7);
+	z-index: 0;
 }
 
 .register-card {
@@ -15,6 +28,8 @@
 	box-shadow: 0 10px 30px rgba(31, 38, 135, 0.25);
 	padding: 2rem 1.5rem;
 	color: #fff;
+	position: relative;
+	z-index: 1;
 }
 
 .register-header {
