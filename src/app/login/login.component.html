@@ -1,13 +1,13 @@
 <app-menu></app-menu>
 <div class="split-login-bg">
-  <div class="split-login-container">
+  <div class="split-login-container" [ngClass]="{ 'register-mode': modoRegistro }">
     <div class="split-login-left">
       <img src="../../assets/banner.jpg" alt="Imagen login" />
     </div>
-    <div class="split-login-right">
+    <div class="split-login-right" [ngClass]="{ 'register-card-mode': modoRegistro }">
     <div class="split-login-header">
       <img src="../../assets/LOGO.png" alt="Logo" class="split-login-logo">
-      <div class="split-login-title">Bienvenido</div>
+      <div class="split-login-title">{{ modoRegistro ? 'Registro de Usuario' : 'Bienvenido' }}</div>
       <div class="split-login-desc">
         {{ modoRegistro ? 'Crea tu cuenta para comenzar' : 'Inicia sesión para continuar' }}
       </div>

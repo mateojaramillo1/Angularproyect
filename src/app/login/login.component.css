@@ -125,7 +125,7 @@
 }
 .split-login-left img {
 	width: 380px;
-	height: 540px;
+	height: 571px;
 	object-fit: cover;
 	border-radius: 1.2rem 0 0 1.2rem;
 	display: block;
@@ -243,6 +243,52 @@
 	border-radius: 7px;
 	font-size: 1.01rem;
 }
+
+.split-login-container.register-mode {
+	width: 100%;
+	max-width: 720px;
+	padding: 0 1rem;
+}
+
+.split-login-container.register-mode .split-login-left {
+	display: none;
+}
+
+.split-login-right.register-card-mode {
+	width: 100%;
+	max-width: 620px;
+	border-radius: 1.2rem;
+	padding: 2rem 1.5rem;
+	max-height: none;
+	overflow: visible;
+	box-shadow: 0 10px 30px rgba(31, 38, 135, 0.25);
+}
+
+.split-login-right.register-card-mode .split-login-title {
+	font-size: 2rem;
+}
+
+.split-login-right.register-card-mode .split-btn {
+	width: 100%;
+	min-height: 42px;
+	font-size: 1rem;
+	font-weight: 700;
+	background: linear-gradient(90deg, #f9d423 0%, #ff8800 100%);
+	box-shadow: 0 2px 8px rgba(255, 136, 0, 0.13);
+	margin-bottom: 0.9rem;
+}
+
+.split-login-right.register-card-mode .split-btn:hover {
+	background: linear-gradient(90deg, #ff8800 0%, #f9d423 100%);
+}
+
+.split-login-right.register-card-mode .split-btn-link {
+	color: #d7e3ff;
+}
+
+.split-login-right.register-card-mode .split-btn-link:hover {
+	color: #ffffff;
+}
 @media (max-width: 900px) {
 	.split-login-bg {
 		flex-direction: column;
@@ -264,6 +310,14 @@
 		height: auto;
 		max-height: none;
 		overflow: visible;
+	}
+
+	.split-login-right.register-card-mode {
+		padding: 1.4rem 1rem;
+	}
+
+	.split-login-right.register-card-mode .split-login-title {
+		font-size: 1.6rem;
 	}
 }
 @keyframes pop-in {
