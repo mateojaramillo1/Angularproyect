@@ -33,4 +33,8 @@ export class MenuComponent {
     this.auth.logout();
   }
 
+  get userDisplayName(): string {
+    return this.auth.getDisplayName();
+  }
+
 }

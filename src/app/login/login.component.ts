@@ -31,7 +31,7 @@ export class LoginComponent {
     this.auth.login(this.loginForm.value).subscribe({
       next: (res: any) => {
         if (res && res.token) {
-          this.auth.setToken(res.token);
+          this.auth.setSession(res.token, res.usuario);
           this.router.navigate(['/']);
         }
       },

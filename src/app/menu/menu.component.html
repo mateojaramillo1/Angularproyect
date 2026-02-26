@@ -11,9 +11,13 @@
         <li><a routerLink="/niños">Niños</a></li>
         <li><a routerLink="/deporte">Deporte</a></li>
         <li *ngIf="auth.isLoggedIn() && auth.isAdmin()"><a routerLink="/registrohabitacion">Agregar Habitación</a></li>
-        <li><a routerLink="/login">Check-in</a></li>
+        <li *ngIf="!auth.isLoggedIn()"><a routerLink="/login">Check-in</a></li>
       </ul>
-      <button class="nav-nike-reserva-btn">Reserva con nosotros</button>
+      <div class="nav-actions">
+        <span *ngIf="auth.isLoggedIn()" class="nav-user-name">{{ userDisplayName }}</span>
+        <button *ngIf="auth.isLoggedIn()" type="button" class="nav-logout-btn" (click)="logout()">Cerrar sesión</button>
+        <button class="nav-nike-reserva-btn">Reserva con nosotros</button>
+      </div>
     </div>
   </nav>
 </header>

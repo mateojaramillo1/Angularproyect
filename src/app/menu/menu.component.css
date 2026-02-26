@@ -11,34 +11,69 @@
     left: 0;
     z-index: 100;
     transition: background 0.5s cubic-bezier(.4,0,.2,1);
+    padding: 0.75rem 0;
 }
 .nav-nike-merged.nav-nike-centered {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    gap: 1rem;
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    position: relative;
+    padding: 0 1.5rem;
 }
 .nav-nike-menu2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    gap: 0.8rem 1.4rem;
     list-style: none;
     margin: 0;
     padding: 0;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
 }
 .nav-nike-menu2 li a {
     color: #fff;
     text-decoration: none;
-    font-size: 1.08rem;
+    font-size: 1rem;
     font-weight: 500;
     transition: color 0.2s;
+    white-space: nowrap;
 }
 .nav-nike-menu2 li a:hover {
     color: #b3b3b3;
+}
+.nav-user-name {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.nav-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-left: auto;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+}
+.nav-logout-btn {
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.nav-logout-btn:hover {
+    background: #fff;
+    color: #1124b3;
 }
 .nav-nike-center {
     display: flex;
@@ -46,15 +81,11 @@
     align-items: center;
 }
 .nav-nike-logo {
-    width: 100px;
+    width: 90px;
     display: block;
-    margin: 0 2rem;
+    margin: 0 0.6rem;
 }
 .nav-nike-reserva-btn {
-    position: absolute;
-    top: 50%;
-    right: 2.5rem;
-    transform: translateY(-50%);
     background: linear-gradient(90deg, #f9d423 0%, #ff8800 100%);
     color: #fff;
     border: none;
@@ -65,7 +96,6 @@
     box-shadow: 0 2px 8px rgba(255, 136, 0, 0.13);
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
-    z-index: 200;
 }
 .nav-nike-reserva-btn:hover {
     background: linear-gradient(90deg, #ff8800 0%, #f9d423 100%);
@@ -76,17 +106,33 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
-        padding: 0.7rem 0.5rem;
+        padding: 0.7rem 1rem;
     }
     .nav-nike-menu2 {
-        gap: 1rem;
+        width: 100%;
+        justify-content: flex-start;
+        gap: 0.6rem 1rem;
+    }
+    .nav-actions {
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 0.3rem;
         flex-wrap: wrap;
+        gap: 0.6rem;
+        margin-left: 0;
     }
     .nav-nike-reserva-btn {
-        position: static;
-        margin-top: 1rem;
-        transform: none;
         width: 100%;
-        right: 0;
+    }
+}
+
+@media (max-width: 1200px) {
+    .nav-nike-merged.nav-nike-centered {
+        align-items: flex-start;
+    }
+
+    .nav-actions {
+        justify-content: flex-start;
+        margin-left: 0;
     }
 }
