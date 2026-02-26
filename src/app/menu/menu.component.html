@@ -3,8 +3,12 @@
     <div class="nav-nike-merged nav-nike-centered">
       <div class="nav-mobile-bar">
         <img src="../../assets/LOGO.png" alt="Logo" class="nav-mobile-logo">
-        <button type="button" class="nav-mobile-toggle" (click)="toggleMobileMenu()" aria-label="Abrir menú">
-          ☰
+        <button
+          type="button"
+          class="nav-mobile-toggle"
+          (click)="toggleMobileMenu()"
+          [attr.aria-label]="isMobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'">
+          {{ isMobileMenuOpen ? '✕' : '☰' }}
         </button>
       </div>
 
