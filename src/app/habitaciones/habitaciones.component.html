@@ -1,21 +1,17 @@
 <div class="container my-5">
-    <div class="row">
-        <div class="col-12">
-            <h2>Conoce Nuestras Opciones De Alojamiento:</h2>
-            <hr>
-        </div>
-    </div>
-    <div class="row row-cols-1 row-cols-md-3 g-3 my-5">
+    <div class="row row-cols-1 row-cols-md-3 g-4 my-4">
         <div class="col" *ngFor="let habitacion of habitaciones">
-            <div class="card h-100 shadow p-3 text-center">
-                <h4>{{habitacion.nombre}}</h4>
-                <img [src]="habitacion.foto[0] || 'https://via.placeholder.com/600x400?text=Sin+imagen'" alt="Habitación" class="img-fluid w-100 h-100">
-                <h6 class="mt-4 ">{{habitacion.descripcion}}</h6>
-                <h6>
-                    <i class="bi bi-person-fill"></i>
-                    X{{habitacion.numeropersonas}}
-                </h6>
-                <h5 class="fw-bold">Desde: {{habitacion.precio}} USD</h5>
+            <div class="card h-100 alojamiento-card">
+                <img [src]="habitacion.foto[0] || 'https://via.placeholder.com/600x400?text=Sin+imagen'" alt="Habitación" class="img-fluid alojamiento-image">
+                <div class="alojamiento-body">
+                    <h4>{{habitacion.nombre}}</h4>
+                    <p class="alojamiento-descripcion">{{habitacion.descripcion}}</p>
+                    <h6>
+                        <i class="bi bi-person-fill"></i>
+                        X{{habitacion.numeropersonas}}
+                    </h6>
+                    <h5 class="fw-bold">Desde: {{habitacion.precio}} USD</h5>
+                </div>
             </div>
         </div>
     </div>

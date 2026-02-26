@@ -1,0 +1,45 @@
+.alojamiento-card {
+	border: 0;
+	border-radius: 16px;
+	overflow: hidden;
+	box-shadow: 0 10px 24px rgba(17, 36, 179, 0.14);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.alojamiento-card:hover {
+	transform: translateY(-6px);
+	box-shadow: 0 16px 30px rgba(17, 36, 179, 0.2);
+}
+
+.alojamiento-image {
+	width: 100%;
+	height: 220px;
+	object-fit: cover;
+}
+
+.alojamiento-body {
+	padding: 1rem 1rem 1.2rem;
+	text-align: center;
+}
+
+.alojamiento-body h4 {
+	margin-bottom: 0.6rem;
+	font-weight: 700;
+	color: #1124b3;
+}
+
+.alojamiento-descripcion {
+	min-height: 56px;
+	margin-bottom: 0.8rem;
+	color: #3f4868;
+}
+
+.alojamiento-body h6 {
+	margin-bottom: 0.6rem;
+	color: #202945;
+}
+
+.alojamiento-body h5 {
+	color: #0d1f92;
+	margin-bottom: 0;
+}

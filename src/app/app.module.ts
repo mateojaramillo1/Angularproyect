@@ -17,6 +17,7 @@ import { RegisterComponent } from './register/register.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './services/token-interceptor.service';
 import { AuthGuard } from './guards/auth.guard';
+import { AlojamientosComponent } from './alojamientos/alojamientos.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { AuthGuard } from './guards/auth.guard';
     MenuComponent,
     FooterComponent,
     HabitacionesComponent,
+    AlojamientosComponent,
     DescripcionComponent,
     FormulariohabitacionComponent
     ,LoginComponent,RegisterComponent

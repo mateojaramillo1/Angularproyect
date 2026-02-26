@@ -1,0 +1,50 @@
+.alojamientos-hero {
+  position: relative;
+  min-height: 52vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8rem 1rem 4rem;
+  background: url('../../assets/banner.jpg') center/cover no-repeat;
+}
+
+.alojamientos-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(2, 3, 5, 0.78), rgba(0, 77, 217, 0.72));
+}
+
+.alojamientos-content {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+}
+
+.alojamientos-content h1 {
+  font-family: 'Lato', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.alojamientos-content p {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #e7ecff;
+}
+
+.alojamientos-listado {
+  background: #f4f7ff;
+  padding-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .alojamientos-content h1 {
+    font-size: 1.8rem;
+  }
+
+  .alojamientos-content p {
+    font-size: 1rem;
+  }
+}

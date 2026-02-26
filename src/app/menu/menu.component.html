@@ -17,7 +17,7 @@
       <div class="nav-actions">
         <span *ngIf="auth.isLoggedIn()" class="nav-user-name">{{ userDisplayName }}</span>
         <button *ngIf="auth.isLoggedIn()" type="button" class="nav-logout-btn" (click)="logout()">Cerrar sesión</button>
-        <button class="nav-nike-reserva-btn">Reserva con nosotros</button>
+        <button class="nav-nike-reserva-btn" type="button" routerLink="/alojamientos">Reserva con nosotros</button>
       </div>
     </div>
   </nav>
