@@ -90,6 +90,26 @@
 	font-size: 0.85rem;
 }
 
+.servicios-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.55rem;
+}
+
+.servicio-item {
+	display: flex;
+	align-items: center;
+	gap: 0.45rem;
+	padding: 0.45rem 0.55rem;
+	border: 1px solid rgba(255, 255, 255, 0.35);
+	border-radius: 8px;
+	font-size: 0.95rem;
+}
+
+.servicio-item input {
+	accent-color: #ff8800;
+}
+
 .form-submit-btn {
 	width: 100%;
 	min-height: 42px;
@@ -124,5 +144,9 @@
 
 	.form-header h2 {
 		font-size: 1.6rem;
+	}
+
+	.servicios-grid {
+		grid-template-columns: 1fr;
 	}
 }

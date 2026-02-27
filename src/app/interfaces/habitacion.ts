@@ -3,5 +3,6 @@ export interface Habitacion{
     foto:string[],
     descripcion:string,
     precio:number,
-    numeropersonas:number
+    numeropersonas:number,
+    servicios?: string[]
 }

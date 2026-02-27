@@ -45,6 +45,29 @@
 	color: #202945;
 }
 
+.servicios-lista {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.45rem;
+	margin-bottom: 0.8rem;
+}
+
+.servicio-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3rem;
+	padding: 0.3rem 0.6rem;
+	border-radius: 999px;
+	background: rgba(17, 36, 179, 0.12);
+	color: #1c2f7d;
+	font-size: 0.85rem;
+	font-weight: 600;
+}
+
+.servicio-icono {
+	font-size: 0.95rem;
+}
+
 .alojamiento-body-horizontal h5 {
 	color: #0d1f92;
 	margin-bottom: 0.9rem;
@@ -83,6 +106,10 @@
 
 	.alojamiento-body-horizontal {
 		text-align: center;
+	}
+
+	.servicios-lista {
+		justify-content: center;
 	}
 
 	.alojamiento-reservar-btn {

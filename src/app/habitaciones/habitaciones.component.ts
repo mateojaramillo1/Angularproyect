@@ -19,4 +19,23 @@ export class HabitacionesComponent {
 
 
   }
+
+  public getServicioIcono(servicio: string): string {
+    const key = servicio?.toLowerCase().trim();
+
+    switch (key) {
+      case 'televisión':
+      case 'television':
+        return '📺';
+      case 'aire acondicionado':
+        return '❄️';
+      case 'baño':
+      case 'bano':
+        return '🛁';
+      case 'jacuzzi':
+        return '🫧';
+      default:
+        return '✔️';
+    }
+  }
 }

@@ -13,6 +13,7 @@ export class FormulariohabitacionComponent {
   public cargandoRegistro = false;
   public mensajeRegistro = '';
   public registroExitoso = false;
+  public serviciosDisponibles: string[] = ['Televisión', 'Aire acondicionado', 'Baño', 'Jacuzzi'];
 
   public constructor(
     public constructorFormulario: FormBuilder,
@@ -27,13 +28,37 @@ export class FormulariohabitacionComponent {
       foto: ['', [Validators.required]],
       descripcion: ['', [Validators.required, Validators.minLength(10)]],
       precio: [null, [Validators.required, Validators.min(1)]],
-      numeropersonas: [null, [Validators.required, Validators.min(1), Validators.max(20)]]
+      numeropersonas: [null, [Validators.required, Validators.min(1), Validators.max(20)]],
+      servicios: [[]]
     });
+  }
+
+  public toggleServicio(servicio: string, event: Event): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    const actuales = (this.formulario.get('servicios')?.value as string[]) || [];
+
+    const nuevos = checked
+      ? [...actuales, servicio]
+      : actuales.filter((item) => item !== servicio);
+
+    this.formulario.get('servicios')?.setValue(nuevos);
+  }
+
+  public isServicioSeleccionado(servicio: string): boolean {
+    const actuales = (this.formulario.get('servicios')?.value as string[]) || [];
+    return actuales.includes(servicio);
   }
 
   public procesarDatos(): void {
     if (this.formulario.invalid || this.cargandoRegistro) {
       this.formulario.markAllAsTouched();
+      return;
+    }
+
+    const serviciosSeleccionados = (this.formulario.get('servicios')?.value as string[]) || [];
+    if (serviciosSeleccionados.length === 0) {
+      this.registroExitoso = false;
+      this.mensajeRegistro = 'Selecciona al menos un servicio para la habitación.';
       return;
     }
 
@@ -48,6 +73,7 @@ export class FormulariohabitacionComponent {
         this.registroExitoso = true;
         this.mensajeRegistro = 'Habitación registrada correctamente.';
         this.formulario.reset();
+        this.formulario.get('servicios')?.setValue([]);
         this.cargandoRegistro = false;
       },
       error: (error) => {

@@ -48,6 +48,19 @@
                 </small>
             </div>
 
+            <div class="form-input-group">
+                <label>Servicios de la Habitación</label>
+                <div class="servicios-grid">
+                    <label class="servicio-item" *ngFor="let servicio of serviciosDisponibles">
+                        <input
+                            type="checkbox"
+                            [checked]="isServicioSeleccionado(servicio)"
+                            (change)="toggleServicio(servicio, $event)">
+                        <span>{{ servicio }}</span>
+                    </label>
+                </div>
+            </div>
+
             <button type="submit" class="form-submit-btn" [disabled]="cargandoRegistro">
                 {{ cargandoRegistro ? 'Registrando...' : 'Registrar' }}
             </button>
