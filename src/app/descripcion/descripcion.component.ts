@@ -11,6 +11,8 @@ export class DescripcionComponent {
 
   constructor(private router: Router, private authService: AuthService) {}
 
+  habitacion: any = {};
+
   reservar() {
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['/reservar', this.habitacion._id]);
