@@ -22,6 +22,25 @@ export interface IniciarPagoReservaResponse {
   checkoutUrl: string;
 }
 
+export interface EstadoPagoWompiResponse {
+  mensaje: string;
+  transaccion: {
+    id: string;
+    status: string;
+    reference: string | null;
+    amount_in_cents: number;
+    currency: string;
+  };
+  reserva: {
+    id: string;
+    referenciaPago: string;
+    estadoPago: string;
+    estadoReserva: string;
+    montoTotal: number;
+    moneda: string;
+  } | null;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,5 +51,9 @@ export class ReservaPagoService {
 
   iniciarPagoPse(payload: IniciarPagoReservaRequest): Observable<IniciarPagoReservaResponse> {
     return this.http.post<IniciarPagoReservaResponse>(`${this.url}/reservas/iniciar-pago-pse`, payload);
+  }
+
+  consultarEstadoPago(transactionId: string): Observable<EstadoPagoWompiResponse> {
+    return this.http.get<EstadoPagoWompiResponse>(`${this.url}/pagos/wompi/estado/${transactionId}`);
   }
 }

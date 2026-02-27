@@ -1,0 +1,49 @@
+.resultado-wrap {
+  min-height: 55vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: #f4f7ff;
+}
+
+.resultado-card {
+  width: 100%;
+  max-width: 680px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 10px 26px rgba(17, 36, 179, 0.14);
+  padding: 1.4rem;
+}
+
+.estado {
+  font-weight: 700;
+  color: #1b2a73;
+}
+
+.estado.ok {
+  color: #0d7a2f;
+}
+
+.estado.fail {
+  color: #9b1c1c;
+}
+
+.error {
+  color: #9b1c1c;
+  font-weight: 600;
+}
+
+.acciones {
+  margin-top: 1rem;
+}
+
+.btn-principal {
+  display: inline-block;
+  text-decoration: none;
+  background: linear-gradient(90deg, #f9d423 0%, #ff8800 100%);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.55rem 1.2rem;
+  font-weight: 700;
+}

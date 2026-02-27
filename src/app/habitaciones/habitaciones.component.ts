@@ -14,6 +14,17 @@ export class HabitacionesComponent {
 
   public habitaciones:Habitacion[]=[]
   public procesandoReservaId: string | null = null;
+  public formularioReservaId: string | null = null;
+  public mensajeReserva: string = '';
+  public errorReserva: string = '';
+
+  public fechainicio: string = '';
+  public fechafin: string = '';
+  public numeroadultos: number = 1;
+  public numeroninos: number = 0;
+
+  public nombreUsuarioReserva: string = '';
+  public telefonoUsuarioReserva: string = '';
 
   public constructor(
     public servicio:HabitacionesService,
@@ -26,59 +37,77 @@ export class HabitacionesComponent {
       this.habitaciones=respuesta.habitaciones
     })
 
+    this.inicializarFechasPorDefecto();
+
 
   }
 
-  public reservar(habitacion: Habitacion): void {
+  private inicializarFechasPorDefecto(): void {
+    const hoy = new Date();
+    const manana = new Date();
+    manana.setDate(hoy.getDate() + 1);
+
+    this.fechainicio = this.formatearFecha(hoy);
+    this.fechafin = this.formatearFecha(manana);
+  }
+
+  private formatearFecha(fecha: Date): string {
+    return fecha.toISOString().slice(0, 10);
+  }
+
+  public abrirFormularioReserva(habitacion: Habitacion): void {
+    this.errorReserva = '';
+    this.mensajeReserva = '';
+
     if (!this.authService.isLoggedIn()) {
-      alert('Debes registrarte o iniciar sesión antes de reservar.');
+      this.errorReserva = 'Debes registrarte o iniciar sesión antes de reservar.';
       this.router.navigate(['/register']);
       return;
     }
 
     const usuario = this.authService.getStoredUser();
-    if (usuario?.nombre) {
-      alert(`Reservarás como: ${usuario.nombre} ${usuario.apellido || ''}`.trim());
-    }
+    this.nombreUsuarioReserva = [usuario?.nombre, usuario?.apellido].filter(Boolean).join(' ').trim() || 'Usuario';
+    this.telefonoUsuarioReserva = usuario?.telefono || '';
 
     const idHabitacion = habitacion._id || habitacion.id;
     if (!idHabitacion) {
-      alert('No se encontró el identificador de la habitación.');
+      this.errorReserva = 'No se encontró el identificador de la habitación.';
       return;
     }
 
-    const hoy = new Date();
-    const manana = new Date();
-    manana.setDate(hoy.getDate() + 1);
+    this.formularioReservaId = idHabitacion;
+    this.inicializarFechasPorDefecto();
+    this.numeroadultos = 1;
+    this.numeroninos = 0;
+    this.mensajeReserva = `Reservarás como ${this.nombreUsuarioReserva}.`;
+  }
 
-    const formato = (fecha: Date) => fecha.toISOString().slice(0, 10);
+  public reservar(habitacion: Habitacion): void {
+    this.errorReserva = '';
+    this.mensajeReserva = '';
 
-    const fechainicio = prompt('Fecha de ingreso (YYYY-MM-DD):', formato(hoy));
-    if (!fechainicio) {
+    const idHabitacion = habitacion._id || habitacion.id;
+    if (!idHabitacion || this.formularioReservaId !== idHabitacion) {
+      this.errorReserva = 'Primero abre el formulario de reserva para esta habitación.';
       return;
     }
 
-    const fechafin = prompt('Fecha de salida (YYYY-MM-DD):', formato(manana));
-    if (!fechafin) {
-      return;
-    }
-
-    const adultosInput = prompt('Número de adultos:', '1');
-    if (!adultosInput) {
-      return;
-    }
-
-    const ninosInput = prompt('Número de niños:', '0');
-    if (ninosInput === null) {
-      return;
-    }
-
-    const numeroadultos = Number(adultosInput);
-    const numeroniños = Number(ninosInput);
+    const numeroadultos = Number(this.numeroadultos);
+    const numeroniños = Number(this.numeroninos);
     const numeropersonas = numeroadultos + numeroniños;
 
     if (!Number.isFinite(numeroadultos) || !Number.isFinite(numeroniños) || numeroadultos < 0 || numeroniños < 0 || numeropersonas <= 0) {
-      alert('Debes ingresar números válidos para los huéspedes.');
+      this.errorReserva = 'Debes ingresar números válidos para los huéspedes.';
+      return;
+    }
+
+    if (!this.fechainicio || !this.fechafin) {
+      this.errorReserva = 'Debes seleccionar fecha de ingreso y salida.';
+      return;
+    }
+
+    if (this.fechainicio > this.fechafin) {
+      this.errorReserva = 'La fecha de ingreso no puede ser mayor a la fecha de salida.';
       return;
     }
 
@@ -86,12 +115,12 @@ export class HabitacionesComponent {
 
     this.reservaPagoService.iniciarPagoPse({
       idHabitacion,
-      fechainicio,
-      fechafin,
+      fechainicio: this.fechainicio,
+      fechafin: this.fechafin,
       numeroadultos,
       numeroniños,
       numeropersonas,
-      telefono: usuario?.telefono || ''
+      telefono: this.telefonoUsuarioReserva
     }).subscribe({
       next: (respuesta) => {
         if (respuesta?.checkoutUrl) {
@@ -100,14 +129,24 @@ export class HabitacionesComponent {
         }
 
         this.procesandoReservaId = null;
-        alert('No fue posible obtener la URL de pago.');
+        this.errorReserva = 'No fue posible obtener la URL de pago.';
       },
       error: (error) => {
         this.procesandoReservaId = null;
         const mensaje = error?.error?.mensaje || 'No fue posible iniciar el pago de la reserva.';
-        alert(mensaje);
+        if (String(mensaje).includes('WOMPI_PRIVATE_KEY')) {
+          this.errorReserva = 'El pago no está disponible porque falta configurar WOMPI_PRIVATE_KEY en el backend.';
+          return;
+        }
+        this.errorReserva = mensaje;
       }
     });
+  }
+
+  public cancelarFormularioReserva(): void {
+    this.formularioReservaId = null;
+    this.errorReserva = '';
+    this.mensajeReserva = '';
   }
 
   public getServicioIcono(servicio: string): string {
