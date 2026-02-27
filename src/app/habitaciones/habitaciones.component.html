@@ -22,7 +22,11 @@
                         class="alojamiento-reservar-btn"
                         (click)="abrirFormularioReserva(habitacion)"
                         [disabled]="procesandoReservaId === (habitacion._id || habitacion.id)">
-                        {{ procesandoReservaId === (habitacion._id || habitacion.id) ? 'Procesando...' : 'Reservar ahora' }}
+                        {{
+                            procesandoReservaId === (habitacion._id || habitacion.id)
+                            ? 'Procesando...'
+                            : (formularioReservaId === (habitacion._id || habitacion.id) ? 'Ocultar formulario' : 'Reservar ahora')
+                        }}
                     </button>
 
                     <div class="reserva-formulario" *ngIf="formularioReservaId === (habitacion._id || habitacion.id)">

@@ -75,6 +75,11 @@ export class HabitacionesComponent {
       return;
     }
 
+    if (this.formularioReservaId === idHabitacion) {
+      this.cancelarFormularioReserva();
+      return;
+    }
+
     this.formularioReservaId = idHabitacion;
     this.inicializarFechasPorDefecto();
     this.numeroadultos = 1;
