@@ -58,7 +58,7 @@
                                 class="alojamiento-reservar-btn"
                                 (click)="reservar(habitacion)"
                                 [disabled]="procesandoReservaId === (habitacion._id || habitacion.id)">
-                                {{ procesandoReservaId === (habitacion._id || habitacion.id) ? 'Procesando...' : 'Continuar al pago' }}
+                                {{ procesandoReservaId === (habitacion._id || habitacion.id) ? 'Procesando...' : 'Confirmar reserva' }}
                             </button>
                             <button type="button" class="reserva-cancelar-btn" (click)="cancelarFormularioReserva()">Cancelar</button>
                         </div>

@@ -53,41 +53,6 @@
   padding: 1.4rem 1.2rem;
 }
 
-.pago-estado-banner {
-  border-radius: 12px;
-  padding: 1rem 1rem 0.7rem;
-  margin-bottom: 0.9rem;
-  border: 1px solid transparent;
-  background: #ecf1ff;
-}
-
-.pago-estado-banner h4 {
-  margin: 0 0 0.35rem;
-  font-weight: 700;
-}
-
-.pago-estado-banner p {
-  margin: 0;
-}
-
-.pago-estado-banner.ok {
-  background: #eaf8ef;
-  border-color: #9ad9ad;
-  color: #0d7a2f;
-}
-
-.pago-estado-banner.error {
-  background: #fdeeee;
-  border-color: #efb7b7;
-  color: #9b1c1c;
-}
-
-.pago-estado-banner.pendiente {
-  background: #fff8e8;
-  border-color: #f0d49a;
-  color: #8a5a00;
-}
-
 .alojamientos-search-card h3 {
   margin: 0 0 1rem;
   color: #1124b3;

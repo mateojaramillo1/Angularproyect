@@ -10,16 +10,6 @@
 
 <section class="alojamientos-search-wrap">
   <div class="container">
-    <div
-      class="pago-estado-banner"
-      *ngIf="mostrarEstadoPago"
-      [class.ok]="estadoPagoTipo === 'ok'"
-      [class.error]="estadoPagoTipo === 'error'"
-      [class.pendiente]="estadoPagoTipo === 'pendiente'">
-      <h4>{{ estadoPagoTitulo }}</h4>
-      <p>{{ estadoPagoMensaje }}</p>
-    </div>
-
     <div class="alojamientos-search-card">
       <h3>Busca tu estadía</h3>
       <div class="search-grid">

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Habitacion } from '../interfaces/habitacion';
 import { HabitacionesService } from '../services/habitaciones.service';
-import { ReservaPagoService } from '../services/reserva-pago.service';
+import { ReservaService } from '../services/reserva.service';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 @Component({
@@ -28,7 +28,7 @@ export class HabitacionesComponent {
 
   public constructor(
     public servicio:HabitacionesService,
-    private reservaPagoService: ReservaPagoService,
+    private reservaService: ReservaService,
     private authService: AuthService,
     private router: Router
   ){
@@ -118,7 +118,7 @@ export class HabitacionesComponent {
 
     this.procesandoReservaId = idHabitacion;
 
-    this.reservaPagoService.iniciarPagoPse({
+    this.reservaService.registrarReserva({
       idHabitacion,
       fechainicio: this.fechainicio,
       fechafin: this.fechafin,
@@ -127,22 +127,13 @@ export class HabitacionesComponent {
       numeropersonas,
       telefono: this.telefonoUsuarioReserva
     }).subscribe({
-      next: (respuesta) => {
-        if (respuesta?.checkoutUrl) {
-          window.location.href = respuesta.checkoutUrl;
-          return;
-        }
-
+      next: () => {
         this.procesandoReservaId = null;
-        this.errorReserva = 'No fue posible obtener la URL de pago.';
+        this.mensajeReserva = 'Reserva creada correctamente.';
       },
       error: (error) => {
         this.procesandoReservaId = null;
-        const mensaje = error?.error?.mensaje || 'No fue posible iniciar el pago de la reserva.';
-        if (String(mensaje).includes('WOMPI_PRIVATE_KEY')) {
-          this.errorReserva = 'El pago no está disponible porque falta configurar WOMPI_PRIVATE_KEY en el backend.';
-          return;
-        }
+        const mensaje = error?.error?.mensaje || 'No fue posible registrar la reserva.';
         this.errorReserva = mensaje;
       }
     });
