@@ -31,9 +31,14 @@ export class HabitacionesComponent {
 
   public reservar(habitacion: Habitacion): void {
     if (!this.authService.isLoggedIn()) {
-      alert('Debes iniciar sesión para reservar.');
-      this.router.navigate(['/login']);
+      alert('Debes registrarte o iniciar sesión antes de reservar.');
+      this.router.navigate(['/register']);
       return;
+    }
+
+    const usuario = this.authService.getStoredUser();
+    if (usuario?.nombre) {
+      alert(`Reservarás como: ${usuario.nombre} ${usuario.apellido || ''}`.trim());
     }
 
     const idHabitacion = habitacion._id || habitacion.id;
@@ -85,7 +90,8 @@ export class HabitacionesComponent {
       fechafin,
       numeroadultos,
       numeroniños,
-      numeropersonas
+      numeropersonas,
+      telefono: usuario?.telefono || ''
     }).subscribe({
       next: (respuesta) => {
         if (respuesta?.checkoutUrl) {
