@@ -21,7 +21,6 @@ export class DescripcionComponent {
 
   reservar() {
     if (this.authService.isLoggedIn()) {
-      // Simulación: crear reserva y obtener estado
       const payload = {
         idHabitacion: this.habitacion._id,
         fechainicio: new Date().toISOString(),
@@ -33,15 +32,9 @@ export class DescripcionComponent {
       };
       this.reservaService.registrarReserva(payload).subscribe({
         next: (res) => {
-          // Después de crear, buscar la reserva del usuario
-          this.reservaService.obtenerReservas().subscribe({
-            next: (r) => {
-              const reservas = r.reservas || [];
-              // Busca la última reserva del usuario para mostrar estado
-              this.reservaActual = reservas.find((rv: Reserva) => rv.idHabitacion === this.habitacion._id);
-              this.actualizarEstadoReserva();
-            }
-          });
+          // Usar la reserva recién creada directamente
+          this.reservaActual = res.reserva;
+          this.actualizarEstadoReserva();
         }
       });
     } else {
