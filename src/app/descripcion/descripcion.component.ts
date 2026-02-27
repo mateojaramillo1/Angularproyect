@@ -32,9 +32,19 @@ export class DescripcionComponent {
       };
       this.reservaService.registrarReserva(payload).subscribe({
         next: (res) => {
-          // Usar la reserva recién creada directamente
           this.reservaActual = res.reserva;
           this.actualizarEstadoReserva();
+          // Mostrar feedback inmediato
+          if (this.reservaActual && this.reservaActual.estado === 'pendiente') {
+            alert('Reserva creada correctamente. Estado: pendiente.');
+          } else if (this.reservaActual && this.reservaActual.estado === 'aprobada') {
+            alert('¡Reserva aprobada!');
+          } else if (this.reservaActual && this.reservaActual.estado === 'rechazada') {
+            alert('Reserva rechazada.');
+          }
+        },
+        error: () => {
+          alert('Error al crear la reserva.');
         }
       });
     } else {
