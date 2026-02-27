@@ -24,4 +24,12 @@ export class ReservaService {
   registrarReserva(payload: RegistrarReservaRequest): Observable<any> {
     return this.http.post(`${this.url}/registrarreserva`, payload);
   }
+
+  obtenerReservas(): Observable<any> {
+    return this.http.get(`${this.url}/buscarreservas`);
+  }
+
+  cambiarEstadoReserva(id: string, estado: string): Observable<any> {
+    return this.http.put(`${this.url}/cambiar-estado-reserva/${id}`, { estado });
+  }
 }

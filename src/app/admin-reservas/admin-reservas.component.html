@@ -1,0 +1,26 @@
+<div *ngIf="loading">Cargando reservas...</div>
+<div *ngIf="error">{{ error }}</div>
+<table *ngIf="!loading && reservas.length">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Habitación</th>
+      <th>Fechas</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let reserva of reservas">
+      <td>{{ reserva.nombre }}</td>
+      <td>{{ reserva.idHabitacion }}</td>
+      <td>{{ reserva.fechainicio | date }} - {{ reserva.fechafin | date }}</td>
+      <td>{{ reserva.estado }}</td>
+      <td>
+        <button *ngIf="reserva.estado === 'pendiente'" (click)="cambiarEstado(reserva, 'aprobada')">Aprobar</button>
+        <button *ngIf="reserva.estado === 'pendiente'" (click)="cambiarEstado(reserva, 'rechazada')">Rechazar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div *ngIf="!loading && !reservas.length">No hay reservas.</div>

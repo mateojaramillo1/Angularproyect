@@ -1,11 +1,13 @@
-export interface Reserva{
+export interface Reserva {
     nombre: string,
-    apellidos: string,
+    apellidos?: string,
     telefono: string,
     fechainicio: Date,
     fechafin: Date,
     idHabitacion: string,
-    numeropersonas:number,
+    numeropersonas: number,
     numeroadultos: number,
-    numeroniños: number
+    numeroniños: number,
+    estado: string,
+    _id?: string
 }

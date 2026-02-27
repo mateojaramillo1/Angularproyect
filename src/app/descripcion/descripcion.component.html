@@ -45,6 +45,26 @@
                     <img src="../../assets/imagen4.jpg" alt="" class="img-fluid w-100 h-100 shadow rounded-4 zoom">
                 </div>
             </div>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <button class="btn btn-primary" (click)="reservar()">Registrar reserva</button>
+                    <div *ngIf="reservaPendiente">
+                        <div class="alert alert-warning mt-3">
+                            Tu reserva está pendiente. Recibirás la confirmación tras el pago por transferencia o efectivo.
+                        </div>
+                    </div>
+                    <div *ngIf="reservaAprobada">
+                        <div class="alert alert-success mt-3">
+                            ¡Reserva aprobada! Te esperamos.
+                        </div>
+                    </div>
+                    <div *ngIf="reservaRechazada">
+                        <div class="alert alert-danger mt-3">
+                            Tu reserva fue rechazada. Contáctanos para más información.
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- <img src="../../assets/foto1.jpg" alt="" srcset="" class="img-fluid w-100"> -->
         </div>
         <div class="col-4"></div>

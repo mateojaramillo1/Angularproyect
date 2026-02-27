@@ -18,6 +18,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './services/token-interceptor.service';
 import { AuthGuard } from './guards/auth.guard';
 import { AlojamientosComponent } from './alojamientos/alojamientos.component';
+import { AdminReservasComponent } from './admin-reservas/admin-reservas.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { AlojamientosComponent } from './alojamientos/alojamientos.component';
     DescripcionComponent,
     FormulariohabitacionComponent
     ,LoginComponent,RegisterComponent
+    ,AdminReservasComponent
   ],
   imports: [
     BrowserModule,

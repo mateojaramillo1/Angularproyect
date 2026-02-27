@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { ReservaService } from '../services/reserva.service';
+import { Reserva } from '../interfaces/reserva';
 
 @Component({
   selector: 'app-descripcion',
@@ -9,16 +11,49 @@ import { AuthService } from '../services/auth.service';
 })
 export class DescripcionComponent {
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService, private reservaService: ReservaService) {}
 
   habitacion: any = {};
+  reservaPendiente = false;
+  reservaAprobada = false;
+  reservaRechazada = false;
+  reservaActual: Reserva | null = null;
 
   reservar() {
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/reservar', this.habitacion._id]);
+      // Simulación: crear reserva y obtener estado
+      const payload = {
+        idHabitacion: this.habitacion._id,
+        fechainicio: new Date(),
+        fechafin: new Date(),
+        numeropersonas: 1,
+        numeroadultos: 1,
+        numeroniños: 0,
+        telefono: ''
+      };
+      this.reservaService.registrarReserva(payload).subscribe({
+        next: (res) => {
+          // Después de crear, buscar la reserva del usuario
+          this.reservaService.obtenerReservas().subscribe({
+            next: (r) => {
+              const reservas = r.reservas || [];
+              // Busca la última reserva del usuario para mostrar estado
+              this.reservaActual = reservas.find((rv: Reserva) => rv.idHabitacion === this.habitacion._id);
+              this.actualizarEstadoReserva();
+            }
+          });
+        }
+      });
     } else {
       this.router.navigate(['/login']);
     }
+  }
+
+  actualizarEstadoReserva() {
+    if (!this.reservaActual) return;
+    this.reservaPendiente = this.reservaActual.estado === 'pendiente';
+    this.reservaAprobada = this.reservaActual.estado === 'aprobada';
+    this.reservaRechazada = this.reservaActual.estado === 'rechazada';
   }
 
 }
