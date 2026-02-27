@@ -24,8 +24,8 @@ export class DescripcionComponent {
       // Simulación: crear reserva y obtener estado
       const payload = {
         idHabitacion: this.habitacion._id,
-        fechainicio: new Date(),
-        fechafin: new Date(),
+        fechainicio: new Date().toISOString(),
+        fechafin: new Date().toISOString(),
         numeropersonas: 1,
         numeroadultos: 1,
         numeroniños: 0,
