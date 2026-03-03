@@ -7,7 +7,9 @@ export interface Reserva {
     idHabitacion: string,
     numeropersonas: number,
     numeroadultos: number,
-    numeroniños: number,
+    numeroninos: number,
     estado: string,
+    metodoPago?: string,
+    pagoVerificado?: boolean,
     _id?: string
 }

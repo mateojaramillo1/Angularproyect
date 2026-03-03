@@ -17,6 +17,7 @@ export class HabitacionesComponent {
   public formularioReservaId: string | null = null;
   public mensajeReserva: string = '';
   public errorReserva: string = '';
+  public mostrarDatosBancarios: boolean = false;
 
   public fechainicio: string = '';
   public fechafin: string = '';
@@ -26,6 +27,15 @@ export class HabitacionesComponent {
   public nombreUsuarioReserva: string = '';
   public telefonoUsuarioReserva: string = '';
   public metodoPago: string = 'efectivo';
+
+  // Datos bancarios para transferencia
+  public datosBancarios = {
+    banco: 'Banco de Bogotá',
+    tipoCuenta: 'Cuenta de Ahorros',
+    numeroCuenta: '123-456789-00',
+    titular: 'Hotel Reservas S.A.S',
+    nit: '900.123.456-7'
+  };
 
   public constructor(
     public servicio:HabitacionesService,
@@ -131,7 +141,13 @@ export class HabitacionesComponent {
     }).subscribe({
       next: () => {
         this.procesandoReservaId = null;
-        this.mensajeReserva = 'Reserva creada correctamente.';
+        if (this.metodoPago === 'transferencia') {
+          this.mensajeReserva = '¡Reserva creada! Realiza la transferencia con los datos bancarios que aparecen abajo.';
+          this.mostrarDatosBancarios = true;
+        } else {
+          this.mensajeReserva = '¡Reserva creada! Recuerda que el pago se realiza en efectivo al momento de tu llegada.';
+          this.mostrarDatosBancarios = false;
+        }
       },
       error: (error) => {
         this.procesandoReservaId = null;
@@ -145,6 +161,7 @@ export class HabitacionesComponent {
     this.formularioReservaId = null;
     this.errorReserva = '';
     this.mensajeReserva = '';
+    this.mostrarDatosBancarios = false;
   }
 
   public getServicioIcono(servicio: string): string {

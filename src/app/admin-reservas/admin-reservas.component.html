@@ -1,26 +1,124 @@
-<div *ngIf="loading">Cargando reservas...</div>
-<div *ngIf="error">{{ error }}</div>
-<table *ngIf="!loading && reservas.length">
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Habitación</th>
-      <th>Fechas</th>
-      <th>Estado</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let reserva of reservas">
-      <td>{{ reserva.nombre }}</td>
-      <td>{{ reserva.idHabitacion }}</td>
-      <td>{{ reserva.fechainicio | date }} - {{ reserva.fechafin | date }}</td>
-      <td>{{ reserva.estado }}</td>
-      <td>
-        <button *ngIf="reserva.estado === 'pendiente'" (click)="cambiarEstado(reserva, 'aprobada')">Aprobar</button>
-        <button *ngIf="reserva.estado === 'pendiente'" (click)="cambiarEstado(reserva, 'rechazada')">Rechazar</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<div *ngIf="!loading && !reservas.length">No hay reservas.</div>
+<div class="admin-reservas-container">
+  <h2>📋 Panel de Administración de Reservas</h2>
+  
+  <div class="filtros-container">
+    <div class="filtro">
+      <label>Estado:</label>
+      <select [(ngModel)]="filtroEstado">
+        <option value="todos">Todos</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="aprobada">Aprobada</option>
+        <option value="rechazada">Rechazada</option>
+      </select>
+    </div>
+    <div class="filtro">
+      <label>Pago:</label>
+      <select [(ngModel)]="filtroPago">
+        <option value="todos">Todos</option>
+        <option value="verificado">Verificados</option>
+        <option value="pendiente">Sin verificar</option>
+      </select>
+    </div>
+    <button class="btn-refresh" (click)="cargarReservas()">🔄 Actualizar</button>
+  </div>
+
+  <div class="loading-message" *ngIf="loading">Cargando reservas...</div>
+  <div class="error-message" *ngIf="error">{{ error }}</div>
+
+  <div class="reservas-stats" *ngIf="!loading && reservas.length">
+    <div class="stat">
+      <span class="stat-number">{{ reservas.length }}</span>
+      <span class="stat-label">Total reservas</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">{{ totalPendientes }}</span>
+      <span class="stat-label">Pendientes</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">{{ totalPagosVerificados }}</span>
+      <span class="stat-label">Pagos verificados</span>
+    </div>
+  </div>
+
+  <div class="reservas-table-container" *ngIf="!loading && reservasFiltradas.length">
+    <table class="reservas-table">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Teléfono</th>
+          <th>Habitación</th>
+          <th>Fechas</th>
+          <th>Huéspedes</th>
+          <th>Método de Pago</th>
+          <th>Estado Pago</th>
+          <th>Estado Reserva</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reserva of reservasFiltradas">
+          <td class="cliente-cell">
+            <strong>{{ reserva.nombre }}</strong>
+            <span *ngIf="reserva.apellidos"> {{ reserva.apellidos }}</span>
+          </td>
+          <td>{{ reserva.telefono }}</td>
+          <td>{{ reserva.idHabitacion }}</td>
+          <td class="fechas-cell">
+            <span>📅 {{ reserva.fechainicio | date:'dd/MM/yyyy' }}</span>
+            <span>➜ {{ reserva.fechafin | date:'dd/MM/yyyy' }}</span>
+          </td>
+          <td>
+            <span>👥 {{ reserva.numeroadultos }} adultos</span>
+            <span *ngIf="reserva.numeroninos > 0">, {{ reserva.numeroninos }} niños</span>
+          </td>
+          <td>
+            <span class="metodo-pago-badge" [ngClass]="reserva.metodoPago || 'efectivo'">
+              {{ getMetodoPagoLabel(reserva.metodoPago) }}
+            </span>
+          </td>
+          <td>
+            <span class="pago-badge" [ngClass]="reserva.pagoVerificado ? 'verificado' : 'no-verificado'">
+              {{ reserva.pagoVerificado ? '✅ Verificado' : '⏳ Pendiente' }}
+            </span>
+          </td>
+          <td>
+            <span class="estado-badge" [ngClass]="getEstadoClass(reserva.estado)">
+              {{ reserva.estado | titlecase }}
+            </span>
+          </td>
+          <td class="acciones-cell">
+            <div class="acciones-grupo">
+              <div class="acciones-pago" *ngIf="reserva.metodoPago === 'transferencia'">
+                <button 
+                  *ngIf="!reserva.pagoVerificado" 
+                  class="btn-verificar" 
+                  (click)="verificarPago(reserva, true)"
+                  title="Marcar pago como verificado">
+                  ✅ Verificar pago
+                </button>
+                <button 
+                  *ngIf="reserva.pagoVerificado" 
+                  class="btn-desverificar" 
+                  (click)="verificarPago(reserva, false)"
+                  title="Desmarcar verificación">
+                  ❌ Quitar verificación
+                </button>
+              </div>
+              <div class="acciones-estado" *ngIf="reserva.estado === 'pendiente'">
+                <button class="btn-aprobar" (click)="cambiarEstado(reserva, 'aprobada')">✔️ Aprobar</button>
+                <button class="btn-rechazar" (click)="cambiarEstado(reserva, 'rechazada')">✖️ Rechazar</button>
+              </div>
+              <div class="acciones-estado" *ngIf="reserva.estado !== 'pendiente'">
+                <button class="btn-pendiente" (click)="cambiarEstado(reserva, 'pendiente')">⏪ Volver a pendiente</button>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="no-reservas" *ngIf="!loading && !reservasFiltradas.length">
+    <p>No hay reservas que coincidan con los filtros seleccionados.</p>
+  </div>
+</div>

@@ -33,7 +33,35 @@
                         <p class="reserva-info" *ngIf="mensajeReserva">{{ mensajeReserva }}</p>
                         <p class="reserva-error" *ngIf="errorReserva">{{ errorReserva }}</p>
 
-                        <div class="reserva-grid">
+                        <!-- Datos bancarios para transferencia -->
+                        <div class="datos-bancarios" *ngIf="mostrarDatosBancarios">
+                            <h5>📋 Datos para transferencia:</h5>
+                            <div class="datos-bancarios-grid">
+                                <div class="dato-bancario">
+                                    <span class="dato-label">Banco:</span>
+                                    <span class="dato-valor">{{ datosBancarios.banco }}</span>
+                                </div>
+                                <div class="dato-bancario">
+                                    <span class="dato-label">Tipo de cuenta:</span>
+                                    <span class="dato-valor">{{ datosBancarios.tipoCuenta }}</span>
+                                </div>
+                                <div class="dato-bancario">
+                                    <span class="dato-label">Número de cuenta:</span>
+                                    <span class="dato-valor">{{ datosBancarios.numeroCuenta }}</span>
+                                </div>
+                                <div class="dato-bancario">
+                                    <span class="dato-label">Titular:</span>
+                                    <span class="dato-valor">{{ datosBancarios.titular }}</span>
+                                </div>
+                                <div class="dato-bancario">
+                                    <span class="dato-label">NIT:</span>
+                                    <span class="dato-valor">{{ datosBancarios.nit }}</span>
+                                </div>
+                            </div>
+                            <p class="datos-bancarios-nota">⚠️ Envía el comprobante de pago a nuestro correo para confirmar tu reserva.</p>
+                        </div>
+
+                        <div class="reserva-grid" *ngIf="!mostrarDatosBancarios">
                             <label>
                                 Fecha ingreso
                                 <input type="date" [value]="fechainicio" (input)="fechainicio = $any($event.target).value">
@@ -52,7 +80,7 @@
                             </label>
                         </div>
 
-                        <div class="metodo-pago-section">
+                        <div class="metodo-pago-section" *ngIf="!mostrarDatosBancarios">
                             <label>Método de pago</label>
                             <div class="metodo-pago-opciones">
                                 <label class="metodo-pago-opcion">
@@ -65,19 +93,22 @@
                                 </label>
                             </div>
                             <p class="metodo-pago-info" *ngIf="metodoPago === 'transferencia'">
-                                Los datos bancarios se enviarán a tu correo tras confirmar la reserva.
+                                Los datos bancarios se mostrarán tras confirmar la reserva.
                             </p>
                         </div>
 
                         <div class="reserva-acciones">
                             <button
+                                *ngIf="!mostrarDatosBancarios"
                                 type="button"
                                 class="alojamiento-reservar-btn"
                                 (click)="reservar(habitacion)"
                                 [disabled]="procesandoReservaId === (habitacion._id || habitacion.id)">
                                 {{ procesandoReservaId === (habitacion._id || habitacion.id) ? 'Procesando...' : 'Confirmar reserva' }}
                             </button>
-                            <button type="button" class="reserva-cancelar-btn" (click)="cancelarFormularioReserva()">Cancelar</button>
+                            <button type="button" class="reserva-cancelar-btn" (click)="cancelarFormularioReserva()">
+                                {{ mostrarDatosBancarios ? 'Cerrar' : 'Cancelar' }}
+                            </button>
                         </div>
                     </div>
                 </div>

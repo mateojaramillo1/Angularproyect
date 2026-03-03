@@ -33,4 +33,8 @@ export class ReservaService {
   cambiarEstadoReserva(id: string, estado: string): Observable<any> {
     return this.http.put(`${this.url}/cambiar-estado-reserva/${id}`, { estado });
   }
+
+  verificarPago(id: string, pagoVerificado: boolean): Observable<any> {
+    return this.http.put(`${this.url}/verificar-pago/${id}`, { pagoVerificado });
+  }
 }
