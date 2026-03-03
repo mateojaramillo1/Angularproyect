@@ -24,6 +24,7 @@
           <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/niños" (click)="closeMobileMenu()">Niños</a></li>
           <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/deporte" (click)="closeMobileMenu()">Deporte</a></li>
           <li *ngIf="auth.isLoggedIn() && auth.isAdmin()"><a routerLink="/registrohabitacion" (click)="closeMobileMenu()">Registrar Habitación</a></li>
+          <li *ngIf="auth.isLoggedIn() && auth.isAdmin()"><a routerLink="/admin-reservas" (click)="closeMobileMenu()">Panel Reservas</a></li>
           <li *ngIf="!auth.isLoggedIn()"><a routerLink="/login" (click)="closeMobileMenu()">Check-in</a></li>
         </ul>
         <div class="nav-actions">
