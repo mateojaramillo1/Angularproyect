@@ -70,9 +70,9 @@ export class HabitacionesComponent {
   public abrirFormularioReserva(habitacion: Habitacion): void {
     this.errorReserva = '';
     this.mensajeReserva = '';
+    this.mostrarDatosBancarios = false;
 
     if (!this.authService.isLoggedIn()) {
-      this.errorReserva = 'Debes iniciar sesión antes de reservar.';
       this.router.navigate(['/login']);
       return;
     }
@@ -87,17 +87,12 @@ export class HabitacionesComponent {
       return;
     }
 
-    if (this.formularioReservaId === idHabitacion) {
-      this.cancelarFormularioReserva();
-      return;
-    }
-
     this.formularioReservaId = idHabitacion;
     this.habitacionSeleccionada = habitacion;
     this.inicializarFechasPorDefecto();
     this.numeroadultos = 1;
     this.numeroninos = 0;
-    this.mensajeReserva = `Reservarás como ${this.nombreUsuarioReserva}.`;
+    this.metodoPago = 'efectivo';
   }
 
   public reservar(habitacion: Habitacion): void {
@@ -182,6 +177,13 @@ export class HabitacionesComponent {
     this.errorReserva = '';
     this.mensajeReserva = '';
     this.mostrarDatosBancarios = false;
+  }
+
+  public cerrarModalSiClickFuera(event: MouseEvent): void {
+    // Solo cerrar si el click fue en el overlay (fondo oscuro), no en el modal
+    if ((event.target as HTMLElement).classList.contains('modal-overlay')) {
+      this.cancelarFormularioReserva();
+    }
   }
 
   // Calcular número de noches entre las fechas seleccionadas

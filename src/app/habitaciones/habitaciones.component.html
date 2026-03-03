@@ -8,7 +8,7 @@
                     <p class="alojamiento-descripcion">{{habitacion.descripcion}}</p>
                     <h6>
                         <i class="bi bi-person-fill"></i>
-                        X{{habitacion.numeropersonas}}
+                        Capacidad: {{habitacion.numeropersonas}} personas
                     </h6>
                     <div class="servicios-lista" *ngIf="habitacion.servicios?.length">
                         <span class="servicio-chip" *ngFor="let servicio of habitacion.servicios">
@@ -20,154 +20,195 @@
                     <button
                         type="button"
                         class="alojamiento-reservar-btn"
-                        (click)="abrirFormularioReserva(habitacion)"
-                        [disabled]="procesandoReservaId === (habitacion._id || habitacion.id)">
-                        {{
-                            procesandoReservaId === (habitacion._id || habitacion.id)
-                            ? 'Procesando...'
-                            : (formularioReservaId === (habitacion._id || habitacion.id) ? 'Ocultar formulario' : 'Reservar ahora')
-                        }}
+                        (click)="abrirFormularioReserva(habitacion)">
+                        🛎️ Reservar ahora
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                    <div class="reserva-formulario" *ngIf="formularioReservaId === (habitacion._id || habitacion.id)">
-                        <p class="reserva-info" *ngIf="mensajeReserva">{{ mensajeReserva }}</p>
-                        <p class="reserva-error" *ngIf="errorReserva">{{ errorReserva }}</p>
+<!-- MODAL DE RESERVA -->
+<div class="modal-overlay" *ngIf="formularioReservaId && habitacionSeleccionada" (click)="cerrarModalSiClickFuera($event)">
+    <div class="modal-reserva">
+        <!-- Header del modal con info de la habitación -->
+        <div class="modal-header-reserva">
+            <button class="modal-close-btn" (click)="cancelarFormularioReserva()">✕</button>
+            <div class="modal-habitacion-preview">
+                <img [src]="habitacionSeleccionada.foto[0] || 'https://via.placeholder.com/200x150'" alt="Habitación" class="modal-habitacion-img">
+                <div class="modal-habitacion-info">
+                    <h3>{{ habitacionSeleccionada.nombre }}</h3>
+                    <p class="modal-habitacion-capacidad">👥 Capacidad máxima: {{ habitacionSeleccionada.numeropersonas }} personas</p>
+                    <p class="modal-habitacion-precio">💰 {{ formatearPrecio(habitacionSeleccionada.precio) }} / noche</p>
+                </div>
+            </div>
+        </div>
 
-                        <!-- Datos bancarios para transferencia -->
-                        <div class="datos-bancarios" *ngIf="mostrarDatosBancarios">
-                            <h5>📋 Datos para transferencia:</h5>
-                            <div class="datos-bancarios-grid">
-                                <div class="dato-bancario">
-                                    <span class="dato-label">Banco:</span>
-                                    <span class="dato-valor">{{ datosBancarios.banco }}</span>
-                                </div>
-                                <div class="dato-bancario">
-                                    <span class="dato-label">Tipo de cuenta:</span>
-                                    <span class="dato-valor">{{ datosBancarios.tipoCuenta }}</span>
-                                </div>
-                                <div class="dato-bancario">
-                                    <span class="dato-label">Número de cuenta:</span>
-                                    <span class="dato-valor">{{ datosBancarios.numeroCuenta }}</span>
-                                </div>
-                                <div class="dato-bancario">
-                                    <span class="dato-label">Titular:</span>
-                                    <span class="dato-valor">{{ datosBancarios.titular }}</span>
-                                </div>
-                                <div class="dato-bancario">
-                                    <span class="dato-label">NIT:</span>
-                                    <span class="dato-valor">{{ datosBancarios.nit }}</span>
-                                </div>
-                            </div>
-                            <p class="datos-bancarios-nota">⚠️ Envía el comprobante de pago a nuestro correo para confirmar tu reserva.</p>
+        <!-- Mensajes -->
+        <div class="modal-messages">
+            <p class="reserva-info" *ngIf="mensajeReserva">{{ mensajeReserva }}</p>
+            <p class="reserva-error" *ngIf="errorReserva">{{ errorReserva }}</p>
+        </div>
+
+        <!-- Datos bancarios para transferencia (se muestra después de confirmar) -->
+        <div class="modal-body-reserva" *ngIf="mostrarDatosBancarios">
+            <div class="datos-bancarios">
+                <h4>📋 Datos para realizar la transferencia</h4>
+                <div class="datos-bancarios-grid">
+                    <div class="dato-bancario">
+                        <span class="dato-label">🏦 Banco:</span>
+                        <span class="dato-valor">{{ datosBancarios.banco }}</span>
+                    </div>
+                    <div class="dato-bancario">
+                        <span class="dato-label">📄 Tipo de cuenta:</span>
+                        <span class="dato-valor">{{ datosBancarios.tipoCuenta }}</span>
+                    </div>
+                    <div class="dato-bancario">
+                        <span class="dato-label">🔢 Número de cuenta:</span>
+                        <span class="dato-valor">{{ datosBancarios.numeroCuenta }}</span>
+                    </div>
+                    <div class="dato-bancario">
+                        <span class="dato-label">👤 Titular:</span>
+                        <span class="dato-valor">{{ datosBancarios.titular }}</span>
+                    </div>
+                    <div class="dato-bancario">
+                        <span class="dato-label">🏢 NIT:</span>
+                        <span class="dato-valor">{{ datosBancarios.nit }}</span>
+                    </div>
+                </div>
+                <div class="datos-bancarios-total">
+                    <span>Total a transferir:</span>
+                    <strong>{{ formatearPrecio(calcularPrecioTotal(habitacionSeleccionada)) }}</strong>
+                </div>
+                <p class="datos-bancarios-nota">⚠️ Envía el comprobante de pago a nuestro correo para confirmar tu reserva.</p>
+            </div>
+            <button type="button" class="btn-cerrar-modal" (click)="cancelarFormularioReserva()">
+                ✓ Entendido, cerrar
+            </button>
+        </div>
+
+        <!-- Formulario de reserva -->
+        <div class="modal-body-reserva" *ngIf="!mostrarDatosBancarios">
+            <!-- Paso 1: Fechas -->
+            <div class="form-section">
+                <h4 class="form-section-title">📅 Selecciona tus fechas</h4>
+                <div class="fechas-grid">
+                    <div class="fecha-input-group">
+                        <label>Fecha de llegada</label>
+                        <input type="date" [value]="fechainicio" (input)="fechainicio = $any($event.target).value" class="fecha-input">
+                    </div>
+                    <div class="fecha-input-group">
+                        <label>Fecha de salida</label>
+                        <input type="date" [value]="fechafin" (input)="fechafin = $any($event.target).value" class="fecha-input">
+                    </div>
+                </div>
+                <div class="noches-indicator" *ngIf="calcularNoches() > 0">
+                    🌙 {{ calcularNoches() }} {{ calcularNoches() === 1 ? 'noche' : 'noches' }} de estadía
+                </div>
+            </div>
+
+            <!-- Paso 2: Huéspedes -->
+            <div class="form-section">
+                <h4 class="form-section-title">👥 ¿Cuántos huéspedes?</h4>
+                <div class="huespedes-grid">
+                    <div class="huesped-input-group">
+                        <div class="huesped-label">
+                            <span class="huesped-icon">🧑</span>
+                            <span>Adultos</span>
                         </div>
-
-                        <div class="reserva-grid" *ngIf="!mostrarDatosBancarios">
-                            <label>
-                                Fecha ingreso
-                                <input type="date" [value]="fechainicio" (input)="fechainicio = $any($event.target).value">
-                            </label>
-                            <label>
-                                Fecha salida
-                                <input type="date" [value]="fechafin" (input)="fechafin = $any($event.target).value">
-                            </label>
-                            <label>
-                                Adultos
-                                <input type="number" min="0" [max]="habitacion.numeropersonas" [value]="numeroadultos" (input)="numeroadultos = +$any($event.target).value">
-                            </label>
-                            <label>
-                                Niños
-                                <input type="number" min="0" [max]="habitacion.numeropersonas" [value]="numeroninos" (input)="numeroninos = +$any($event.target).value">
-                            </label>
+                        <div class="huesped-counter">
+                            <button type="button" class="counter-btn" (click)="numeroadultos = numeroadultos > 0 ? numeroadultos - 1 : 0">−</button>
+                            <span class="counter-value">{{ numeroadultos }}</span>
+                            <button type="button" class="counter-btn" (click)="numeroadultos = numeroadultos + 1">+</button>
                         </div>
-
-                        <!-- Indicador de capacidad -->
-                        <div class="capacidad-section" *ngIf="!mostrarDatosBancarios">
-                            <div class="capacidad-header">
-                                <span class="capacidad-icono">👥</span>
-                                <span class="capacidad-titulo">Capacidad de la habitación</span>
-                            </div>
-                            <div class="capacidad-barra-container">
-                                <div class="capacidad-barra" 
-                                     [ngClass]="{'capacidad-ok': !excedeCapacidad(habitacion), 'capacidad-excedida': excedeCapacidad(habitacion)}"
-                                     [style.width.%]="(getTotalPersonas() / habitacion.numeropersonas) * 100 > 100 ? 100 : (getTotalPersonas() / habitacion.numeropersonas) * 100">
-                                </div>
-                            </div>
-                            <div class="capacidad-info" [ngClass]="{'capacidad-error-text': excedeCapacidad(habitacion)}">
-                                <span *ngIf="!excedeCapacidad(habitacion)">
-                                    ✅ {{ getTotalPersonas() }} de {{ habitacion.numeropersonas }} personas
-                                    <span *ngIf="getCapacidadRestante(habitacion) > 0">(quedan {{ getCapacidadRestante(habitacion) }} lugares)</span>
-                                </span>
-                                <span *ngIf="excedeCapacidad(habitacion)">
-                                    ⚠️ Excedes la capacidad por {{ getTotalPersonas() - habitacion.numeropersonas }} persona(s). Máximo: {{ habitacion.numeropersonas }}
-                                </span>
-                            </div>
+                    </div>
+                    <div class="huesped-input-group">
+                        <div class="huesped-label">
+                            <span class="huesped-icon">👶</span>
+                            <span>Niños</span>
                         </div>
-
-                        <!-- Resumen de precio interactivo -->
-                        <div class="precio-resumen" *ngIf="!mostrarDatosBancarios && calcularNoches() > 0">
-                            <h5 class="precio-resumen-titulo">💰 Resumen de tu reserva</h5>
-                            <div class="precio-desglose">
-                                <div class="precio-linea">
-                                    <span>Precio por noche</span>
-                                    <span class="precio-valor">{{ formatearPrecio(habitacion.precio) }}</span>
-                                </div>
-                                <div class="precio-linea">
-                                    <span>Número de noches</span>
-                                    <span class="precio-valor noches-badge">{{ calcularNoches() }} {{ calcularNoches() === 1 ? 'noche' : 'noches' }}</span>
-                                </div>
-                                <div class="precio-linea precio-linea-total">
-                                    <span>🏷️ Total a pagar</span>
-                                    <span class="precio-total-valor">{{ formatearPrecio(calcularPrecioTotal(habitacion)) }}</span>
-                                </div>
-                            </div>
-                            <p class="precio-nota">
-                                <span *ngIf="metodoPago === 'efectivo'">💵 Pagarás al momento de tu llegada</span>
-                                <span *ngIf="metodoPago === 'transferencia'">🏦 Realiza la transferencia para confirmar</span>
-                            </p>
-                        </div>
-
-                        <div class="metodo-pago-section" *ngIf="!mostrarDatosBancarios">
-                            <label>Método de pago</label>
-                            <div class="metodo-pago-opciones">
-                                <label class="metodo-pago-opcion">
-                                    <input type="radio" name="metodoPago-{{habitacion._id || habitacion.id}}" value="efectivo" [(ngModel)]="metodoPago" checked>
-                                    <span>💵 Pago en efectivo al llegar</span>
-                                </label>
-                                <label class="metodo-pago-opcion">
-                                    <input type="radio" name="metodoPago-{{habitacion._id || habitacion.id}}" value="transferencia" [(ngModel)]="metodoPago">
-                                    <span>🏦 Transferencia bancaria</span>
-                                </label>
-                            </div>
-                            <p class="metodo-pago-info" *ngIf="metodoPago === 'transferencia'">
-                                Los datos bancarios se mostrarán tras confirmar la reserva.
-                            </p>
-                        </div>
-
-                        <div class="reserva-acciones">
-                            <button
-                                *ngIf="!mostrarDatosBancarios"
-                                type="button"
-                                class="alojamiento-reservar-btn"
-                                [ngClass]="{'btn-disabled': excedeCapacidad(habitacion) || calcularNoches() < 1}"
-                                (click)="reservar(habitacion)"
-                                [disabled]="procesandoReservaId === (habitacion._id || habitacion.id) || excedeCapacidad(habitacion) || calcularNoches() < 1">
-                                <span *ngIf="procesandoReservaId === (habitacion._id || habitacion.id)">Procesando...</span>
-                                <span *ngIf="procesandoReservaId !== (habitacion._id || habitacion.id) && !excedeCapacidad(habitacion) && calcularNoches() >= 1">
-                                    ✅ Confirmar reserva - {{ formatearPrecio(calcularPrecioTotal(habitacion)) }}
-                                </span>
-                                <span *ngIf="procesandoReservaId !== (habitacion._id || habitacion.id) && excedeCapacidad(habitacion)">
-                                    ⚠️ Capacidad excedida
-                                </span>
-                                <span *ngIf="procesandoReservaId !== (habitacion._id || habitacion.id) && !excedeCapacidad(habitacion) && calcularNoches() < 1">
-                                    📅 Selecciona las fechas
-                                </span>
-                            </button>
-                            <button type="button" class="reserva-cancelar-btn" (click)="cancelarFormularioReserva()">
-                                {{ mostrarDatosBancarios ? 'Cerrar' : 'Cancelar' }}
-                            </button>
+                        <div class="huesped-counter">
+                            <button type="button" class="counter-btn" (click)="numeroninos = numeroninos > 0 ? numeroninos - 1 : 0">−</button>
+                            <span class="counter-value">{{ numeroninos }}</span>
+                            <button type="button" class="counter-btn" (click)="numeroninos = numeroninos + 1">+</button>
                         </div>
                     </div>
                 </div>
+                
+                <!-- Barra de capacidad -->
+                <div class="capacidad-visual">
+                    <div class="capacidad-barra-container">
+                        <div class="capacidad-barra" 
+                             [ngClass]="{'capacidad-ok': !excedeCapacidad(habitacionSeleccionada), 'capacidad-excedida': excedeCapacidad(habitacionSeleccionada)}"
+                             [style.width.%]="(getTotalPersonas() / habitacionSeleccionada.numeropersonas) * 100 > 100 ? 100 : (getTotalPersonas() / habitacionSeleccionada.numeropersonas) * 100">
+                        </div>
+                    </div>
+                    <div class="capacidad-texto" [ngClass]="{'capacidad-error-text': excedeCapacidad(habitacionSeleccionada)}">
+                        <span *ngIf="!excedeCapacidad(habitacionSeleccionada)">
+                            ✅ {{ getTotalPersonas() }} de {{ habitacionSeleccionada.numeropersonas }} personas
+                        </span>
+                        <span *ngIf="excedeCapacidad(habitacionSeleccionada)">
+                            ⚠️ Excedes la capacidad máxima ({{ habitacionSeleccionada.numeropersonas }} personas)
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paso 3: Método de pago -->
+            <div class="form-section">
+                <h4 class="form-section-title">💳 Método de pago</h4>
+                <div class="metodo-pago-cards">
+                    <label class="metodo-pago-card" [ngClass]="{'selected': metodoPago === 'efectivo'}">
+                        <input type="radio" name="metodoPago" value="efectivo" [(ngModel)]="metodoPago">
+                        <div class="metodo-card-content">
+                            <span class="metodo-icon">💵</span>
+                            <span class="metodo-titulo">Efectivo</span>
+                            <span class="metodo-desc">Pagas al llegar al hotel</span>
+                        </div>
+                    </label>
+                    <label class="metodo-pago-card" [ngClass]="{'selected': metodoPago === 'transferencia'}">
+                        <input type="radio" name="metodoPago" value="transferencia" [(ngModel)]="metodoPago">
+                        <div class="metodo-card-content">
+                            <span class="metodo-icon">🏦</span>
+                            <span class="metodo-titulo">Transferencia</span>
+                            <span class="metodo-desc">Pago anticipado por banco</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Resumen de precio -->
+            <div class="resumen-precio-card" *ngIf="calcularNoches() > 0">
+                <div class="resumen-linea">
+                    <span>{{ formatearPrecio(habitacionSeleccionada.precio) }} x {{ calcularNoches() }} noches</span>
+                    <span>{{ formatearPrecio(calcularPrecioTotal(habitacionSeleccionada)) }}</span>
+                </div>
+                <div class="resumen-total">
+                    <span>Total</span>
+                    <span class="total-precio">{{ formatearPrecio(calcularPrecioTotal(habitacionSeleccionada)) }}</span>
+                </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="modal-actions">
+                <button type="button" class="btn-cancelar" (click)="cancelarFormularioReserva()">
+                    Cancelar
+                </button>
+                <button 
+                    type="button" 
+                    class="btn-confirmar"
+                    [disabled]="procesandoReservaId || excedeCapacidad(habitacionSeleccionada) || calcularNoches() < 1 || getTotalPersonas() < 1"
+                    [ngClass]="{'btn-disabled': excedeCapacidad(habitacionSeleccionada) || calcularNoches() < 1 || getTotalPersonas() < 1}"
+                    (click)="reservar(habitacionSeleccionada)">
+                    <span *ngIf="procesandoReservaId">⏳ Procesando...</span>
+                    <span *ngIf="!procesandoReservaId && !excedeCapacidad(habitacionSeleccionada) && calcularNoches() >= 1 && getTotalPersonas() >= 1">
+                        ✅ Confirmar reserva
+                    </span>
+                    <span *ngIf="!procesandoReservaId && excedeCapacidad(habitacionSeleccionada)">⚠️ Capacidad excedida</span>
+                    <span *ngIf="!procesandoReservaId && !excedeCapacidad(habitacionSeleccionada) && calcularNoches() < 1">📅 Selecciona fechas</span>
+                    <span *ngIf="!procesandoReservaId && !excedeCapacidad(habitacionSeleccionada) && calcularNoches() >= 1 && getTotalPersonas() < 1">👥 Agrega huéspedes</span>
+                </button>
             </div>
         </div>
     </div>
