@@ -1,22 +1,52 @@
+/* Hero Section */
+.habitaciones-hero {
+  position: relative;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8rem 1rem 4rem;
+  background: url('../../assets/banner.jpg') center/cover no-repeat;
+}
+
+.habitaciones-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(2, 3, 5, 0.78), rgba(0, 77, 217, 0.72));
+}
+
+.habitaciones-content {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+}
+
+.habitaciones-content h1 {
+  font-family: 'Lato', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #fff;
+}
+
+.habitaciones-content p {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #e7ecff;
+}
+
 /* Fondo general limpio y amigable */
 .habitaciones-bg {
   min-height: 100vh;
   background: #f4f7ff;
-  padding-top: 5.5rem;
+  padding-top: 0;
   padding-bottom: 3rem;
 }
 
 .habitaciones-bg .container {
   max-width: 1200px;
-}
-
-.habitaciones-titulo {
-  text-align: center;
-  color: #1124b3;
-  font-size: 2.2rem;
-  font-weight: 700;
-  margin-bottom: 2.5rem;
-  margin-top: 1rem;
+  padding-top: 3rem;
 }
 
 .alojamiento-card-horizontal {
