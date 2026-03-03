@@ -1,5 +1,13 @@
 <app-menu></app-menu>
 <div class="admin-panel-bg">
+  <section class="admin-reservas-hero text-white">
+    <div class="admin-reservas-overlay"></div>
+    <div class="admin-reservas-content">
+      <h1>Gestión de Reservas</h1>
+      <p>Administra y verifica las reservas de Paradisus Cancún de forma rápida y organizada.</p>
+    </div>
+  </section>
+
 <div class="admin-reservas-container">
   <h2>📋 Panel de Administración de Reservas</h2>
   
@@ -128,4 +136,5 @@
   <div class="no-reservas" *ngIf="!loading && !reservasFiltradas.length">
     <p>No hay reservas que coincidan con los filtros seleccionados.</p>
   </div>
+</div>
 </div>

@@ -2,16 +2,55 @@
 .admin-panel-bg {
   min-height: 100vh;
   background: #f4f7ff;
-  padding: 6rem 2rem 3rem;
+  padding: 5.5rem 0 3rem;
+}
+
+.admin-reservas-hero {
+  position: relative;
+  min-height: 42vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1rem 3rem;
+  background: url('../../assets/banner.jpg') center/cover no-repeat;
+}
+
+.admin-reservas-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(2, 3, 5, 0.78), rgba(0, 77, 217, 0.72));
+}
+
+.admin-reservas-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  padding: 0 1rem;
+}
+
+.admin-reservas-content h1 {
+  font-family: 'Lato', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.admin-reservas-content p {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #e7ecff;
 }
 
 .admin-reservas-container {
   max-width: 1400px;
-  margin: 0 auto;
+  margin: -2.2rem auto 0;
   padding: 2rem;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(17, 36, 179, 0.12);
+  position: relative;
+  z-index: 2;
 }
 
 .admin-reservas-container h2 {
@@ -354,6 +393,19 @@
 }
 
 @media (max-width: 768px) {
+  .admin-panel-bg {
+    padding-top: 5rem;
+  }
+
+  .admin-reservas-hero {
+    min-height: 34vh;
+    padding: 3rem 1rem 2.5rem;
+  }
+
+  .admin-reservas-content h1 {
+    font-size: 2rem;
+  }
+
   .admin-reservas-container {
     padding: 1rem;
     margin: 1rem;

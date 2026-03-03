@@ -67,9 +67,25 @@
     font-weight: 500;
     transition: color 0.2s;
     white-space: nowrap;
+    position: relative;
+    padding-bottom: 0.15rem;
 }
 .nav-nike-menu2 li a:hover {
     color: #b3b3b3;
+}
+.nav-nike-menu2 li a.nav-active-link {
+    color: #ffffff;
+    font-weight: 700;
+}
+.nav-nike-menu2 li a.nav-active-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.28rem;
+    height: 2px;
+    border-radius: 999px;
+    background: #f9d423;
 }
 .nav-user-name {
     color: #fff;
@@ -126,6 +142,9 @@
 .nav-nike-reserva-btn:hover {
     background: linear-gradient(90deg, #ff8800 0%, #f9d423 100%);
     color: #fff;
+}
+.nav-nike-reserva-btn.nav-active-btn {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.55), 0 2px 8px rgba(255, 136, 0, 0.2);
 }
 @media (max-width: 900px) {
     .nav-nike-merged.nav-nike-centered {
