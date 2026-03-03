@@ -1,13 +1,15 @@
 <app-menu></app-menu>
 
+<section class="mis-reservas-hero text-white">
+  <div class="mis-reservas-overlay"></div>
+  <div class="mis-reservas-hero-content">
+    <h1>Mis Reservas</h1>
+    <p>Consulta el estado de tus reservaciones en el hotel</p>
+  </div>
+</section>
+
 <div class="mis-reservas-bg">
   <div class="container">
-    <!-- Header -->
-    <div class="mis-reservas-header">
-      <h1>📋 Mis Reservas</h1>
-      <p>Consulta el estado de tus reservaciones en el hotel</p>
-    </div>
-
     <!-- Loading -->
     <div class="loading-container" *ngIf="loading">
       <div class="spinner"></div>
@@ -110,3 +112,5 @@
     </div>
   </div>
 </div>
+
+<app-footer></app-footer>

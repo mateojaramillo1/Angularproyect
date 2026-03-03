@@ -1,31 +1,56 @@
+/* Hero Section */
+.mis-reservas-hero {
+  position: relative;
+  min-height: 52vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8rem 1rem 4rem;
+  background: url('../../assets/banner.jpg') center/cover no-repeat;
+}
+
+.mis-reservas-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(2, 3, 5, 0.78), rgba(0, 77, 217, 0.72));
+}
+
+.mis-reservas-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+}
+
+.mis-reservas-hero-content h1 {
+  font-family: 'Lato', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #fff;
+}
+
+.mis-reservas-hero-content p {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #e7ecff;
+}
+
 .mis-reservas-bg {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f4f7ff 0%, #e8ecff 100%);
-  padding-top: 6rem;
+  min-height: auto;
+  background: #f4f7ff;
+  padding-top: 0;
+  margin-top: -56px;
+  position: relative;
+  z-index: 2;
   padding-bottom: 3rem;
+  border-radius: 24px 24px 0 0;
 }
 
 .container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 0 1rem;
-}
-
-/* Header */
-.mis-reservas-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.mis-reservas-header h1 {
-  font-size: 2rem;
-  color: #1124b3;
-  margin-bottom: 0.5rem;
-}
-
-.mis-reservas-header p {
-  color: #666;
-  font-size: 1.1rem;
+  padding: 2rem 1rem 0;
 }
 
 /* Loading */
@@ -347,6 +372,18 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .mis-reservas-hero-content h1 {
+    font-size: 1.8rem;
+  }
+
+  .mis-reservas-hero-content p {
+    font-size: 1rem;
+  }
+
+  .mis-reservas-bg {
+    margin-top: -28px;
+  }
+
   .resumen-estados {
     grid-template-columns: 1fr;
   }
