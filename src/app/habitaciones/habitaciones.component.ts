@@ -27,6 +27,7 @@ export class HabitacionesComponent {
   public nombreUsuarioReserva: string = '';
   public telefonoUsuarioReserva: string = '';
   public metodoPago: string = 'efectivo';
+  public habitacionSeleccionada: Habitacion | null = null;
 
   // Datos bancarios para transferencia
   public datosBancarios = {
@@ -92,6 +93,7 @@ export class HabitacionesComponent {
     }
 
     this.formularioReservaId = idHabitacion;
+    this.habitacionSeleccionada = habitacion;
     this.inicializarFechasPorDefecto();
     this.numeroadultos = 1;
     this.numeroninos = 0;
@@ -127,7 +129,22 @@ export class HabitacionesComponent {
       return;
     }
 
+    // Validar capacidad de la habitación
+    if (numeropersonas > habitacion.numeropersonas) {
+      this.errorReserva = `La habitación tiene capacidad máxima para ${habitacion.numeropersonas} personas. Has seleccionado ${numeropersonas}.`;
+      return;
+    }
+
+    // Validar que haya al menos una noche
+    if (this.calcularNoches() < 1) {
+      this.errorReserva = 'Debes seleccionar al menos una noche de estadía.';
+      return;
+    }
+
     this.procesandoReservaId = idHabitacion;
+
+    const noches = this.calcularNoches();
+    const precioTotal = this.calcularPrecioTotal(habitacion);
 
     this.reservaService.registrarReserva({
       idHabitacion,
@@ -137,7 +154,9 @@ export class HabitacionesComponent {
       numeroniños,
       numeropersonas,
       telefono: this.telefonoUsuarioReserva,
-      metodoPago: this.metodoPago
+      metodoPago: this.metodoPago,
+      precioTotal,
+      noches
     }).subscribe({
       next: () => {
         this.procesandoReservaId = null;
@@ -159,9 +178,51 @@ export class HabitacionesComponent {
 
   public cancelarFormularioReserva(): void {
     this.formularioReservaId = null;
+    this.habitacionSeleccionada = null;
     this.errorReserva = '';
     this.mensajeReserva = '';
     this.mostrarDatosBancarios = false;
+  }
+
+  // Calcular número de noches entre las fechas seleccionadas
+  public calcularNoches(): number {
+    if (!this.fechainicio || !this.fechafin) return 0;
+    const inicio = new Date(this.fechainicio);
+    const fin = new Date(this.fechafin);
+    const diferencia = fin.getTime() - inicio.getTime();
+    const noches = Math.ceil(diferencia / (1000 * 60 * 60 * 24));
+    return noches > 0 ? noches : 0;
+  }
+
+  // Calcular precio total basado en las noches
+  public calcularPrecioTotal(habitacion: Habitacion): number {
+    const noches = this.calcularNoches();
+    return habitacion.precio * noches;
+  }
+
+  // Obtener total de personas seleccionadas
+  public getTotalPersonas(): number {
+    return (Number(this.numeroadultos) || 0) + (Number(this.numeroninos) || 0);
+  }
+
+  // Verificar si la cantidad de personas excede la capacidad
+  public excedeCapacidad(habitacion: Habitacion): boolean {
+    return this.getTotalPersonas() > habitacion.numeropersonas;
+  }
+
+  // Obtener capacidad restante
+  public getCapacidadRestante(habitacion: Habitacion): number {
+    return habitacion.numeropersonas - this.getTotalPersonas();
+  }
+
+  // Formatear precio en COP
+  public formatearPrecio(precio: number): string {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(precio);
   }
 
   public getServicioIcono(servicio: string): string {

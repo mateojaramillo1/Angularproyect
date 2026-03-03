@@ -12,6 +12,8 @@ export interface RegistrarReservaRequest {
   numeroniños: number;
   telefono?: string;
   metodoPago?: string;
+  precioTotal?: number;
+  noches?: number;
 }
 
 @Injectable({

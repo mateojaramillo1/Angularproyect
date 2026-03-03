@@ -16,7 +16,7 @@
                             <span>{{ servicio }}</span>
                         </span>
                     </div>
-                    <h5 class="fw-bold">Desde:COP {{habitacion.precio}} </h5>
+                    <h5 class="fw-bold">Desde: {{ formatearPrecio(habitacion.precio) }} <span class="precio-noche">/ noche</span></h5>
                     <button
                         type="button"
                         class="alojamiento-reservar-btn"
@@ -72,12 +72,58 @@
                             </label>
                             <label>
                                 Adultos
-                                <input type="number" min="0" [value]="numeroadultos" (input)="numeroadultos = +$any($event.target).value">
+                                <input type="number" min="0" [max]="habitacion.numeropersonas" [value]="numeroadultos" (input)="numeroadultos = +$any($event.target).value">
                             </label>
                             <label>
                                 Niños
-                                <input type="number" min="0" [value]="numeroninos" (input)="numeroninos = +$any($event.target).value">
+                                <input type="number" min="0" [max]="habitacion.numeropersonas" [value]="numeroninos" (input)="numeroninos = +$any($event.target).value">
                             </label>
+                        </div>
+
+                        <!-- Indicador de capacidad -->
+                        <div class="capacidad-section" *ngIf="!mostrarDatosBancarios">
+                            <div class="capacidad-header">
+                                <span class="capacidad-icono">👥</span>
+                                <span class="capacidad-titulo">Capacidad de la habitación</span>
+                            </div>
+                            <div class="capacidad-barra-container">
+                                <div class="capacidad-barra" 
+                                     [ngClass]="{'capacidad-ok': !excedeCapacidad(habitacion), 'capacidad-excedida': excedeCapacidad(habitacion)}"
+                                     [style.width.%]="(getTotalPersonas() / habitacion.numeropersonas) * 100 > 100 ? 100 : (getTotalPersonas() / habitacion.numeropersonas) * 100">
+                                </div>
+                            </div>
+                            <div class="capacidad-info" [ngClass]="{'capacidad-error-text': excedeCapacidad(habitacion)}">
+                                <span *ngIf="!excedeCapacidad(habitacion)">
+                                    ✅ {{ getTotalPersonas() }} de {{ habitacion.numeropersonas }} personas
+                                    <span *ngIf="getCapacidadRestante(habitacion) > 0">(quedan {{ getCapacidadRestante(habitacion) }} lugares)</span>
+                                </span>
+                                <span *ngIf="excedeCapacidad(habitacion)">
+                                    ⚠️ Excedes la capacidad por {{ getTotalPersonas() - habitacion.numeropersonas }} persona(s). Máximo: {{ habitacion.numeropersonas }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Resumen de precio interactivo -->
+                        <div class="precio-resumen" *ngIf="!mostrarDatosBancarios && calcularNoches() > 0">
+                            <h5 class="precio-resumen-titulo">💰 Resumen de tu reserva</h5>
+                            <div class="precio-desglose">
+                                <div class="precio-linea">
+                                    <span>Precio por noche</span>
+                                    <span class="precio-valor">{{ formatearPrecio(habitacion.precio) }}</span>
+                                </div>
+                                <div class="precio-linea">
+                                    <span>Número de noches</span>
+                                    <span class="precio-valor noches-badge">{{ calcularNoches() }} {{ calcularNoches() === 1 ? 'noche' : 'noches' }}</span>
+                                </div>
+                                <div class="precio-linea precio-linea-total">
+                                    <span>🏷️ Total a pagar</span>
+                                    <span class="precio-total-valor">{{ formatearPrecio(calcularPrecioTotal(habitacion)) }}</span>
+                                </div>
+                            </div>
+                            <p class="precio-nota">
+                                <span *ngIf="metodoPago === 'efectivo'">💵 Pagarás al momento de tu llegada</span>
+                                <span *ngIf="metodoPago === 'transferencia'">🏦 Realiza la transferencia para confirmar</span>
+                            </p>
                         </div>
 
                         <div class="metodo-pago-section" *ngIf="!mostrarDatosBancarios">
@@ -102,9 +148,19 @@
                                 *ngIf="!mostrarDatosBancarios"
                                 type="button"
                                 class="alojamiento-reservar-btn"
+                                [ngClass]="{'btn-disabled': excedeCapacidad(habitacion) || calcularNoches() < 1}"
                                 (click)="reservar(habitacion)"
-                                [disabled]="procesandoReservaId === (habitacion._id || habitacion.id)">
-                                {{ procesandoReservaId === (habitacion._id || habitacion.id) ? 'Procesando...' : 'Confirmar reserva' }}
+                                [disabled]="procesandoReservaId === (habitacion._id || habitacion.id) || excedeCapacidad(habitacion) || calcularNoches() < 1">
+                                <span *ngIf="procesandoReservaId === (habitacion._id || habitacion.id)">Procesando...</span>
+                                <span *ngIf="procesandoReservaId !== (habitacion._id || habitacion.id) && !excedeCapacidad(habitacion) && calcularNoches() >= 1">
+                                    ✅ Confirmar reserva - {{ formatearPrecio(calcularPrecioTotal(habitacion)) }}
+                                </span>
+                                <span *ngIf="procesandoReservaId !== (habitacion._id || habitacion.id) && excedeCapacidad(habitacion)">
+                                    ⚠️ Capacidad excedida
+                                </span>
+                                <span *ngIf="procesandoReservaId !== (habitacion._id || habitacion.id) && !excedeCapacidad(habitacion) && calcularNoches() < 1">
+                                    📅 Selecciona las fechas
+                                </span>
                             </button>
                             <button type="button" class="reserva-cancelar-btn" (click)="cancelarFormularioReserva()">
                                 {{ mostrarDatosBancarios ? 'Cerrar' : 'Cancelar' }}

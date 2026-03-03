@@ -11,5 +11,7 @@ export interface Reserva {
     estado: string,
     metodoPago?: string,
     pagoVerificado?: boolean,
+    precioTotal?: number,
+    noches?: number,
     _id?: string
 }

@@ -89,6 +89,13 @@
 	background: linear-gradient(90deg, #ff8800 0%, #f9d423 100%);
 }
 
+.alojamiento-reservar-btn.btn-disabled,
+.alojamiento-reservar-btn:disabled {
+	background: #ccc;
+	cursor: not-allowed;
+	opacity: 0.7;
+}
+
 .reserva-formulario {
 	margin-top: 0.9rem;
 	padding: 0.9rem;
@@ -259,6 +266,139 @@
 	color: #e65100;
 	font-size: 0.9rem;
 	text-align: center;
+}
+
+/* Precio por noche label */
+.precio-noche {
+	font-size: 0.85rem;
+	font-weight: 400;
+	color: #666;
+}
+
+/* Sección de capacidad */
+.capacidad-section {
+	background: #f8f9fc;
+	border-radius: 10px;
+	padding: 1rem;
+	margin: 1rem 0;
+}
+
+.capacidad-header {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin-bottom: 0.8rem;
+}
+
+.capacidad-icono {
+	font-size: 1.2rem;
+}
+
+.capacidad-titulo {
+	font-weight: 600;
+	color: #455a64;
+}
+
+.capacidad-barra-container {
+	background: #e0e4ef;
+	border-radius: 10px;
+	height: 12px;
+	overflow: hidden;
+	margin-bottom: 0.5rem;
+}
+
+.capacidad-barra {
+	height: 100%;
+	border-radius: 10px;
+	transition: width 0.3s ease, background 0.3s ease;
+}
+
+.capacidad-barra.capacidad-ok {
+	background: linear-gradient(90deg, #4caf50, #8bc34a);
+}
+
+.capacidad-barra.capacidad-excedida {
+	background: linear-gradient(90deg, #f44336, #ff5722);
+}
+
+.capacidad-info {
+	font-size: 0.9rem;
+	color: #2e7d32;
+}
+
+.capacidad-error-text {
+	color: #c62828;
+	font-weight: 600;
+}
+
+/* Resumen de precio */
+.precio-resumen {
+	background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+	border: 2px solid #4caf50;
+	border-radius: 12px;
+	padding: 1.2rem;
+	margin: 1rem 0;
+}
+
+.precio-resumen-titulo {
+	color: #2e7d32;
+	margin-bottom: 1rem;
+	font-size: 1.1rem;
+	font-weight: 700;
+}
+
+.precio-desglose {
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+}
+
+.precio-linea {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.5rem 0;
+	border-bottom: 1px dashed #a5d6a7;
+}
+
+.precio-linea:last-child {
+	border-bottom: none;
+}
+
+.precio-valor {
+	font-weight: 600;
+	color: #1b5e20;
+}
+
+.noches-badge {
+	background: #fff;
+	padding: 0.3rem 0.8rem;
+	border-radius: 20px;
+	font-size: 0.9rem;
+}
+
+.precio-linea-total {
+	background: #fff;
+	border-radius: 8px;
+	padding: 0.8rem !important;
+	margin-top: 0.5rem;
+	border: none !important;
+}
+
+.precio-total-valor {
+	font-size: 1.4rem;
+	font-weight: 800;
+	color: #1b5e20;
+}
+
+.precio-nota {
+	margin-top: 1rem;
+	padding: 0.6rem;
+	background: rgba(255,255,255,0.7);
+	border-radius: 8px;
+	font-size: 0.9rem;
+	text-align: center;
+	color: #388e3c;
 }
 
 @media (max-width: 900px) {

@@ -49,6 +49,7 @@
           <th>Habitación</th>
           <th>Fechas</th>
           <th>Huéspedes</th>
+          <th>💰 Precio</th>
           <th>Método de Pago</th>
           <th>Estado Pago</th>
           <th>Estado Reserva</th>
@@ -70,6 +71,10 @@
           <td>
             <span>👥 {{ reserva.numeroadultos }} adultos</span>
             <span *ngIf="reserva.numeroninos > 0">, {{ reserva.numeroninos }} niños</span>
+          </td>
+          <td class="precio-cell">
+            <span class="precio-total-badge">{{ formatearPrecio(reserva.precioTotal || 0) }}</span>
+            <span class="noches-info" *ngIf="reserva.noches">{{ reserva.noches }} {{ reserva.noches === 1 ? 'noche' : 'noches' }}</span>
           </td>
           <td>
             <span class="metodo-pago-badge" [ngClass]="reserva.metodoPago || 'efectivo'">

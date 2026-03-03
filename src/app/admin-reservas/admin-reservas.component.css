@@ -150,6 +150,25 @@
   font-size: 0.85rem;
 }
 
+/* Celda de precio */
+.precio-cell {
+  text-align: center;
+}
+
+.precio-total-badge {
+  display: block;
+  font-weight: 700;
+  color: #1b5e20;
+  font-size: 1rem;
+}
+
+.noches-info {
+  display: block;
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.2rem;
+}
+
 /* Badges */
 .metodo-pago-badge {
   display: inline-block;
