@@ -2,17 +2,17 @@
 .admin-panel-bg {
   min-height: 100vh;
   background: #f4f7ff;
-  padding: 5.5rem 0 3rem;
+  padding: 0 0 3rem;
 }
 
 .admin-reservas-hero {
   position: relative;
-  min-height: 42vh;
+  min-height: 52vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 4rem 1rem 3rem;
+  padding: 8rem 1rem 4rem;
   background: url('../../assets/banner.jpg') center/cover no-repeat;
 }
 
@@ -25,8 +25,7 @@
 .admin-reservas-content {
   position: relative;
   z-index: 1;
-  max-width: 900px;
-  padding: 0 1rem;
+  max-width: 860px;
 }
 
 .admin-reservas-content h1 {
@@ -44,7 +43,7 @@
 
 .admin-reservas-container {
   max-width: 1400px;
-  margin: -2.2rem auto 0;
+  margin: 0 auto;
   padding: 2rem;
   background: #fff;
   border-radius: 16px;
@@ -393,13 +392,9 @@
 }
 
 @media (max-width: 768px) {
-  .admin-panel-bg {
-    padding-top: 5rem;
-  }
-
   .admin-reservas-hero {
-    min-height: 34vh;
-    padding: 3rem 1rem 2.5rem;
+    min-height: 44vh;
+    padding: 7rem 1rem 3rem;
   }
 
   .admin-reservas-content h1 {
