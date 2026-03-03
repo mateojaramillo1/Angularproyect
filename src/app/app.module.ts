@@ -19,6 +19,7 @@ import { TokenInterceptor } from './services/token-interceptor.service';
 import { AuthGuard } from './guards/auth.guard';
 import { AlojamientosComponent } from './alojamientos/alojamientos.component';
 import { AdminReservasComponent } from './admin-reservas/admin-reservas.component';
+import { MisReservasComponent } from './mis-reservas/mis-reservas.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { AdminReservasComponent } from './admin-reservas/admin-reservas.componen
     FormulariohabitacionComponent
     ,LoginComponent,RegisterComponent
     ,AdminReservasComponent
+    ,MisReservasComponent
   ],
   imports: [
     BrowserModule,

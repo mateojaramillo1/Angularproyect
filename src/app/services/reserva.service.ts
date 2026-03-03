@@ -16,6 +16,12 @@ export interface RegistrarReservaRequest {
   noches?: number;
 }
 
+export interface DisponibilidadResponse {
+  disponible: boolean;
+  mensaje: string;
+  fechasOcupadas?: { fechainicio: Date; fechafin: Date }[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -38,5 +44,19 @@ export class ReservaService {
 
   verificarPago(id: string, pagoVerificado: boolean): Observable<any> {
     return this.http.put(`${this.url}/verificar-pago/${id}`, { pagoVerificado });
+  }
+
+  // Obtener reservas del usuario actual
+  obtenerMisReservas(): Observable<any> {
+    return this.http.get(`${this.url}/mis-reservas`);
+  }
+
+  // Verificar disponibilidad de habitación para fechas específicas
+  verificarDisponibilidad(idHabitacion: string, fechainicio: string, fechafin: string): Observable<DisponibilidadResponse> {
+    return this.http.post<DisponibilidadResponse>(`${this.url}/verificar-disponibilidad`, {
+      idHabitacion,
+      fechainicio,
+      fechafin
+    });
   }
 }

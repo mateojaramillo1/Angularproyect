@@ -7,6 +7,7 @@ import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AlojamientosComponent } from './alojamientos/alojamientos.component';
 import { AdminReservasComponent } from './admin-reservas/admin-reservas.component';
+import { MisReservasComponent } from './mis-reservas/mis-reservas.component';
 
 const routes: Routes = [
   {path:"", component:HomeComponent,pathMatch:"full"},
@@ -14,7 +15,8 @@ const routes: Routes = [
   {path:"registrohabitacion", component:FormulariohabitacionComponent, canActivate: [AuthGuard], data: { admin: true }},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'admin-reservas', component: AdminReservasComponent, canActivate: [AuthGuard], data: { admin: true } }
+  { path: 'admin-reservas', component: AdminReservasComponent, canActivate: [AuthGuard], data: { admin: true } },
+  { path: 'mis-reservas', component: MisReservasComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

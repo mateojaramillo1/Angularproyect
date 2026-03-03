@@ -1,0 +1,112 @@
+<app-menu></app-menu>
+
+<div class="mis-reservas-bg">
+  <div class="container">
+    <!-- Header -->
+    <div class="mis-reservas-header">
+      <h1>📋 Mis Reservas</h1>
+      <p>Consulta el estado de tus reservaciones en el hotel</p>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-container" *ngIf="loading">
+      <div class="spinner"></div>
+      <p>Cargando tus reservas...</p>
+    </div>
+
+    <!-- Error -->
+    <div class="error-container" *ngIf="error && !loading">
+      <p class="error-message">{{ error }}</p>
+      <button class="btn-reintentar" (click)="cargarMisReservas()">🔄 Reintentar</button>
+    </div>
+
+    <!-- Sin reservas -->
+    <div class="sin-reservas" *ngIf="!loading && !error && reservas.length === 0">
+      <div class="sin-reservas-icon">🏨</div>
+      <h2>No tienes reservas aún</h2>
+      <p>¡Haz tu primera reserva y disfruta de nuestras habitaciones!</p>
+      <a routerLink="/alojamientos" class="btn-ver-habitaciones">Ver habitaciones</a>
+    </div>
+
+    <!-- Resumen de estados -->
+    <div class="resumen-estados" *ngIf="!loading && reservas.length > 0">
+      <div class="estado-card pendiente">
+        <span class="estado-count">{{ reservasPendientes.length }}</span>
+        <span class="estado-label">Pendientes</span>
+      </div>
+      <div class="estado-card aprobada">
+        <span class="estado-count">{{ reservasAprobadas.length }}</span>
+        <span class="estado-label">Confirmadas</span>
+      </div>
+      <div class="estado-card rechazada">
+        <span class="estado-count">{{ reservasRechazadas.length }}</span>
+        <span class="estado-label">Rechazadas</span>
+      </div>
+    </div>
+
+    <!-- Lista de reservas -->
+    <div class="reservas-lista" *ngIf="!loading && reservas.length > 0">
+      <div class="reserva-card" *ngFor="let reserva of reservas" [ngClass]="getEstadoClass(reserva.estado)">
+        <!-- Estado badge -->
+        <div class="reserva-estado-banner" [ngClass]="getEstadoClass(reserva.estado)">
+          {{ getEstadoTexto(reserva.estado) }}
+        </div>
+
+        <div class="reserva-content">
+          <!-- Info principal -->
+          <div class="reserva-info-principal">
+            <div class="reserva-fechas">
+              <div class="fecha-item">
+                <span class="fecha-label">📅 Llegada</span>
+                <span class="fecha-valor">{{ reserva.fechainicio | date:'EEEE, d MMMM yyyy':'':'es' }}</span>
+              </div>
+              <div class="fecha-separador">➜</div>
+              <div class="fecha-item">
+                <span class="fecha-label">📅 Salida</span>
+                <span class="fecha-valor">{{ reserva.fechafin | date:'EEEE, d MMMM yyyy':'':'es' }}</span>
+              </div>
+            </div>
+
+            <div class="reserva-detalles">
+              <div class="detalle-item">
+                <span class="detalle-icon">🌙</span>
+                <span>{{ reserva.noches || 1 }} {{ (reserva.noches || 1) === 1 ? 'noche' : 'noches' }}</span>
+              </div>
+              <div class="detalle-item">
+                <span class="detalle-icon">👥</span>
+                <span>{{ reserva.numeroadultos }} adulto(s)</span>
+                <span *ngIf="reserva.numeroninos && reserva.numeroninos > 0">, {{ reserva.numeroninos }} niño(s)</span>
+              </div>
+              <div class="detalle-item">
+                <span class="detalle-icon">💳</span>
+                <span>{{ getMetodoPagoLabel(reserva.metodoPago) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Precio -->
+          <div class="reserva-precio">
+            <span class="precio-label">Total</span>
+            <span class="precio-valor">{{ formatearPrecio(reserva.precioTotal || 0) }}</span>
+          </div>
+        </div>
+
+        <!-- Mensaje de estado -->
+        <div class="reserva-mensaje" [ngClass]="getEstadoClass(reserva.estado)">
+          <p>{{ getEstadoDescripcion(reserva) }}</p>
+        </div>
+
+        <!-- Pago verificado badge -->
+        <div class="pago-status" *ngIf="reserva.estado !== 'rechazada'">
+          <span *ngIf="reserva.pagoVerificado" class="pago-verificado">✅ Pago verificado</span>
+          <span *ngIf="!reserva.pagoVerificado" class="pago-pendiente">⏳ Pago pendiente de verificación</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón actualizar -->
+    <div class="acciones-container" *ngIf="!loading && reservas.length > 0">
+      <button class="btn-actualizar" (click)="cargarMisReservas()">🔄 Actualizar reservas</button>
+    </div>
+  </div>
+</div>

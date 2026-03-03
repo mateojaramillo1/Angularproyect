@@ -23,6 +23,7 @@
           </li>
           <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/niños" routerLinkActive="nav-active-link" (click)="closeMobileMenu()">Niños</a></li>
           <li *ngIf="!(auth.isLoggedIn() && auth.isAdmin())"><a routerLink="/deporte" routerLinkActive="nav-active-link" (click)="closeMobileMenu()">Deporte</a></li>
+          <li *ngIf="auth.isLoggedIn() && !auth.isAdmin()"><a routerLink="/mis-reservas" routerLinkActive="nav-active-link" (click)="closeMobileMenu()">📋 Mis Reservas</a></li>
           <li *ngIf="auth.isLoggedIn() && auth.isAdmin()"><a routerLink="/registrohabitacion" routerLinkActive="nav-active-link" (click)="closeMobileMenu()">Registrar Habitación</a></li>
           <li *ngIf="auth.isLoggedIn() && auth.isAdmin()"><a routerLink="/admin-reservas" routerLinkActive="nav-active-link" (click)="closeMobileMenu()">Panel Reservas</a></li>
           <li *ngIf="!auth.isLoggedIn()"><a routerLink="/login" routerLinkActive="nav-active-link" (click)="closeMobileMenu()">Check-in</a></li>

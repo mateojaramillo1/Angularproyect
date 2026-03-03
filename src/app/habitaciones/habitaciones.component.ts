@@ -29,6 +29,12 @@ export class HabitacionesComponent {
   public metodoPago: string = 'efectivo';
   public habitacionSeleccionada: Habitacion | null = null;
 
+  // Variables para verificación de disponibilidad
+  public verificandoDisponibilidad: boolean = false;
+  public disponibilidadVerificada: boolean = false;
+  public habitacionDisponible: boolean = true;
+  public fechasOcupadas: { fechainicio: Date; fechafin: Date }[] = [];
+
   // Datos bancarios para transferencia
   public datosBancarios = {
     banco: 'Banco de Bogotá',
@@ -93,6 +99,58 @@ export class HabitacionesComponent {
     this.numeroadultos = 1;
     this.numeroninos = 0;
     this.metodoPago = 'efectivo';
+    
+    // Resetear estado de disponibilidad
+    this.disponibilidadVerificada = false;
+    this.habitacionDisponible = true;
+    this.fechasOcupadas = [];
+    
+    // Verificar disponibilidad automáticamente con las fechas por defecto
+    this.verificarDisponibilidad();
+  }
+
+  // Método para verificar disponibilidad de la habitación
+  public verificarDisponibilidad(): void {
+    if (!this.habitacionSeleccionada || !this.fechainicio || !this.fechafin) {
+      return;
+    }
+
+    const idHabitacion = this.habitacionSeleccionada._id || this.habitacionSeleccionada.id;
+    if (!idHabitacion) return;
+
+    this.verificandoDisponibilidad = true;
+    this.errorReserva = '';
+
+    this.reservaService.verificarDisponibilidad(idHabitacion, this.fechainicio, this.fechafin).subscribe({
+      next: (respuesta) => {
+        this.verificandoDisponibilidad = false;
+        this.disponibilidadVerificada = true;
+        this.habitacionDisponible = respuesta.disponible;
+        this.fechasOcupadas = respuesta.fechasOcupadas || [];
+        
+        if (!respuesta.disponible) {
+          this.errorReserva = '⚠️ Esta habitación no está disponible para las fechas seleccionadas. Ya existe una reserva pendiente o confirmada.';
+        }
+      },
+      error: (error) => {
+        this.verificandoDisponibilidad = false;
+        this.disponibilidadVerificada = false;
+        // En caso de error, permitir continuar pero advertir
+        console.error('Error verificando disponibilidad:', error);
+      }
+    });
+  }
+
+  // Método para manejar cambio de fechas
+  public onFechaChange(): void {
+    this.disponibilidadVerificada = false;
+    this.habitacionDisponible = true;
+    this.errorReserva = '';
+    
+    // Verificar disponibilidad después de un pequeño delay para evitar múltiples llamadas
+    if (this.fechainicio && this.fechafin && this.calcularNoches() > 0) {
+      this.verificarDisponibilidad();
+    }
   }
 
   public reservar(habitacion: Habitacion): void {
@@ -153,20 +211,27 @@ export class HabitacionesComponent {
       precioTotal,
       noches
     }).subscribe({
-      next: () => {
+      next: (response) => {
         this.procesandoReservaId = null;
         if (this.metodoPago === 'transferencia') {
-          this.mensajeReserva = '¡Reserva creada! Realiza la transferencia con los datos bancarios que aparecen abajo.';
+          this.mensajeReserva = '¡Reserva creada con estado PENDIENTE! Realiza la transferencia con los datos bancarios que aparecen abajo. Una vez verifiquemos el pago, tu reserva será aprobada.';
           this.mostrarDatosBancarios = true;
         } else {
-          this.mensajeReserva = '¡Reserva creada! Recuerda que el pago se realiza en efectivo al momento de tu llegada.';
+          this.mensajeReserva = '¡Reserva creada con estado PENDIENTE! El pago se realiza en efectivo al momento de tu llegada. Una vez verificado, tu reserva será aprobada.';
           this.mostrarDatosBancarios = false;
         }
       },
       error: (error) => {
         this.procesandoReservaId = null;
-        const mensaje = error?.error?.mensaje || 'No fue posible registrar la reserva.';
-        this.errorReserva = mensaje;
+        // Manejar error de disponibilidad específicamente
+        if (error?.error?.conflicto) {
+          this.errorReserva = '⚠️ ' + (error?.error?.mensaje || 'Esta habitación ya está reservada para las fechas seleccionadas.');
+          this.habitacionDisponible = false;
+          this.fechasOcupadas = error?.error?.fechasOcupadas || [];
+        } else {
+          const mensaje = error?.error?.mensaje || 'No fue posible registrar la reserva.';
+          this.errorReserva = mensaje;
+        }
       }
     });
   }
