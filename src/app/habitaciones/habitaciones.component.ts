@@ -60,8 +60,8 @@ export class HabitacionesComponent {
     this.mensajeReserva = '';
 
     if (!this.authService.isLoggedIn()) {
-      this.errorReserva = 'Debes registrarte o iniciar sesión antes de reservar.';
-      this.router.navigate(['/register']);
+      this.errorReserva = 'Debes iniciar sesión antes de reservar.';
+      this.router.navigate(['/login']);
       return;
     }
 
