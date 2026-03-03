@@ -1,16 +1,55 @@
+/* Fondo general con estilo consistente */
+.habitaciones-bg {
+  min-height: 100vh;
+  width: 100vw;
+  background: #0a2342;
+  padding-top: 5.5rem;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.habitaciones-bg::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('../../assets/banner.jpg') center center/cover no-repeat;
+  filter: blur(8px) brightness(0.4);
+  z-index: 0;
+}
+
+.habitaciones-bg .container {
+  position: relative;
+  z-index: 1;
+}
+
+.habitaciones-titulo {
+  text-align: center;
+  color: #fff;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
 .alojamiento-card-horizontal {
 	border: 0;
 	border-radius: 16px;
 	overflow: hidden;
-	box-shadow: 0 10px 24px rgba(17, 36, 179, 0.14);
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
 	display: flex;
 	flex-direction: row;
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 249, 255, 0.9) 100%);
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .alojamiento-card-horizontal:hover {
 	transform: translateY(-6px);
-	box-shadow: 0 16px 30px rgba(17, 36, 179, 0.2);
+	box-shadow: 0 16px 40px rgba(17, 36, 179, 0.4);
 }
 
 .alojamiento-image-horizontal {
@@ -443,8 +482,8 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background: rgba(0, 0, 0, 0.6);
-	backdrop-filter: blur(4px);
+	background: rgba(0, 0, 0, 0.75);
+	backdrop-filter: blur(6px);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -459,14 +498,16 @@
 }
 
 .modal-reserva {
-	background: white;
+	background: linear-gradient(135deg, rgba(2, 3, 5, 0.98) 0%, rgba(0, 77, 217, 0.95) 100%);
 	border-radius: 20px;
 	max-width: 600px;
 	width: 100%;
 	max-height: 90vh;
 	overflow-y: auto;
-	box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+	box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
 	animation: slideUp 0.3s ease;
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 @keyframes slideUp {
@@ -548,21 +589,23 @@
 }
 
 .modal-messages .reserva-info {
-	background: #e8f5e9;
-	color: #2e7d32;
+	background: rgba(76, 175, 80, 0.2);
+	color: #a5d6a7;
 	padding: 1rem;
 	border-radius: 10px;
 	margin: 1rem 0;
 	text-align: center;
+	border: 1px solid rgba(76, 175, 80, 0.3);
 }
 
 .modal-messages .reserva-error {
-	background: #ffebee;
-	color: #c62828;
+	background: rgba(244, 67, 54, 0.2);
+	color: #ef9a9a;
 	padding: 1rem;
 	border-radius: 10px;
 	margin: 1rem 0;
 	text-align: center;
+	border: 1px solid rgba(244, 67, 54, 0.3);
 }
 
 /* Body del modal */
@@ -574,7 +617,7 @@
 .form-section {
 	margin-bottom: 1.5rem;
 	padding-bottom: 1.5rem;
-	border-bottom: 1px solid #eee;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .form-section:last-of-type {
@@ -583,7 +626,7 @@
 }
 
 .form-section-title {
-	color: #1124b3;
+	color: #f9d423;
 	font-size: 1.1rem;
 	margin-bottom: 1rem;
 	font-weight: 600;
@@ -599,14 +642,17 @@
 .fecha-input-group label {
 	display: block;
 	font-size: 0.85rem;
-	color: #666;
+	color: #fff;
 	margin-bottom: 0.4rem;
+	font-weight: 500;
 }
 
 .fecha-input {
 	width: 100%;
 	padding: 0.8rem 1rem;
-	border: 2px solid #e0e4ef;
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	background: rgba(255, 255, 255, 0.15);
+	color: #fff;
 	border-radius: 10px;
 	font-size: 1rem;
 	transition: border-color 0.2s;
@@ -614,17 +660,19 @@
 
 .fecha-input:focus {
 	outline: none;
-	border-color: #1124b3;
+	border-color: #f9d423;
+	background: rgba(255, 255, 255, 0.25);
 }
 
 .noches-indicator {
 	text-align: center;
 	margin-top: 1rem;
 	padding: 0.6rem;
-	background: #e3f2fd;
+	background: rgba(249, 212, 35, 0.2);
 	border-radius: 20px;
-	color: #1565c0;
+	color: #f9d423;
 	font-weight: 600;
+	border: 1px solid rgba(249, 212, 35, 0.3);
 }
 
 /* Grid de huéspedes */
@@ -635,13 +683,14 @@
 }
 
 .huesped-input-group {
-	background: #f8f9fc;
+	background: rgba(255, 255, 255, 0.1);
 	border-radius: 12px;
 	padding: 1rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	gap: 0.8rem;
+	border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .huesped-label {
@@ -649,7 +698,7 @@
 	align-items: center;
 	gap: 0.5rem;
 	font-weight: 600;
-	color: #455a64;
+	color: #fff;
 }
 
 .huesped-icon {
@@ -666,9 +715,9 @@
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
-	border: 2px solid #1124b3;
-	background: white;
-	color: #1124b3;
+	border: 2px solid #f9d423;
+	background: rgba(255, 255, 255, 0.15);
+	color: #f9d423;
 	font-size: 1.3rem;
 	cursor: pointer;
 	transition: all 0.2s;
@@ -678,14 +727,15 @@
 }
 
 .counter-btn:hover {
-	background: #1124b3;
-	color: white;
+	background: #f9d423;
+	color: #1124b3;
+	box-shadow: 0 2px 10px rgba(249, 212, 35, 0.5);
 }
 
 .counter-value {
 	font-size: 1.5rem;
 	font-weight: 700;
-	color: #1124b3;
+	color: #fff;
 	min-width: 30px;
 	text-align: center;
 }
@@ -696,7 +746,7 @@
 }
 
 .capacidad-barra-container {
-	background: #e0e4ef;
+	background: rgba(255, 255, 255, 0.2);
 	border-radius: 10px;
 	height: 10px;
 	overflow: hidden;
@@ -707,6 +757,7 @@
 	height: 100%;
 	border-radius: 10px;
 	transition: width 0.3s ease, background 0.3s ease;
+	box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
 }
 
 .capacidad-barra.capacidad-ok {
@@ -715,16 +766,17 @@
 
 .capacidad-barra.capacidad-excedida {
 	background: linear-gradient(90deg, #f44336, #ff5722);
+	box-shadow: 0 0 10px rgba(244, 67, 54, 0.5);
 }
 
 .capacidad-texto {
 	text-align: center;
 	font-size: 0.9rem;
-	color: #2e7d32;
+	color: #a5d6a7;
 }
 
 .capacidad-error-text {
-	color: #c62828 !important;
+	color: #ef9a9a !important;
 	font-weight: 600;
 }
 
@@ -736,7 +788,8 @@
 }
 
 .metodo-pago-card {
-	border: 2px solid #e0e4ef;
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	background: rgba(255, 255, 255, 0.1);
 	border-radius: 12px;
 	padding: 1rem;
 	cursor: pointer;
@@ -745,13 +798,14 @@
 }
 
 .metodo-pago-card:hover {
-	border-color: #1124b3;
-	background: #f8f9fc;
+	border-color: #f9d423;
+	background: rgba(255, 255, 255, 0.15);
 }
 
 .metodo-pago-card.selected {
-	border-color: #1124b3;
-	background: #e8eaf6;
+	border-color: #f9d423;
+	background: rgba(249, 212, 35, 0.2);
+	box-shadow: 0 0 15px rgba(249, 212, 35, 0.3);
 }
 
 .metodo-pago-card input {
@@ -771,42 +825,45 @@
 
 .metodo-titulo {
 	font-weight: 700;
-	color: #1124b3;
+	color: #fff;
 }
 
 .metodo-desc {
 	font-size: 0.8rem;
-	color: #666;
+	color: rgba(255, 255, 255, 0.7);
 	text-align: center;
 }
 
 /* Resumen de precio */
 .resumen-precio-card {
-	background: #f8f9fc;
+	background: rgba(255, 255, 255, 0.1);
 	border-radius: 12px;
 	padding: 1rem;
 	margin-bottom: 1.5rem;
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .resumen-linea {
 	display: flex;
 	justify-content: space-between;
 	padding: 0.5rem 0;
-	color: #666;
+	color: rgba(255, 255, 255, 0.8);
 }
 
 .resumen-total {
 	display: flex;
 	justify-content: space-between;
 	padding: 1rem 0 0;
-	border-top: 2px solid #e0e4ef;
+	border-top: 2px solid rgba(255, 255, 255, 0.3);
 	margin-top: 0.5rem;
 }
 
 .total-precio {
 	font-size: 1.5rem;
 	font-weight: 800;
-	color: #1b5e20;
+	color: #f9d423;
+	text-shadow: 0 2px 10px rgba(249, 212, 35, 0.5);
 }
 
 /* Botones de acción del modal */
@@ -818,9 +875,9 @@
 .btn-cancelar {
 	flex: 1;
 	padding: 1rem;
-	border: 2px solid #e0e4ef;
-	background: white;
-	color: #666;
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	background: rgba(255, 255, 255, 0.1);
+	color: #fff;
 	border-radius: 12px;
 	font-size: 1rem;
 	font-weight: 600;
@@ -829,32 +886,34 @@
 }
 
 .btn-cancelar:hover {
-	background: #f5f5f5;
-	border-color: #ccc;
+	background: rgba(255, 255, 255, 0.15);
+	border-color: rgba(255, 255, 255, 0.5);
 }
 
 .btn-confirmar {
 	flex: 2;
 	padding: 1rem;
 	border: none;
-	background: linear-gradient(90deg, #4caf50 0%, #66bb6a 100%);
-	color: white;
+	background: linear-gradient(90deg, #f9d423 0%, #ff8800 100%);
+	color: #fff;
 	border-radius: 12px;
 	font-size: 1rem;
 	font-weight: 700;
 	cursor: pointer;
 	transition: all 0.2s;
+	box-shadow: 0 4px 15px rgba(255, 136, 0, 0.3);
 }
 
 .btn-confirmar:hover:not(:disabled) {
-	background: linear-gradient(90deg, #43a047 0%, #4caf50 100%);
+	background: linear-gradient(90deg, #ff8800 0%, #f9d423 100%);
 	transform: translateY(-2px);
-	box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+	box-shadow: 0 6px 20px rgba(255, 136, 0, 0.5);
 }
 
 .btn-confirmar.btn-disabled,
 .btn-confirmar:disabled {
-	background: #ccc;
+	background: rgba(255, 255, 255, 0.2);
+	color: rgba(255, 255, 255, 0.5);
 	cursor: not-allowed;
 	transform: none;
 	box-shadow: none;
@@ -880,17 +939,19 @@
 
 /* Datos bancarios en modal */
 .modal-body-reserva .datos-bancarios {
-	background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-	border: none;
+	background: linear-gradient(135deg, rgba(249, 212, 35, 0.15) 0%, rgba(255, 136, 0, 0.1) 100%);
+	border: 1px solid rgba(249, 212, 35, 0.3);
 	border-radius: 16px;
 	padding: 1.5rem;
 	margin-bottom: 1.5rem;
+	backdrop-filter: blur(10px);
 }
 
 .modal-body-reserva .datos-bancarios h4 {
-	color: #1565c0;
+	color: #f9d423;
 	margin-bottom: 1.2rem;
 	text-align: center;
+	font-weight: 700;
 }
 
 .modal-body-reserva .datos-bancarios-grid {
@@ -903,7 +964,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background: white;
+	background: rgba(255, 255, 255, 0.95);
 	padding: 0.8rem 1rem;
 	border-radius: 10px;
 }
@@ -915,7 +976,7 @@
 
 .modal-body-reserva .dato-valor {
 	font-weight: 700;
-	color: #1565c0;
+	color: #1124b3;
 	font-family: monospace;
 }
 
@@ -923,12 +984,13 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background: #1565c0;
-	color: white;
+	background: linear-gradient(90deg, #f9d423 0%, #ff8800 100%);
+	color: #fff;
 	padding: 1rem;
 	border-radius: 10px;
 	margin-top: 1rem;
 	font-size: 1.1rem;
+	box-shadow: 0 4px 15px rgba(255, 136, 0, 0.3);
 }
 
 .datos-bancarios-total strong {
@@ -936,8 +998,10 @@
 }
 
 .modal-body-reserva .datos-bancarios-nota {
-	background: #fff3e0;
+	background: rgba(255, 243, 224, 0.3);
 	margin-top: 1rem;
+	border: 1px solid rgba(255, 152, 0, 0.3);
+	color: #ffb74d;
 }
 
 /* Responsive del modal */
