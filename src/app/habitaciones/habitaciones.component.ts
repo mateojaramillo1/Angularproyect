@@ -25,6 +25,7 @@ export class HabitacionesComponent {
 
   public nombreUsuarioReserva: string = '';
   public telefonoUsuarioReserva: string = '';
+  public metodoPago: string = 'efectivo';
 
   public constructor(
     public servicio:HabitacionesService,
@@ -125,7 +126,8 @@ export class HabitacionesComponent {
       numeroadultos,
       numeroniños,
       numeropersonas,
-      telefono: this.telefonoUsuarioReserva
+      telefono: this.telefonoUsuarioReserva,
+      metodoPago: this.metodoPago
     }).subscribe({
       next: () => {
         this.procesandoReservaId = null;

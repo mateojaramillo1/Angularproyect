@@ -149,6 +149,66 @@
 	cursor: pointer;
 }
 
+/* Estilos para método de pago */
+.metodo-pago-section {
+	margin: 1rem 0;
+	padding: 1rem;
+	background: #f8f9fc;
+	border-radius: 10px;
+	border: 1px solid #e0e4ef;
+}
+
+.metodo-pago-section > label {
+	display: block;
+	font-weight: 600;
+	color: #1124b3;
+	margin-bottom: 0.8rem;
+	font-size: 1rem;
+}
+
+.metodo-pago-opciones {
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+}
+
+.metodo-pago-opcion {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 0.8rem 1rem;
+	background: #fff;
+	border: 2px solid #e0e4ef;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.metodo-pago-opcion:hover {
+	border-color: #1124b3;
+	background: #f0f2ff;
+}
+
+.metodo-pago-opcion input[type="radio"] {
+	width: 18px;
+	height: 18px;
+	accent-color: #1124b3;
+}
+
+.metodo-pago-opcion input[type="radio"]:checked + span {
+	color: #1124b3;
+	font-weight: 600;
+}
+
+.metodo-pago-info {
+	margin-top: 0.8rem;
+	padding: 0.6rem;
+	background: #e8f5e9;
+	border-radius: 6px;
+	font-size: 0.9rem;
+	color: #2e7d32;
+}
+
 @media (max-width: 900px) {
 	.alojamiento-card-horizontal {
 		flex-direction: column;

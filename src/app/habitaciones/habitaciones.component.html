@@ -52,6 +52,23 @@
                             </label>
                         </div>
 
+                        <div class="metodo-pago-section">
+                            <label>Método de pago</label>
+                            <div class="metodo-pago-opciones">
+                                <label class="metodo-pago-opcion">
+                                    <input type="radio" name="metodoPago-{{habitacion._id || habitacion.id}}" value="efectivo" [(ngModel)]="metodoPago" checked>
+                                    <span>💵 Pago en efectivo al llegar</span>
+                                </label>
+                                <label class="metodo-pago-opcion">
+                                    <input type="radio" name="metodoPago-{{habitacion._id || habitacion.id}}" value="transferencia" [(ngModel)]="metodoPago">
+                                    <span>🏦 Transferencia bancaria</span>
+                                </label>
+                            </div>
+                            <p class="metodo-pago-info" *ngIf="metodoPago === 'transferencia'">
+                                Los datos bancarios se enviarán a tu correo tras confirmar la reserva.
+                            </p>
+                        </div>
+
                         <div class="reserva-acciones">
                             <button
                                 type="button"
