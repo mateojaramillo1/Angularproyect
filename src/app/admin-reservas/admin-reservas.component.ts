@@ -57,6 +57,10 @@ export class AdminReservasComponent implements OnInit {
     this.reservaService.cambiarEstadoReserva(reserva._id, estado).subscribe({
       next: () => {
         reserva.estado = estado;
+        // Si se aprueba la reserva, también marcar el pago como verificado
+        if (estado === 'aprobada') {
+          reserva.pagoVerificado = true;
+        }
       },
       error: () => {
         this.error = 'Error actualizando estado';
