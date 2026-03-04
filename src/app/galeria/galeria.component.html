@@ -1,0 +1,50 @@
+<app-menu></app-menu>
+
+<section class="galeria-hero text-white">
+  <div class="galeria-overlay"></div>
+  <div class="galeria-content">
+    <h1>Galería de Fotos</h1>
+    <p>Conoce los espacios y servicios que ofrece Paradisus Cancún</p>
+  </div>
+</section>
+
+<div class="galeria-container">
+  <div class="filtros">
+    <button 
+      *ngFor="let categoria of categorias" 
+      [class.activo]="filtroSeleccionado === categoria"
+      (click)="filtrar(categoria)"
+      class="btn-filtro">
+      {{ categoria }}
+    </button>
+  </div>
+
+  <div class="galeria-grid">
+    <div 
+      *ngFor="let foto of fotosFiltradas" 
+      class="galeria-item"
+      (click)="abrirModal(foto)">
+      <img [src]="foto.ruta" [alt]="foto.titulo" class="galeria-img">
+      <div class="galeria-overlay-item">
+        <h3>{{ foto.titulo }}</h3>
+        <p>{{ foto.descripcion }}</p>
+        <span class="categoria-badge">{{ foto.categoria }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" [class.activo]="mostrarModal" *ngIf="fotoSeleccionada">
+  <div class="modal-contenido">
+    <button class="cerrar-modal" (click)="cerrarModal()">✕</button>
+    <img [src]="fotoSeleccionada.ruta" [alt]="fotoSeleccionada.titulo" class="modal-img">
+    <div class="modal-info">
+      <h2>{{ fotoSeleccionada.titulo }}</h2>
+      <p>{{ fotoSeleccionada.descripcion }}</p>
+      <span class="categoria-badge">{{ fotoSeleccionada.categoria }}</span>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

@@ -20,6 +20,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { AlojamientosComponent } from './alojamientos/alojamientos.component';
 import { AdminReservasComponent } from './admin-reservas/admin-reservas.component';
 import { MisReservasComponent } from './mis-reservas/mis-reservas.component';
+import { GaleriaComponent } from './galeria/galeria.component';
 
 @NgModule({
   declarations: [
@@ -30,10 +31,12 @@ import { MisReservasComponent } from './mis-reservas/mis-reservas.component';
     HabitacionesComponent,
     AlojamientosComponent,
     DescripcionComponent,
-    FormulariohabitacionComponent
-    ,LoginComponent,RegisterComponent
-    ,AdminReservasComponent
-    ,MisReservasComponent
+    FormulariohabitacionComponent,
+    LoginComponent,
+    RegisterComponent,
+    AdminReservasComponent,
+    MisReservasComponent,
+    GaleriaComponent
   ],
   imports: [
     BrowserModule,

@@ -8,10 +8,12 @@ import { AuthGuard } from './guards/auth.guard';
 import { AlojamientosComponent } from './alojamientos/alojamientos.component';
 import { AdminReservasComponent } from './admin-reservas/admin-reservas.component';
 import { MisReservasComponent } from './mis-reservas/mis-reservas.component';
+import { GaleriaComponent } from './galeria/galeria.component';
 
 const routes: Routes = [
   {path:"", component:HomeComponent,pathMatch:"full"},
   {path:"alojamientos", component:AlojamientosComponent},
+  {path:"galeria", component:GaleriaComponent},
   {path:"registrohabitacion", component:FormulariohabitacionComponent, canActivate: [AuthGuard], data: { admin: true }},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
