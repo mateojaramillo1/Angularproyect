@@ -5,8 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
-              url('../../assets/hotel-hero.jpg') center/cover no-repeat;
+  background: linear-gradient(135deg, #1124b3, #2942d1);
   color: white;
   text-align: center;
 }
@@ -17,7 +16,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(17, 36, 179, 0.4), rgba(41, 66, 209, 0.4));
+  background: rgba(17, 36, 179, 0.2);
   pointer-events: none;
 }
 

@@ -19,42 +19,42 @@ export class GaleriaComponent implements OnInit {
       id: 1,
       titulo: 'Habitación Deluxe',
       descripcion: 'Lujosa habitación con vista al mar',
-      ruta: 'assets/habitacion1.jpg',
+      ruta: 'assets/imagen1.jpg',
       categoria: 'Habitaciones'
     },
     {
       id: 2,
       titulo: 'Piscina Principal',
       descripcion: 'Espectacular piscina al aire libre',
-      ruta: 'assets/piscina1.jpg',
+      ruta: 'assets/imagen2.jpg',
       categoria: 'Instalaciones'
     },
     {
       id: 3,
       titulo: 'Restaurante',
       descripcion: 'Comida deliciosa y atención excelente',
-      ruta: 'assets/restaurante1.jpg',
+      ruta: 'assets/imagen3.jpg',
       categoria: 'Servicios'
     },
     {
       id: 4,
       titulo: 'Playa Privada',
       descripcion: 'Acceso exclusivo a la playa del hotel',
-      ruta: 'assets/playa1.jpg',
+      ruta: 'assets/imagen4.jpg',
       categoria: 'Playas'
     },
     {
       id: 5,
       titulo: 'Spa y Bienestar',
       descripcion: 'Relajación total con nuestros servicios',
-      ruta: 'assets/spa1.jpg',
+      ruta: 'assets/imagen5.jpg',
       categoria: 'Servicios'
     },
     {
       id: 6,
       titulo: 'Salón de Eventos',
       descripcion: 'Perfecto para bodas y eventos especiales',
-      ruta: 'assets/eventos1.jpg',
+      ruta: 'assets/banner.jpg',
       categoria: 'Instalaciones'
     }
   ];
