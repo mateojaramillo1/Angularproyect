@@ -967,6 +967,119 @@
 	color: #e65100;
 }
 
+/* Reserva exitosa en efectivo */
+.reserva-exitosa {
+	text-align: center;
+	padding: 1.5rem;
+}
+
+.reserva-exitosa-icon {
+	font-size: 4rem;
+	margin-bottom: 1rem;
+	animation: bounceIn 0.6s ease-out;
+}
+
+@keyframes bounceIn {
+	0% { transform: scale(0); opacity: 0; }
+	50% { transform: scale(1.2); }
+	100% { transform: scale(1); opacity: 1; }
+}
+
+.reserva-exitosa h3 {
+	color: #2e7d32;
+	margin-bottom: 0.5rem;
+	font-weight: 700;
+}
+
+.reserva-exitosa-estado {
+	margin-bottom: 1.5rem;
+	font-size: 1rem;
+	color: #666;
+}
+
+.reserva-exitosa-estado .estado-pendiente {
+	background: linear-gradient(135deg, #ff9800, #ffa726);
+	color: #fff;
+	padding: 0.3rem 0.8rem;
+	border-radius: 20px;
+	font-weight: 700;
+	font-size: 0.85rem;
+}
+
+.reserva-exitosa-detalles {
+	background: #f5f5f5;
+	border-radius: 12px;
+	padding: 1rem;
+	margin-bottom: 1rem;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 1rem;
+}
+
+.reserva-exitosa-detalles .detalle-item {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	color: #444;
+	font-size: 0.95rem;
+}
+
+.reserva-exitosa-detalles .detalle-icon {
+	font-size: 1.1rem;
+}
+
+.reserva-exitosa-total {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: linear-gradient(135deg, #4caf50, #66bb6a);
+	color: #fff;
+	padding: 1rem 1.5rem;
+	border-radius: 12px;
+	margin-bottom: 1rem;
+	font-size: 1.1rem;
+}
+
+.reserva-exitosa-total strong {
+	font-size: 1.4rem;
+}
+
+.reserva-exitosa-nota {
+	background: #e3f2fd;
+	border: 1px solid #90caf9;
+	color: #1565c0;
+	padding: 0.8rem;
+	border-radius: 10px;
+	font-size: 0.9rem;
+	margin: 0;
+}
+
+.modal-actions-exitosa {
+	display: flex;
+	gap: 1rem;
+	margin-top: 1.5rem;
+}
+
+.btn-ver-reservas {
+	flex: 1;
+	background: linear-gradient(135deg, #1124b3, #2942d1);
+	color: #fff;
+	border: none;
+	padding: 0.9rem 1.5rem;
+	border-radius: 12px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: transform 0.2s, box-shadow 0.2s;
+	text-decoration: none;
+	text-align: center;
+}
+
+.btn-ver-reservas:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 15px rgba(17, 36, 179, 0.4);
+}
+
 /* Responsive del modal */
 @media (max-width: 600px) {
 	.modal-reserva {

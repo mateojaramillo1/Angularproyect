@@ -18,6 +18,7 @@ export class HabitacionesComponent {
   public mensajeReserva: string = '';
   public errorReserva: string = '';
   public mostrarDatosBancarios: boolean = false;
+  public reservaEfectivoExitosa: boolean = false;
 
   public fechainicio: string = '';
   public fechafin: string = '';
@@ -216,9 +217,11 @@ export class HabitacionesComponent {
         if (this.metodoPago === 'transferencia') {
           this.mensajeReserva = '¡Reserva creada con estado PENDIENTE! Realiza la transferencia con los datos bancarios que aparecen abajo. Una vez verifiquemos el pago, tu reserva será aprobada.';
           this.mostrarDatosBancarios = true;
+          this.reservaEfectivoExitosa = false;
         } else {
-          this.mensajeReserva = '¡Reserva creada con estado PENDIENTE! El pago se realiza en efectivo al momento de tu llegada. Una vez verificado, tu reserva será aprobada.';
+          this.mensajeReserva = '¡Reserva creada exitosamente!';
           this.mostrarDatosBancarios = false;
+          this.reservaEfectivoExitosa = true;
         }
       },
       error: (error) => {
@@ -242,6 +245,7 @@ export class HabitacionesComponent {
     this.errorReserva = '';
     this.mensajeReserva = '';
     this.mostrarDatosBancarios = false;
+    this.reservaEfectivoExitosa = false;
   }
 
   public cerrarModalSiClickFuera(event: MouseEvent): void {

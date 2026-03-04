@@ -91,8 +91,48 @@
             </button>
         </div>
 
+        <!-- Confirmación de reserva en efectivo -->
+        <div class="modal-body-reserva" *ngIf="reservaEfectivoExitosa">
+            <div class="reserva-exitosa">
+                <div class="reserva-exitosa-icon">✅</div>
+                <h3>¡Reserva realizada con éxito!</h3>
+                <p class="reserva-exitosa-estado">Estado: <span class="estado-pendiente">PENDIENTE</span></p>
+                <div class="reserva-exitosa-detalles">
+                    <div class="detalle-item">
+                        <span class="detalle-icon">📅</span>
+                        <span>{{ fechainicio }} - {{ fechafin }}</span>
+                    </div>
+                    <div class="detalle-item">
+                        <span class="detalle-icon">🌙</span>
+                        <span>{{ calcularNoches() }} {{ calcularNoches() === 1 ? 'noche' : 'noches' }}</span>
+                    </div>
+                    <div class="detalle-item">
+                        <span class="detalle-icon">👥</span>
+                        <span>{{ numeroadultos }} adulto(s){{ numeroninos > 0 ? ', ' + numeroninos + ' niño(s)' : '' }}</span>
+                    </div>
+                    <div class="detalle-item">
+                        <span class="detalle-icon">💵</span>
+                        <span>Pago en efectivo al llegar</span>
+                    </div>
+                </div>
+                <div class="reserva-exitosa-total">
+                    <span>Total a pagar:</span>
+                    <strong>{{ formatearPrecio(calcularPrecioTotal(habitacionSeleccionada)) }}</strong>
+                </div>
+                <p class="reserva-exitosa-nota">💡 Recibirás la confirmación una vez el administrador apruebe tu reserva. Puedes ver el estado en "Mis Reservas".</p>
+            </div>
+            <div class="modal-actions-exitosa">
+                <button type="button" class="btn-ver-reservas" routerLink="/mis-reservas" (click)="cancelarFormularioReserva()">
+                    📋 Ver mis reservas
+                </button>
+                <button type="button" class="btn-cerrar-modal" (click)="cancelarFormularioReserva()">
+                    ✓ Cerrar
+                </button>
+            </div>
+        </div>
+
         <!-- Formulario de reserva -->
-        <div class="modal-body-reserva" *ngIf="!mostrarDatosBancarios">
+        <div class="modal-body-reserva" *ngIf="!mostrarDatosBancarios && !reservaEfectivoExitosa">
             <!-- Paso 1: Fechas -->
             <div class="form-section">
                 <h4 class="form-section-title">📅 Selecciona tus fechas</h4>
