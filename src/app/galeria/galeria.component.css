@@ -5,9 +5,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1124b3, #2942d1);
+  background: url('../../assets/banner.jpg') center/cover no-repeat;
   color: white;
   text-align: center;
+  padding: 8rem 1rem 4rem;
 }
 
 .galeria-overlay {
@@ -16,25 +17,27 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(17, 36, 179, 0.2);
+  background: linear-gradient(135deg, rgba(2, 3, 5, 0.78), rgba(0, 77, 217, 0.72));
   pointer-events: none;
 }
 
 .galeria-content {
   position: relative;
   z-index: 2;
+  max-width: 860px;
 }
 
 .galeria-content h1 {
-  font-size: 3.5rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Lato', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
 }
 
 .galeria-content p {
-  font-size: 1.3rem;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  font-size: 1.1rem;
+  margin: 0;
+  color: #e7ecff;
 }
 
 /* Container */
