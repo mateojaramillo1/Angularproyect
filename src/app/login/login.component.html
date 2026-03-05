@@ -23,6 +23,7 @@
       </div>
       <div *ngIf="error" class="alert alert-danger split-login-alert">{{ error }}</div>
       <button type="submit" class="login-action-btn">Iniciar sesión</button>
+      <button type="button" class="split-btn-forgot-pwd" routerLink="/cambiar-contrasena-token" (click)="scrollTop()">🔑 Olvidé mi contraseña</button>
       <button type="button" class="split-btn-link" (click)="toggleModo()">¿No tienes cuenta? Regístrate</button>
     </form>
     <form [formGroup]="registerForm" (ngSubmit)="submitRegister()" *ngIf="modoRegistro" style="width:100%;">

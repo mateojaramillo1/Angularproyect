@@ -21,6 +21,8 @@ import { AlojamientosComponent } from './alojamientos/alojamientos.component';
 import { AdminReservasComponent } from './admin-reservas/admin-reservas.component';
 import { MisReservasComponent } from './mis-reservas/mis-reservas.component';
 import { GaleriaComponent } from './galeria/galeria.component';
+import { CambiarContrasenaComponent } from './cambiar-contrasena/cambiar-contrasena.component';
+import { ReinicioContrasenaComponent } from './reinicio-contrasena/reinicio-contrasena.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { GaleriaComponent } from './galeria/galeria.component';
     RegisterComponent,
     AdminReservasComponent,
     MisReservasComponent,
-    GaleriaComponent
+    GaleriaComponent,
+    CambiarContrasenaComponent,
+    ReinicioContrasenaComponent
   ],
   imports: [
     BrowserModule,

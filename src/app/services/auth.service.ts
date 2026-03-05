@@ -128,4 +128,15 @@ export class AuthService {
     const u = this.getUserFromToken();
     return !!(u && u.rol && u.rol === 'admin');
   }
+
+  solicitarCambioContrasena(email: string) {
+    return this.http.post(`${environment.apiUrl}/auth/solicitar-cambio-contrasena`, { email });
+  }
+
+  confirmarCambioContrasena(token: string, nuevaContrasena: string) {
+    return this.http.post(`${environment.apiUrl}/auth/confirmar-cambio-contrasena`, {
+      token,
+      nuevaContrasena
+    });
+  }
 }

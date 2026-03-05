@@ -1,0 +1,122 @@
+<app-menu></app-menu>
+
+<div class="reinicio-container">
+  <div class="reinicio-card">
+    <div class="header">
+      <h1>🔑 Recuperar Contraseña</h1>
+      <p *ngIf="paso === 1">Ingresa tu email para recibir un enlace de cambio</p>
+      <p *ngIf="paso === 2">Crea una nueva contraseña segura</p>
+    </div>
+
+    <div *ngIf="mensaje" [ngClass]="'alert alert-' + (tipoMensaje === 'exito' ? 'success' : 'danger')">
+      {{ mensaje }}
+    </div>
+
+    <!-- PASO 1: Solicitar enlace -->
+    <div *ngIf="paso === 1" [formGroup]="formSolicitud">
+      <div class="form-group">
+        <label for="email">Tu correo electrónico</label>
+        <input 
+          id="email" 
+          type="email" 
+          class="form-input" 
+          formControlName="email"
+          placeholder="ejemplo@email.com"
+        >
+        <small class="form-text">Se enviará un enlace seguro a este correo</small>
+      </div>
+
+      <div class="info-box">
+        <h3>Proceso:</h3>
+        <ol>
+          <li>Ingresa tu correo electrónico</li>
+          <li>Haz clic en "Enviar enlace"</li>
+          <li>Recibirás un email con un enlace (válido por 24 horas)</li>
+          <li>Haz clic en ese enlace para cambiar tu contraseña</li>
+        </ol>
+      </div>
+
+      <button 
+        type="button"
+        class="btn-primary"
+        (click)="solicitarEnlace()"
+        [disabled]="!formSolicitud.valid || cargando"
+      >
+        {{ cargando ? 'Procesando...' : '📧 Enviar enlace' }}
+      </button>
+
+      <div class="volver-link">
+        <a routerLink="/login">← Volver al login</a>
+      </div>
+    </div>
+
+    <!-- PASO 2: Cambiar contraseña -->
+    <div *ngIf="paso === 2 && mostrarFormulario && tokenValido" [formGroup]="form">
+      <div class="form-group">
+        <label for="nuevaContrasena">Nueva Contraseña</label>
+        <input 
+          id="nuevaContrasena" 
+          type="password" 
+          class="form-input" 
+          formControlName="nuevaContrasena"
+          placeholder="Mínimo 8 caracteres, mayúsculas, minúsculas y números"
+        >
+        <small class="form-error" *ngIf="errorContrasena">
+          ❌ {{ errorContrasena }}
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmarContrasena">Confirmar Contraseña</label>
+        <input 
+          id="confirmarContrasena" 
+          type="password" 
+          class="form-input" 
+          formControlName="confirmarContrasena"
+          placeholder="Repite tu nueva contraseña"
+        >
+        <small class="form-error" *ngIf="errorConfirmacion">
+          ❌ {{ errorConfirmacion }}
+        </small>
+      </div>
+
+      <div class="requisitos">
+        <h4>Requisitos de contraseña:</h4>
+        <ul>
+          <li [class.cumplido]="form.get('nuevaContrasena')?.value?.length >= 8">
+            ✓ Mínimo 8 caracteres
+          </li>
+          <li [class.cumplido]="/[A-Z]/.test(form.get('nuevaContrasena')?.value)">
+            ✓ Al menos una mayúscula
+          </li>
+          <li [class.cumplido]="/[a-z]/.test(form.get('nuevaContrasena')?.value)">
+            ✓ Al menos una minúscula
+          </li>
+          <li [class.cumplido]="/\d/.test(form.get('nuevaContrasena')?.value)">
+            ✓ Al menos un número
+          </li>
+        </ul>
+      </div>
+
+      <button 
+        type="button"
+        class="btn-primary"
+        (click)="cambiar()"
+        [disabled]="!form.valid || cargando"
+      >
+        {{ cargando ? 'Actualizando...' : '🔒 Cambiar Contraseña' }}
+      </button>
+    </div>
+
+    <!-- Mensaje de éxito -->
+    <div *ngIf="!mostrarFormulario && tipoMensaje === 'exito'" class="success-message">
+      <h2 *ngIf="paso === 1">✅ Solicitud enviada</h2>
+      <h2 *ngIf="paso === 2">✅ ¡Contraseña actualizada!</h2>
+      <p *ngIf="paso === 1">Revisa tu correo electrónico en los próximos minutos.</p>
+      <p *ngIf="paso === 2">Tu contraseña ha sido cambiada correctamente.</p>
+      <p>Serás redirigido al login en unos momentos...</p>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

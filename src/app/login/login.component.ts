@@ -62,4 +62,8 @@ export class LoginComponent {
     this.error = null;
     this.success = null;
   }
+
+  scrollTop() {
+    window.scrollTo(0, 0);
+  }
 }

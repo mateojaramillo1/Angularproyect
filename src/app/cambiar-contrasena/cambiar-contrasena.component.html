@@ -1,0 +1,56 @@
+<app-menu></app-menu>
+
+<div class="cambiar-contrasena-container">
+  <div class="cambiar-contrasena-card">
+    <div class="header">
+      <h1>🔒 Cambiar Contraseña</h1>
+      <p>Solicita un enlace para cambiar tu contraseña</p>
+    </div>
+
+    <div *ngIf="mensaje" [ngClass]="'alert alert-' + (tipoMensaje === 'exito' ? 'success' : 'danger')">
+      {{ mensaje }}
+    </div>
+
+    <div *ngIf="mostrarFormulario" [formGroup]="form">
+      <div class="form-group">
+        <label for="email">Tu correo electrónico</label>
+        <input 
+          id="email" 
+          type="email" 
+          class="form-input" 
+          formControlName="email"
+          readonly
+        >
+        <small class="form-text">Se enviará un enlace seguro a este correo</small>
+      </div>
+
+      <div class="info-box">
+        <h3>Proceso:</h3>
+        <ol>
+          <li>Haz clic en "Enviar enlace"</li>
+          <li>Recibirás un correo con un enlace de cambio</li>
+          <li>Haz clic en ese enlace (válido por 24 horas)</li>
+          <li>Ingresa tu nueva contraseña</li>
+        </ol>
+      </div>
+
+      <button 
+        type="button"
+        class="btn-primary"
+        (click)="solicitar()"
+        [disabled]="cargando"
+      >
+        {{ cargando ? 'Procesando...' : '📧 Enviar enlace a mi correo' }}
+      </button>
+    </div>
+
+    <div *ngIf="!mostrarFormulario" class="success-message">
+      <h2>✅ Solicitud enviada</h2>
+      <p>Revisa tu correo electrónico en los próximos minutos.</p>
+      <p><strong>⏰ El enlace es válido por 24 horas</strong></p>
+      <p>Redirigiendo en unos momentos...</p>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
