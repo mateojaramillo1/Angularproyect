@@ -13,6 +13,18 @@
 	gap: 0;
 }
 
+.split-login-bg::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: url('../../assets/banner.jpg') center center/cover no-repeat;
+	filter: blur(8px) brightness(0.7);
+	z-index: 0;
+}
+
 .split-login-container {
 	display: flex;
 	width: 100%;
@@ -23,26 +35,49 @@
 	overflow: hidden;
 	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 	margin: 2rem;
+	z-index: 1;
+	align-items: center;
+	justify-content: center;
+	gap: 0;
 }
 
 .split-login-left {
 	flex: 1;
-	display: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(255,255,255,0.10);
+	border-top-left-radius: 1.2rem;
+	border-bottom-left-radius: 1.2rem;
+	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+	z-index: 1;
+	width: 320px;
+	height: 380px;
+	min-width: 220px;
+	min-height: 220px;
 }
 
 .split-login-left img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	border-radius: 1.2rem 0 0 1.2rem;
+	display: block;
 }
 
 .split-login-right {
 	flex: 1;
-	background: white;
+	background: linear-gradient(135deg, #020305 0%, #004dd9 100%);
+	color: #fff;
 	padding: 50px 40px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	border-radius: 0 1.2rem 1.2rem 0;
+	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+	z-index: 1;
+	max-height: calc(100vh - 7rem);
+	overflow-y: auto;
 }
 
 .split-login-header {
@@ -58,13 +93,13 @@
 .split-login-title {
 	font-size: 32px;
 	font-weight: 700;
-	color: #2c3e50;
+	color: #fff;
 	margin-bottom: 10px;
 }
 
 .split-login-desc {
 	font-size: 15px;
-	color: #7f8c8d;
+	color: #e0e0e0;
 	margin: 0;
 }
 
@@ -75,7 +110,7 @@
 .split-input-group label {
 	display: block;
 	margin-bottom: 8px;
-	color: #2c3e50;
+	color: #fff;
 	font-weight: 600;
 	font-size: 14px;
 }
@@ -83,50 +118,59 @@
 .split-input {
 	width: 100%;
 	padding: 12px 15px;
-	border: 2px solid #ddd;
+	border: 1px solid rgba(255, 255, 255, 0.3);
 	border-radius: 8px;
+	background: rgba(255, 255, 255, 0.1);
+	color: #fff;
 	font-size: 14px;
-	font-family: Arial, sans-serif;
 	box-sizing: border-box;
-	transition: border-color 0.3s;
+	transition: all 0.3s ease;
+}
+
+.split-input::placeholder {
+	color: rgba(255, 255, 255, 0.6);
 }
 
 .split-input:focus {
 	outline: none;
-	border-color: #27ae60;
+	border-color: rgba(255, 255, 255, 0.6);
+	background: rgba(255, 255, 255, 0.15);
+	box-shadow: 0 0 10px rgba(255, 136, 0, 0.3);
 }
 
 .split-input:disabled {
-	background-color: #ecf0f1;
-	color: #7f8c8d;
+	background-color: rgba(255, 255, 255, 0.05);
+	color: rgba(255, 255, 255, 0.6);
 	cursor: not-allowed;
 }
 
 .split-input-help {
 	display: block;
 	margin-top: 5px;
-	color: #95a5a6;
+	color: rgba(255, 255, 255, 0.7);
 	font-size: 12px;
 }
 
 .info-box {
-	background-color: #f8f9fa;
-	border-left: 4px solid #27ae60;
+	background-color: rgba(255, 255, 255, 0.1);
+	border-left: 4px solid #ff9800;
 	padding: 15px;
 	margin-bottom: 25px;
 	border-radius: 5px;
+	color: #fff;
 }
 
 .info-box h4 {
 	margin: 0 0 10px 0;
-	color: #2c3e50;
+	color: #fff;
 	font-size: 14px;
+	font-weight: 600;
 }
 
 .info-box ol {
 	margin: 0;
 	padding-left: 20px;
-	color: #555;
+	color: rgba(255, 255, 255, 0.85);
 	font-size: 13px;
 	line-height: 1.8;
 }
@@ -144,15 +188,15 @@
 }
 
 .alert-success {
-	background-color: #d4edda;
-	color: #155724;
-	border: 1px solid #c3e6cb;
+	background-color: rgba(76, 175, 80, 0.2);
+	color: #90ee90;
+	border: 1px solid rgba(76, 175, 80, 0.5);
 }
 
 .alert-danger {
-	background-color: #f8d7da;
-	color: #721c24;
-	border: 1px solid #f5c6cb;
+	background-color: rgba(244, 67, 54, 0.2);
+	color: #ff7b7b;
+	border: 1px solid rgba(244, 67, 54, 0.5);
 }
 
 .login-action-btn {
