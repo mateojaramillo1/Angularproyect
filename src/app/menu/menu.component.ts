@@ -41,9 +41,8 @@ export class MenuComponent implements OnInit, OnDestroy {
 
     const scrollY = Math.min(currentScroll, maxScroll);
     const targetOpacity = Math.min(scrollY / maxScroll, 1);
-    const visibleOpacity = currentScroll > 0 ? Math.max(targetOpacity, 0.92) : 0;
 
-    this.navOpacity = visibleOpacity;
+    this.navOpacity = targetOpacity;
     this.isScrolled = currentScroll > 0;
   }
 
