@@ -1,0 +1,83 @@
+<div class="checkin-container">
+  <!-- Logo/Header -->
+  <div class="checkin-header">
+    <h1>🏨 Check-in Paradisus Cancún</h1>
+    <p class="subtitle">Sistema de Check-in Digital</p>
+  </div>
+
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="state loading">
+    <div class="spinner"></div>
+    <p>Procesando check-in...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="!loading && error" class="state error">
+    <div class="icon">❌</div>
+    <h2>Error en Check-in</h2>
+    <p>{{ error }}</p>
+    <button (click)="volverAInicio()" class="btn-primary">
+      Volver al Inicio
+    </button>
+  </div>
+
+  <!-- Éxito -->
+  <div *ngIf="!loading && success && reserva" class="state success">
+    <div class="icon">✅</div>
+    <h2>{{ success }}</h2>
+
+    <!-- Información de la reserva -->
+    <div class="reserva-info">
+      <h3>Información de tu Reserva</h3>
+
+      <div class="info-group">
+        <label>Huésped:</label>
+        <p>{{ reserva.nombre }} {{ reserva.apellido }}</p>
+      </div>
+
+      <div class="info-group">
+        <label>Habitación:</label>
+        <p>{{ reserva.idHabitacion }}</p>
+      </div>
+
+      <div class="info-group">
+        <label>Check-in:</label>
+        <p>{{ getFechaFormato(reserva.fechainicio) }} · {{ getHoraFormato(reserva.fechainicio) }}</p>
+      </div>
+
+      <div class="info-group">
+        <label>Check-out:</label>
+        <p>{{ getFechaFormato(reserva.fechafin) }} · {{ getHoraFormato(reserva.fechafin) }}</p>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Digital Key - lo más importante -->
+      <div class="digital-key-section">
+        <label>Tu Clave Digital:</label>
+        <div class="digital-key">
+          {{ reserva.digitalKey || 'N/A' }}
+        </div>
+        <p class="digital-key-help">
+          👆 Usa esta clave en la cerradura digital de tu habitación
+        </p>
+      </div>
+    </div>
+
+    <!-- Instrucciones -->
+    <div class="instructions">
+      <h4>📱 Próximos pasos:</h4>
+      <ol>
+        <li>Guarda tu <strong>Clave Digital</strong> (captura pantalla)</li>
+        <li>Dirígete a tu habitación</li>
+        <li>Ingresa la clave en la cerradura digital</li>
+        <li>¡Bienvenido a tu estadía! 🔓</li>
+      </ol>
+    </div>
+
+    <!-- Botón para volver -->
+    <button (click)="volverAInicio()" class="btn-secondary">
+      ← Volver al Inicio
+    </button>
+  </div>
+</div>

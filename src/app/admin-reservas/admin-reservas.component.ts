@@ -321,15 +321,11 @@ export class AdminReservasComponent implements OnInit {
     if (!token) {
       return '';
     }
-    // Crear payload JSON que será escaneable
-    const payload = {
-      tipo: 'checkin',
-      token: token,
-      reservaId: reservaId || '',
-      digitalKey: digitalKey || ''
-    };
-    const data = encodeURIComponent(JSON.stringify(payload));
-    return `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${data}`;
+    // Generar URL pública que el cliente puede abrir en su celular
+    const publicCheckinUrl = `${window.location.origin}/checkin?token=${encodeURIComponent(token)}`;
+    const data = encodeURIComponent(publicCheckinUrl);
+    return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data}`;
+  }
   }
 
   getFidelidadClass(nivel: string): string {
@@ -708,26 +704,45 @@ export class AdminReservasComponent implements OnInit {
 
   procesarQRDetectado(qrData: string) {
     try {
-      const data = JSON.parse(qrData);
+      // Intentar extraer token de la URL
+      let token: string | null = null;
 
-      if (data.tipo === 'checkin' && data.token) {
+      // Caso 1: Es una URL pública
+      if (qrData.includes('/checkin') && qrData.includes('token=')) {
+        const urlObj = new URL(qrData);
+        token = urlObj.searchParams.get('token');
+      }
+      // Caso 2: Es JSON directo
+      else {
+        try {
+          const data = JSON.parse(qrData);
+          if (data.tipo === 'checkin' && data.token) {
+            token = data.token;
+          }
+        } catch (e) {
+          // No es JSON, ignorar
+        }
+      }
+
+      if (token) {
         const confirmar = confirm(
-          `QR Detectado:\n\nReserva ID: ${data.reservaId || 'N/A'}\nClave Digital: ${data.digitalKey || 'N/A'}\n\nProcesar CHECK-IN?`
+          `QR Detectado para Check-in\n\n¿Procesar CHECK-IN con este token?`
         );
 
         if (confirmar) {
-          this.procesarCheckInDesdeQR(data.token);
+          this.procesarCheckInDesdeQR(token);
         } else {
           this.qrDetectado = '';
           requestAnimationFrame(() => this.escanearFrame());
         }
       } else {
-        alert('QR no valido para check-in');
+        alert('QR no válido para check-in o formato no reconocido');
         this.qrDetectado = '';
         requestAnimationFrame(() => this.escanearFrame());
       }
-    } catch {
-      alert('QR no valido o corrupto');
+    } catch (error) {
+      console.error('Error procesando QR:', error);
+      alert('Error al procesar QR');
       this.qrDetectado = '';
       requestAnimationFrame(() => this.escanearFrame());
     }

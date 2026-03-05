@@ -11,6 +11,7 @@ import { MisReservasComponent } from './mis-reservas/mis-reservas.component';
 import { GaleriaComponent } from './galeria/galeria.component';
 import { CambiarContrasenaComponent } from './cambiar-contrasena/cambiar-contrasena.component';
 import { ReinicioContrasenaComponent } from './reinicio-contrasena/reinicio-contrasena.component';
+import { PublicCheckinComponent } from './public-checkin/public-checkin.component';
 
 const routes: Routes = [
   {path:"", component:HomeComponent,pathMatch:"full"},
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'cambiar-contrasena', component: CambiarContrasenaComponent, canActivate: [AuthGuard] },
   { path: 'cambiar-contrasena-token', component: ReinicioContrasenaComponent },
+  { path: 'checkin', component: PublicCheckinComponent },
   { path: 'admin-reservas', component: AdminReservasComponent, canActivate: [AuthGuard], data: { admin: true } },
   { path: 'mis-reservas', component: MisReservasComponent, canActivate: [AuthGuard] }
 ];
