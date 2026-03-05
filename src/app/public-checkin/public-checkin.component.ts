@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ReservaService } from '../services/ReservaService';
+import { ReservaService } from '../services/reserva.service';
 
 interface Reserva {
   _id?: string;
@@ -19,6 +19,7 @@ interface Reserva {
   selector: 'app-public-checkin',
   standalone: true,
   imports: [CommonModule],
+  providers: [ReservaService],
   templateUrl: './public-checkin.component.html',
   styleUrls: ['./public-checkin.component.css']
 })
