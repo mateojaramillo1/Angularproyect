@@ -3,13 +3,209 @@
   <section class="admin-reservas-hero text-white">
     <div class="admin-reservas-overlay"></div>
     <div class="admin-reservas-content">
-      <h1>Gestión de Reservas</h1>
-      <p>Administra y verifica las reservas de Paradisus Cancún de forma rápida y organizada.</p>
+      <h1>Panel de Administración</h1>
+      <p>Sistema completo de gestión de reservas, análisis y marketing</p>
     </div>
   </section>
 
 <div class="admin-reservas-container">
-  <h2>📋 Panel de Administración de Reservas</h2>
+  <!-- Navegación por Tabs -->
+  <div class="admin-tabs">
+    <button 
+      class="tab-btn" 
+      [class.active]="tabActivo === 'reservas'" 
+      (click)="tabActivo = 'reservas'">
+      📋 Gestión de Reservas
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="tabActivo === 'dashboard'" 
+      (click)="tabActivo = 'dashboard'">
+      📊 Dashboard & Análisis
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="tabActivo === 'calendario'" 
+      (click)="tabActivo = 'calendario'">
+      📆 Disponibilidad
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="tabActivo === 'crm'" 
+      (click)="tabActivo = 'crm'">
+      🧠 CRM & Marketing
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="tabActivo === 'checkin'" 
+      (click)="tabActivo = 'checkin'">
+      🔐 Check-in Digital
+    </button>
+  </div>
+
+  <!-- TAB 1: GESTIÓN DE RESERVAS -->
+  <div class="tab-content" *ngIf="tabActivo === 'reservas'">
+    <div class="tab-header">
+      <h2>📋 Gestión de Reservas</h2>
+      <p class="tab-description">Administra, aprueba, rechaza y verifica el pago de las reservas</p>
+    </div>
+
+    <div class="tab-header">
+      <h2>📋 Gestión de Reservas</h2>
+      <p class="tab-description">Administra, aprueba, rechaza y verifica el pago de las reservas</p>
+    </div>
+
+    <!-- Filtros y acciones rápidas -->
+    <div class="filtros-container">
+      <div class="filtro">
+        <label>Estado:</label>
+        <select [(ngModel)]="filtroEstado">
+          <option value="todos">Todos</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="aprobada">Aprobada</option>
+          <option value="rechazada">Rechazada</option>
+        </select>
+      </div>
+      <div class="filtro">
+        <label>Pago:</label>
+        <select [(ngModel)]="filtroPago">
+          <option value="todos">Todos</option>
+          <option value="verificado">Verificados</option>
+          <option value="pendiente">Sin verificar</option>
+        </select>
+      </div>
+      <button class="btn-refresh" (click)="actualizarPanelCompleto()">🔄 Actualizar</button>
+    </div>
+
+    <div class="loading-message" *ngIf="loading">Cargando reservas...</div>
+    <div class="error-message" *ngIf="error">{{ error }}</div>
+
+    <!-- Resumen rápido -->
+    <div class="reservas-stats" *ngIf="!loading && reservas.length">
+      <div class="stat">
+        <span class="stat-number">{{ reservas.length }}</span>
+        <span class="stat-label">Total reservas</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">{{ totalPendientes }}</span>
+        <span class="stat-label">Pendientes</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">{{ totalPagosVerificados }}</span>
+        <span class="stat-label">Pagos verificados</span>
+      </div>
+    </div>
+
+    <!-- Tabla de reservas -->
+    <div class="reservas-table-container" *ngIf="!loading && reservasFiltradas.length">
+      <table class="reservas-table">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Teléfono</th>
+            <th>Habitación</th>
+            <th>Fechas</th>
+            <th>Huéspedes</th>
+            <th>💰 Precio</th>
+            <th>Método de Pago</th>
+            <th>Estado Pago</th>
+            <th>Estado Reserva</th>
+            <th>Check-in</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reserva of reservasFiltradas">
+            <td class="cliente-cell">
+              <strong>{{ reserva.nombre }}</strong>
+              <span *ngIf="reserva.apellidos"> {{ reserva.apellidos }}</span>
+            </td>
+            <td>{{ reserva.telefono }}</td>
+            <td>{{ reserva.idHabitacion }}</td>
+            <td class="fechas-cell">
+              <span>📅 {{ reserva.fechainicio | date:'dd/MM/yyyy' }}</span>
+              <span>➜ {{ reserva.fechafin | date:'dd/MM/yyyy' }}</span>
+            </td>
+            <td>
+              <span>👥 {{ reserva.numeroadultos }} adultos</span>
+              <span *ngIf="reserva.numeroninos > 0">, {{ reserva.numeroninos }} niños</span>
+            </td>
+            <td class="precio-cell">
+              <span class="precio-total-badge">{{ formatearPrecio(reserva.precioTotal || 0) }}</span>
+              <span class="noches-info" *ngIf="reserva.noches">{{ reserva.noches }} {{ reserva.noches === 1 ? 'noche' : 'noches' }}</span>
+            </td>
+            <td>
+              <span class="metodo-pago-badge" [ngClass]="reserva.metodoPago || 'efectivo'">
+                {{ getMetodoPagoLabel(reserva.metodoPago) }}
+              </span>
+            </td>
+            <td>
+              <span class="pago-badge" [ngClass]="reserva.pagoVerificado ? 'verificado' : 'no-verificado'">
+                {{ reserva.pagoVerificado ? '✅ Verificado' : '⏳ Pendiente' }}
+              </span>
+            </td>
+            <td>
+              <span class="estado-badge" [ngClass]="getEstadoClass(reserva.estado)">
+                {{ reserva.estado | titlecase }}
+              </span>
+            </td>
+            <td>
+              <span class="estado-badge" [ngClass]="'checkin-' + (reserva.checkInEstado || 'pendiente')">
+                {{ getEstadoCheckInLabel(reserva.checkInEstado) }}
+              </span>
+              <div class="checkin-times" *ngIf="reserva.checkInAt || reserva.checkOutAt">
+                <small *ngIf="reserva.checkInAt">IN: {{ reserva.checkInAt | date:'dd/MM HH:mm' }}</small>
+                <small *ngIf="reserva.checkOutAt">OUT: {{ reserva.checkOutAt | date:'dd/MM HH:mm' }}</small>
+              </div>
+            </td>
+            <td class="acciones-cell">
+              <div class="acciones-grupo">
+                <div class="acciones-pago" *ngIf="reserva.metodoPago === 'transferencia'">
+                  <button 
+                    *ngIf="!reserva.pagoVerificado" 
+                    class="btn-verificar" 
+                    (click)="verificarPago(reserva, true)"
+                    title="Marcar pago como verificado">
+                    ✅ Verificar pago
+                  </button>
+                  <button 
+                    *ngIf="reserva.pagoVerificado" 
+                    class="btn-desverificar" 
+                    (click)="verificarPago(reserva, false)"
+                    title="Desmarcar verificación">
+                    ❌ Quitar verificación
+                  </button>
+                </div>
+                <div class="acciones-estado" *ngIf="reserva.estado === 'pendiente'">
+                  <button class="btn-aprobar" (click)="cambiarEstado(reserva, 'aprobada')">✔️ Aprobar</button>
+                  <button class="btn-rechazar" (click)="cambiarEstado(reserva, 'rechazada')">✖️ Rechazar</button>
+                </div>
+                <div class="acciones-estado" *ngIf="reserva.estado !== 'pendiente'">
+                  <button class="btn-pendiente" (click)="cambiarEstado(reserva, 'pendiente')">⏪ Volver a pendiente</button>
+                </div>
+                <div class="acciones-checkin" *ngIf="reserva.estado === 'aprobada'">
+                  <button class="btn-qr" (click)="generarQR(reserva)">📱 Generar QR</button>
+                  <button class="btn-checkin" [disabled]="reserva.checkInEstado !== 'generado'" (click)="realizarCheckIn(reserva)">✅ Check-in</button>
+                  <button class="btn-checkout" [disabled]="reserva.checkInEstado !== 'checkin'" (click)="realizarCheckOut(reserva)">🚪 Check-out</button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="no-reservas" *ngIf="!loading && !reservasFiltradas.length">
+      <p>No hay reservas que coincidan con los filtros seleccionados.</p>
+    </div>
+  </div>
+
+  <!-- TAB 2: DASHBOARD & ANÁLISIS -->
+  <div class="tab-content" *ngIf="tabActivo === 'dashboard'">
+    <div class="tab-header">
+      <h2>📊 Dashboard & Análisis</h2>
+      <p class="tab-description">Métricas clave, ingresos y análisis de ocupación del hotel</p>
+    </div>
 
   <section class="analytics-panel">
     <div class="analytics-header">

@@ -36,6 +36,9 @@ interface DiaCalendario {
   styleUrls: ['./admin-reservas.component.css']
 })
 export class AdminReservasComponent implements OnInit {
+  // Control de tabs
+  tabActivo: string = 'reservas';
+  
   reservas: Reserva[] = [];
   habitaciones: any[] = [];
   loading = false;
