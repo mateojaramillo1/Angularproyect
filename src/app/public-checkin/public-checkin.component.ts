@@ -60,7 +60,7 @@ export class PublicCheckinComponent implements OnInit {
         this.reserva = resp.reserva || resp;
         console.log('Check-in exitoso:', this.reserva);
       },
-      error: (err) => {
+      error: (err: any) => {
         this.loading = false;
         this.error = err?.error?.mensaje || 'Error al procesar check-in. Token inválido o expirado.';
         console.error('Error en check-in:', err);
