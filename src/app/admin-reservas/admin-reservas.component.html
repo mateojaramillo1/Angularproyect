@@ -1,0 +1,559 @@
+<app-menu></app-menu>
+<div class="admin-panel-bg">
+  <section class="admin-reservas-hero text-white">
+    <div class="admin-reservas-overlay"></div>
+    <div class="admin-reservas-content">
+      <h1>Panel de Administración</h1>
+      <p>Sistema completo de gestión de reservas, análisis y marketing</p>
+    </div>
+  </section>
+
+  <div class="admin-reservas-container">
+    <!-- Navegación por Tabs -->
+    <div class="admin-tabs">
+      <button 
+        class="tab-btn" 
+        [class.active]="tabActivo === 'reservas'" 
+        (click)="tabActivo = 'reservas'">
+        📋 Gestión de Reservas
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="tabActivo === 'dashboard'" 
+        (click)="tabActivo = 'dashboard'">
+        📊 Dashboard & Análisis
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="tabActivo === 'calendario'" 
+        (click)="tabActivo = 'calendario'">
+        📆 Disponibilidad
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="tabActivo === 'crm'" 
+        (click)="tabActivo = 'crm'">
+        🧠 CRM & Marketing
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="tabActivo === 'checkin'" 
+        (click)="tabActivo = 'checkin'">
+        🔐 Check-in Digital
+      </button>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- TAB 1: GESTIÓN DE RESERVAS -->
+    <!-- ========================================= -->
+    <div class="tab-content" *ngIf="tabActivo === 'reservas'">
+      <div class="tab-header">
+        <h2>📋 Gestión de Reservas</h2>
+        <p class="tab-description">Administra, aprueba, rechaza y verifica el pago de las reservas</p>
+      </div>
+
+      <!-- Filtros y acciones rápidas -->
+      <div class="filtros-container">
+        <div class="filtro">
+          <label>Estado:</label>
+          <select [(ngModel)]="filtroEstado">
+            <option value="todos">Todos</option>
+            <option value="pendiente">Pendiente</option>
+            <option value="aprobada">Aprobada</option>
+            <option value="rechazada">Rechazada</option>
+          </select>
+        </div>
+        <div class="filtro">
+          <label>Pago:</label>
+          <select [(ngModel)]="filtroPago">
+            <option value="todos">Todos</option>
+            <option value="verificado">Verificados</option>
+            <option value="pendiente">Sin verificar</option>
+          </select>
+        </div>
+        <button class="btn-refresh" (click)="actualizarPanelCompleto()">🔄 Actualizar</button>
+      </div>
+
+      <div class="loading-message" *ngIf="loading">Cargando reservas...</div>
+      <div class="error-message" *ngIf="error">{{ error }}</div>
+
+      <!-- Resumen rápido -->
+      <div class="reservas-stats" *ngIf="!loading && reservas.length">
+        <div class="stat">
+          <span class="stat-number">{{ reservas.length }}</span>
+          <span class="stat-label">Total reservas</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">{{ totalPendientes }}</span>
+          <span class="stat-label">Pendientes</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">{{ totalPagosVerificados }}</span>
+          <span class="stat-label">Pagos verificados</span>
+        </div>
+      </div>
+
+      <!-- Tabla de reservas -->
+      <div class="reservas-table-container" *ngIf="!loading && reservasFiltradas.length">
+        <table class="reservas-table">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Teléfono</th>
+              <th>Habitación</th>
+              <th>Fechas</th>
+              <th>Huéspedes</th>
+              <th>💰 Precio</th>
+              <th>Método de Pago</th>
+              <th>Estado Pago</th>
+              <th>Estado Reserva</th>
+              <th>Check-in</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let reserva of reservasFiltradas">
+              <td class="cliente-cell">
+                <strong>{{ reserva.nombre }}</strong>
+                <span *ngIf="reserva.apellidos"> {{ reserva.apellidos }}</span>
+              </td>
+              <td>{{ reserva.telefono }}</td>
+              <td>{{ reserva.idHabitacion }}</td>
+              <td class="fechas-cell">
+                <span>📅 {{ reserva.fechainicio | date:'dd/MM/yyyy' }}</span>
+                <span>➜ {{ reserva.fechafin | date:'dd/MM/yyyy' }}</span>
+              </td>
+              <td>
+                <span>👥 {{ reserva.numeroadultos }} adultos</span>
+                <span *ngIf="reserva.numeroninos > 0">, {{ reserva.numeroninos }} niños</span>
+              </td>
+              <td class="precio-cell">
+                <span class="precio-total-badge">{{ formatearPrecio(reserva.precioTotal || 0) }}</span>
+                <span class="noches-info" *ngIf="reserva.noches">{{ reserva.noches }} {{ reserva.noches === 1 ? 'noche' : 'noches' }}</span>
+              </td>
+              <td>
+                <span class="metodo-pago-badge" [ngClass]="reserva.metodoPago || 'efectivo'">
+                  {{ getMetodoPagoLabel(reserva.metodoPago) }}
+                </span>
+              </td>
+              <td>
+                <span class="pago-badge" [ngClass]="reserva.pagoVerificado ? 'verificado' : 'no-verificado'">
+                  {{ reserva.pagoVerificado ? '✅ Verificado' : '⏳ Pendiente' }}
+                </span>
+              </td>
+              <td>
+                <span class="estado-badge" [ngClass]="getEstadoClass(reserva.estado)">
+                  {{ reserva.estado | titlecase }}
+                </span>
+              </td>
+              <td>
+                <span class="estado-badge" [ngClass]="'checkin-' + (reserva.checkInEstado || 'pendiente')">
+                  {{ getEstadoCheckInLabel(reserva.checkInEstado) }}
+                </span>
+                <div class="checkin-times" *ngIf="reserva.checkInAt || reserva.checkOutAt">
+                  <small *ngIf="reserva.checkInAt">IN: {{ reserva.checkInAt | date:'dd/MM HH:mm' }}</small>
+                  <small *ngIf="reserva.checkOutAt">OUT: {{ reserva.checkOutAt | date:'dd/MM HH:mm' }}</small>
+                </div>
+              </td>
+              <td class="acciones-cell">
+                <div class="acciones-grupo">
+                  <div class="acciones-pago" *ngIf="reserva.metodoPago === 'transferencia'">
+                    <button 
+                      *ngIf="!reserva.pagoVerificado" 
+                      class="btn-verificar" 
+                      (click)="verificarPago(reserva, true)"
+                      title="Marcar pago como verificado">
+                      ✅ Verificar pago
+                    </button>
+                    <button 
+                      *ngIf="reserva.pagoVerificado" 
+                      class="btn-desverificar" 
+                      (click)="verificarPago(reserva, false)"
+                      title="Desmarcar verificación">
+                      ❌ Quitar verificación
+                    </button>
+                  </div>
+                  <div class="acciones-estado" *ngIf="reserva.estado === 'pendiente'">
+                    <button class="btn-aprobar" (click)="cambiarEstado(reserva, 'aprobada')">✔️ Aprobar</button>
+                    <button class="btn-rechazar" (click)="cambiarEstado(reserva, 'rechazada')">✖️ Rechazar</button>
+                  </div>
+                  <div class="acciones-estado" *ngIf="reserva.estado !== 'pendiente'">
+                    <button class="btn-pendiente" (click)="cambiarEstado(reserva, 'pendiente')">⏪ Volver a pendiente</button>
+                  </div>
+                  <div class="acciones-checkin" *ngIf="reserva.estado === 'aprobada'">
+                    <button class="btn-qr" (click)="generarQR(reserva)">📱 Generar QR</button>
+                    <button class="btn-checkin" [disabled]="reserva.checkInEstado !== 'generado'" (click)="realizarCheckIn(reserva)">✅ Check-in</button>
+                    <button class="btn-checkout" [disabled]="reserva.checkInEstado !== 'checkin'" (click)="realizarCheckOut(reserva)">🚪 Check-out</button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="no-reservas" *ngIf="!loading && !reservasFiltradas.length">
+        <p>No hay reservas que coincidan con los filtros seleccionados.</p>
+      </div>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- TAB 2: DASHBOARD & ANÁLISIS -->
+    <!-- ========================================= -->
+    <div class="tab-content" *ngIf="tabActivo === 'dashboard'">
+      <div class="tab-header">
+        <h2>📊 Dashboard & Análisis</h2>
+        <p class="tab-description">Métricas clave, ingresos y análisis de ocupación del hotel</p>
+      </div>
+
+      <section class="analytics-panel">
+        <div class="analytics-header">
+          <h3>📈 Dashboard Analítico</h3>
+          <div class="analytics-actions">
+            <input type="date" [(ngModel)]="filtroDesde" />
+            <input type="date" [(ngModel)]="filtroHasta" />
+            <button class="btn-outline" (click)="cargarDashboard()">Actualizar Dashboard</button>
+            <button class="btn-export" (click)="exportarExcel()">Exportar Excel (CSV)</button>
+            <button class="btn-export" (click)="exportarPDF()">Exportar PDF</button>
+          </div>
+        </div>
+
+        <div class="analytics-loading" *ngIf="loadingDashboard">Cargando dashboard...</div>
+
+        <div class="kpi-grid" *ngIf="!loadingDashboard">
+          <div class="kpi-card"><span>Total reservas</span><strong>{{ dashboardKpis.totalReservas }}</strong></div>
+          <div class="kpi-card"><span>Aprobadas</span><strong>{{ dashboardKpis.totalAprobadas }}</strong></div>
+          <div class="kpi-card"><span>Pendientes</span><strong>{{ dashboardKpis.totalPendientes }}</strong></div>
+          <div class="kpi-card"><span>Rechazadas</span><strong>{{ dashboardKpis.totalRechazadas }}</strong></div>
+          <div class="kpi-card"><span>Pagos verificados</span><strong>{{ dashboardKpis.totalPagosVerificados }}</strong></div>
+          <div class="kpi-card"><span>Ingresos reales</span><strong>{{ formatearPrecio(dashboardKpis.ingresosReales) }}</strong></div>
+          <div class="kpi-card"><span>Ingresos proyectados</span><strong>{{ formatearPrecio(dashboardKpis.ingresosProyectados) }}</strong></div>
+          <div class="kpi-card"><span>Ocupación hoy</span><strong>{{ dashboardKpis.tasaOcupacionHoy }}%</strong></div>
+        </div>
+
+        <div class="monthly-chart" *ngIf="!loadingDashboard && ocupacionMensual.length">
+          <h4>Ingresos y ocupación (últimos 12 meses)</h4>
+          <div class="chart-scroll">
+            <div class="chart-month" *ngFor="let item of ocupacionMensual">
+              <div class="bars">
+                <div class="bar-real" [style.height.%]="altoBarra(item.ingresosReales)" title="Ingresos reales"></div>
+                <div class="bar-proyectado" [style.height.%]="altoBarra(item.ingresosProyectados)" title="Ingresos proyectados"></div>
+              </div>
+              <div class="month-label">{{ item.periodo }}</div>
+              <div class="month-occupancy">{{ item.ocupacionPromedio }}%</div>
+            </div>
+          </div>
+          <div class="chart-legend">
+            <span><i class="dot real"></i>Reales</span>
+            <span><i class="dot proyectado"></i>Proyectados</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- TAB 3: CALENDARIO DE DISPONIBILIDAD -->
+    <!-- ========================================= -->
+    <div class="tab-content" *ngIf="tabActivo === 'calendario'">
+      <div class="tab-header">
+        <h2>📆 Disponibilidad Mensual</h2>
+        <p class="tab-description">Visualiza la ocupación de habitaciones en tiempo real</p>
+      </div>
+
+      <section class="availability-panel">
+        <div class="availability-header">
+          <h3>📆 Disponibilidad Mensual en Tiempo Real</h3>
+          <div class="availability-filters">
+            <select [(ngModel)]="habitacionSeleccionada" (change)="cargarDisponibilidadMensual()">
+              <option *ngFor="let h of habitaciones" [value]="h._id">{{ h.nombre }}</option>
+            </select>
+            <input type="month" [(ngModel)]="mesCalendario" (change)="cargarDisponibilidadMensual()" />
+            <button class="btn-outline" (click)="cargarDisponibilidadMensual()">Actualizar calendario</button>
+          </div>
+        </div>
+
+        <div class="availability-loading" *ngIf="loadingDisponibilidad">Cargando disponibilidad...</div>
+
+        <div class="availability-resumen" *ngIf="!loadingDisponibilidad">
+          <div class="resumen-item"><span>Días ocupados</span><strong>{{ resumenDisponibilidad.diasOcupados }}</strong></div>
+          <div class="resumen-item"><span>Días libres</span><strong>{{ resumenDisponibilidad.diasLibres }}</strong></div>
+          <div class="resumen-item"><span>Ocupación mensual</span><strong>{{ resumenDisponibilidad.porcentajeOcupacion }}%</strong></div>
+          <div class="resumen-item"><span>Reservas del mes</span><strong>{{ resumenDisponibilidad.totalReservasMes }}</strong></div>
+        </div>
+
+        <div class="calendar-grid" *ngIf="!loadingDisponibilidad">
+          <div class="weekday">Dom</div>
+          <div class="weekday">Lun</div>
+          <div class="weekday">Mar</div>
+          <div class="weekday">Mié</div>
+          <div class="weekday">Jue</div>
+          <div class="weekday">Vie</div>
+          <div class="weekday">Sáb</div>
+
+          <div
+            class="calendar-day"
+            *ngFor="let dia of calendarioDias"
+            [class.placeholder]="dia.esPlaceholder"
+            [class.ocupada]="dia.ocupada && !dia.esPlaceholder"
+            [class.libre]="!dia.ocupada && !dia.esPlaceholder"
+          >
+            <ng-container *ngIf="!dia.esPlaceholder">
+              <span class="day-number">{{ dia.dia }}</span>
+              <span class="day-reservas" *ngIf="dia.reservas > 0">{{ dia.reservas }} res.</span>
+            </ng-container>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- TAB 4: CRM & MARKETING -->
+    <!-- ========================================= -->
+    <div class="tab-content" *ngIf="tabActivo === 'crm'">
+      <div class="tab-header">
+        <h2>🧠 CRM & Marketing</h2>
+        <p class="tab-description">Gestiona clientes, fidelización y campañas de marketing</p>
+      </div>
+
+      <section class="crm-panel">
+        <div class="crm-header">
+          <h3>🧠 CRM + Fidelización</h3>
+          <button class="btn-outline" (click)="cargarCRM()">Actualizar CRM</button>
+        </div>
+
+        <div class="analytics-loading" *ngIf="loadingCRM">Cargando clientes...</div>
+
+        <div class="crm-table-container" *ngIf="!loadingCRM && crmClientes.length">
+          <table class="crm-table">
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Contacto</th>
+                <th>Reservas</th>
+                <th>Noches</th>
+                <th>Gasto total</th>
+                <th>Fidelidad</th>
+                <th>Descuento sugerido</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of crmClientes">
+                <td><strong>{{ c.nombre }} {{ c.apellido }}</strong></td>
+                <td>
+                  <div>{{ c.email }}</div>
+                  <small>{{ c.telefono || 'Sin telefono' }}</small>
+                </td>
+                <td>{{ c.totalReservas }}</td>
+                <td>{{ c.nochesTotales }}</td>
+                <td>{{ formatearPrecio(c.gastoTotal) }}</td>
+                <td><span class="fidelidad-badge" [ngClass]="getFidelidadClass(c.nivelFidelidad)">{{ c.nivelFidelidad | titlecase }}</span></td>
+                <td>{{ c.descuentoSugerido }}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Panel de Marketing Automatizado -->
+      <section class="marketing-panel">
+        <div class="marketing-header">
+          <h3>📧 Marketing Automatizado por Segmentos CRM</h3>
+          <button (click)="togglePanelMarketing()" class="btn-toggle-marketing">
+            {{ mostrarPanelMarketing ? '▼ Ocultar' : '▶ Mostrar' }} Panel de Marketing
+          </button>
+        </div>
+
+        <div *ngIf="mostrarPanelMarketing" class="marketing-content">
+          <!-- Estadísticas de segmentos -->
+          <div class="marketing-stats">
+            <div class="stat-card">
+              <div class="stat-label">Total Clientes</div>
+              <div class="stat-value">{{ estadisticasMarketing.total }}</div>
+            </div>
+            <div class="stat-card platino-card">
+              <div class="stat-label">💎 Platino</div>
+              <div class="stat-value">{{ estadisticasMarketing.platino }}</div>
+            </div>
+            <div class="stat-card oro-card">
+              <div class="stat-label">🏆 Oro</div>
+              <div class="stat-value">{{ estadisticasMarketing.oro }}</div>
+            </div>
+            <div class="stat-card plata-card">
+              <div class="stat-label">⭐ Plata</div>
+              <div class="stat-value">{{ estadisticasMarketing.plata }}</div>
+            </div>
+            <div class="stat-card bronce-card">
+              <div class="stat-label">🥉 Bronce</div>
+              <div class="stat-value">{{ estadisticasMarketing.bronce }}</div>
+            </div>
+            <div class="stat-card inactivos-card">
+              <div class="stat-label">💤 Inactivos</div>
+              <div class="stat-value">{{ estadisticasMarketing.inactivos }}</div>
+            </div>
+            <div class="stat-card nuevos-card">
+              <div class="stat-label">🆕 Nuevos</div>
+              <div class="stat-value">{{ estadisticasMarketing.nuevos }}</div>
+            </div>
+          </div>
+
+          <!-- Formulario de campaña -->
+          <div class="campania-form">
+            <h4>Crear y Enviar Campaña</h4>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>Segmento de clientes</label>
+                <select [(ngModel)]="segmentoSeleccionado" (ngModelChange)="cargarClientesSegmento()" class="form-control">
+                  <option value="platino">💎 Platino (10+ reservas)</option>
+                  <option value="oro">🏆 Oro (6-9 reservas)</option>
+                  <option value="plata">⭐ Plata (3-5 reservas)</option>
+                  <option value="bronce">🥉 Bronce (1-2 reservas)</option>
+                  <option value="inactivos">💤 Inactivos (>6 meses sin reservar)</option>
+                  <option value="nuevos">🆕 Nuevos (1-2 reservas)</option>
+                  <option value="todos">📊 Todos los clientes</option>
+                </select>
+                <small *ngIf="clientesSegmento.length > 0">{{ clientesSegmento.length }} cliente(s) en este segmento</small>
+              </div>
+
+              <div class="form-group">
+                <label>Tipo de campaña</label>
+                <select [(ngModel)]="tipoCampaniaSeleccionada" class="form-control">
+                  <option value="descuento">🎁 Descuento exclusivo</option>
+                  <option value="reactivacion">💙 Reactivación</option>
+                  <option value="agradecimiento">❤️ Agradecimiento</option>
+                  <option value="personalizado">✍️ Mensaje personalizado</option>
+                </select>
+                <small>{{ getTipoCampaniaDescripcion(tipoCampaniaSeleccionada) }}</small>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group full-width">
+                <label>Asunto del correo</label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="asuntoCampania" 
+                  placeholder="Ej: ¡Oferta exclusiva para ti en Paradisus Cancún!" 
+                  class="form-control"
+                />
+              </div>
+            </div>
+
+            <div class="form-row" *ngIf="tipoCampaniaSeleccionada === 'descuento' || tipoCampaniaSeleccionada === 'reactivacion'">
+              <div class="form-group">
+                <label>Porcentaje de descuento (%)</label>
+                <input 
+                  type="number" 
+                  [(ngModel)]="descuentoCampania" 
+                  min="5" 
+                  max="50" 
+                  class="form-control"
+                />
+              </div>
+            </div>
+
+            <div class="form-row" *ngIf="tipoCampaniaSeleccionada === 'personalizado'">
+              <div class="form-group full-width">
+                <label>Mensaje personalizado (HTML permitido)</label>
+                <textarea 
+                  [(ngModel)]="mensajePersonalizado" 
+                  rows="6" 
+                  placeholder="Escribe tu mensaje aquí. Puedes usar HTML: <p>, <strong>, <em>, etc."
+                  class="form-control"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button 
+                (click)="generarVistaPrevia()" 
+                class="btn-preview"
+                [disabled]="loadingMarketing"
+              >
+                👁️ Vista Previa
+              </button>
+              <button 
+                (click)="enviarCampania()" 
+                class="btn-enviar-campania"
+                [disabled]="loadingMarketing || !asuntoCampania"
+              >
+                {{ loadingMarketing ? '⏳ Enviando...' : '📧 Enviar Campaña' }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Instrucciones -->
+          <div class="marketing-tips">
+            <h4>💡 Consejos de Marketing</h4>
+            <ul>
+              <li><strong>Clientes Oro/Platino:</strong> Usa campañas de descuento y agradecimiento para mantener su lealtad.</li>
+              <li><strong>Clientes Inactivos:</strong> Usa campañas de reactivación con descuentos especiales (20-30%).</li>
+              <li><strong>Clientes Nuevos:</strong> Ofréceles incentivos para su segunda reserva y fomenta la fidelización.</li>
+              <li><strong>Asunto atractivo:</strong> El asunto del correo es clave. Sé claro y ofrece valor inmediato.</li>
+              <li><strong>Vista previa:</strong> Siempre revisa la vista previa antes de enviar a todos.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- TAB 5: CHECK-IN DIGITAL -->
+    <!-- ========================================= -->
+    <div class="tab-content" *ngIf="tabActivo === 'checkin'">
+      <div class="tab-header">
+        <h2>🔐 Check-in Digital</h2>
+        <p class="tab-description">Genera códigos QR y procesa check-in/check-out con la cámara</p>
+      </div>
+
+      <section class="checkin-panel">
+        <div class="checkin-header">
+          <h3>🔐 Check-in / Check-out digital</h3>
+          <p>Genera QR por reserva aprobada y procesa ingreso/salida en recepción.</p>
+          <button (click)="abrirCamaraQR()" class="btn-escanear-qr">
+            📷 Escanear QR con Cámara
+          </button>
+        </div>
+
+        <div class="qr-preview" *ngIf="qrSeleccionado">
+          <img [src]="getQrImageUrl(qrSeleccionado.token)" alt="QR check-in" />
+          <div class="qr-meta">
+            <div><strong>Reserva:</strong> {{ qrSeleccionado.reservaId }}</div>
+            <div><strong>Digital Key:</strong> {{ qrSeleccionado.digitalKey }}</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========================================= -->
+<!-- MODAL CÁMARA QR (fuera de tabs, siempre disponible) -->
+<!-- ========================================= -->
+<div class="qr-camera-overlay" *ngIf="mostrarCamaraQR">
+  <div class="qr-camera-modal">
+    <div class="qr-camera-header">
+      <h3>📷 Escanear QR de Check-in</h3>
+      <button (click)="cerrarCamaraQR()" class="btn-cerrar-camara">✖</button>
+    </div>
+  
+    <div class="qr-camera-body">
+      <div class="video-container">
+        <video id="qr-video" autoplay playsinline></video>
+        <canvas id="qr-canvas" hidden></canvas>
+        <div class="scan-region"></div>
+      </div>
+    
+      <div class="qr-status">
+        <p *ngIf="!qrDetectado && escaneandoQR">🔍 Buscando código QR...</p>
+        <p *ngIf="qrDetectado" class="qr-detectado">✅ QR Detectado!</p>
+      </div>
+    
+      <div class="qr-instructions">
+        <p>Coloca el código QR dentro del marco</p>
+        <p>El escaneo se realizará automáticamente</p>
+      </div>
+    </div>
+  </div>
+</div>
