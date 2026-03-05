@@ -100,6 +100,60 @@
     </div>
   </section>
   
+  <section class="crm-panel">
+    <div class="crm-header">
+      <h3>🧠 CRM + Fidelización</h3>
+      <button class="btn-outline" (click)="cargarCRM()">Actualizar CRM</button>
+    </div>
+
+    <div class="analytics-loading" *ngIf="loadingCRM">Cargando clientes...</div>
+
+    <div class="crm-table-container" *ngIf="!loadingCRM && crmClientes.length">
+      <table class="crm-table">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Contacto</th>
+            <th>Reservas</th>
+            <th>Noches</th>
+            <th>Gasto total</th>
+            <th>Fidelidad</th>
+            <th>Descuento sugerido</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of crmClientes">
+            <td><strong>{{ c.nombre }} {{ c.apellido }}</strong></td>
+            <td>
+              <div>{{ c.email }}</div>
+              <small>{{ c.telefono || 'Sin telefono' }}</small>
+            </td>
+            <td>{{ c.totalReservas }}</td>
+            <td>{{ c.nochesTotales }}</td>
+            <td>{{ formatearPrecio(c.gastoTotal) }}</td>
+            <td><span class="fidelidad-badge" [ngClass]="getFidelidadClass(c.nivelFidelidad)">{{ c.nivelFidelidad | titlecase }}</span></td>
+            <td>{{ c.descuentoSugerido }}%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="checkin-panel">
+    <div class="checkin-header">
+      <h3>🔐 Check-in / Check-out digital</h3>
+      <p>Genera QR por reserva aprobada y procesa ingreso/salida en recepción.</p>
+    </div>
+
+    <div class="qr-preview" *ngIf="qrSeleccionado">
+      <img [src]="getQrImageUrl(qrSeleccionado.token)" alt="QR check-in" />
+      <div class="qr-meta">
+        <div><strong>Reserva:</strong> {{ qrSeleccionado.reservaId }}</div>
+        <div><strong>Digital Key:</strong> {{ qrSeleccionado.digitalKey }}</div>
+      </div>
+    </div>
+  </section>
+
   <div class="filtros-container">
     <div class="filtro">
       <label>Estado:</label>
@@ -152,6 +206,7 @@
           <th>Método de Pago</th>
           <th>Estado Pago</th>
           <th>Estado Reserva</th>
+          <th>Check-in</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -190,6 +245,15 @@
               {{ reserva.estado | titlecase }}
             </span>
           </td>
+          <td>
+            <span class="estado-badge" [ngClass]="'checkin-' + (reserva.checkInEstado || 'pendiente')">
+              {{ getEstadoCheckInLabel(reserva.checkInEstado) }}
+            </span>
+            <div class="checkin-times" *ngIf="reserva.checkInAt || reserva.checkOutAt">
+              <small *ngIf="reserva.checkInAt">IN: {{ reserva.checkInAt | date:'dd/MM HH:mm' }}</small>
+              <small *ngIf="reserva.checkOutAt">OUT: {{ reserva.checkOutAt | date:'dd/MM HH:mm' }}</small>
+            </div>
+          </td>
           <td class="acciones-cell">
             <div class="acciones-grupo">
               <div class="acciones-pago" *ngIf="reserva.metodoPago === 'transferencia'">
@@ -214,6 +278,11 @@
               </div>
               <div class="acciones-estado" *ngIf="reserva.estado !== 'pendiente'">
                 <button class="btn-pendiente" (click)="cambiarEstado(reserva, 'pendiente')">⏪ Volver a pendiente</button>
+              </div>
+              <div class="acciones-checkin" *ngIf="reserva.estado === 'aprobada'">
+                <button class="btn-qr" (click)="generarQR(reserva)">📱 Generar QR</button>
+                <button class="btn-checkin" [disabled]="reserva.checkInEstado !== 'generado'" (click)="realizarCheckIn(reserva)">✅ Check-in</button>
+                <button class="btn-checkout" [disabled]="reserva.checkInEstado !== 'checkin'" (click)="realizarCheckOut(reserva)">🚪 Check-out</button>
               </div>
             </div>
           </td>

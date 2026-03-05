@@ -37,6 +37,8 @@ password: admin123
 6. Usa el dashboard para ver ocupacion mensual, ingresos reales y proyectados.
 7. Usa calendario de disponibilidad por habitacion para planificacion operativa.
 8. Exporta reportes en CSV (Excel) o PDF desde el panel admin.
+9. Genera QR de check-in por reserva aprobada y procesa check-in/check-out digital.
+10. Revisa CRM de clientes y aplica descuentos sugeridos por nivel de fidelidad.
 
 ## Operacion segura recomendada
 

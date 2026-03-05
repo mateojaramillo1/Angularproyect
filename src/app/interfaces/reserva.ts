@@ -13,5 +13,10 @@ export interface Reserva {
     pagoVerificado?: boolean,
     precioTotal?: number,
     noches?: number,
+    checkInEstado?: 'pendiente' | 'generado' | 'checkin' | 'checkout',
+    checkInQrToken?: string,
+    digitalKey?: string,
+    checkInAt?: Date | null,
+    checkOutAt?: Date | null,
     _id?: string
 }

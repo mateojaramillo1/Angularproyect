@@ -62,6 +62,29 @@ export interface DisponibilidadMensualResponse {
   };
 }
 
+export interface CheckInQrResponse {
+  mensaje: string;
+  reservaId: string;
+  token: string;
+  digitalKey: string;
+  qrPayload: string;
+  qrDataText: string;
+}
+
+export interface CRMCliente {
+  usuarioId: string;
+  nombre: string;
+  apellido: string;
+  email: string;
+  telefono: string;
+  totalReservas: number;
+  nochesTotales: number;
+  gastoTotal: number;
+  ultimaReserva: string;
+  nivelFidelidad: 'bronce' | 'plata' | 'oro' | 'platino';
+  descuentoSugerido: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -141,5 +164,21 @@ export class ReservaService {
     return this.http.get(`${this.url}/admin/exportar-reservas?${params.toString()}`, {
       responseType: 'blob'
     });
+  }
+
+  generarCheckInQR(idReserva: string): Observable<CheckInQrResponse> {
+    return this.http.post<CheckInQrResponse>(`${this.url}/admin/generar-checkin-qr/${idReserva}`, {});
+  }
+
+  procesarCheckIn(token: string): Observable<any> {
+    return this.http.post(`${this.url}/admin/procesar-checkin`, { token });
+  }
+
+  procesarCheckOut(token: string): Observable<any> {
+    return this.http.post(`${this.url}/admin/procesar-checkout`, { token });
+  }
+
+  obtenerCRMClientes(limite: number = 40): Observable<{ mensaje: string; clientes: CRMCliente[] }> {
+    return this.http.get<{ mensaje: string; clientes: CRMCliente[] }>(`${this.url}/admin/crm-clientes?limite=${limite}`);
   }
 }

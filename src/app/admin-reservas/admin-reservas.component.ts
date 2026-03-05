@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ReservaService } from '../services/reserva.service';
+import { CRMCliente, CheckInQrResponse, ReservaService } from '../services/reserva.service';
 import { Reserva } from '../interfaces/reserva';
 import { HabitacionesService } from '../services/habitaciones.service';
 
@@ -68,6 +68,10 @@ export class AdminReservasComponent implements OnInit {
     totalReservasMes: 0
   };
 
+  crmClientes: CRMCliente[] = [];
+  loadingCRM = false;
+  qrSeleccionado: CheckInQrResponse | null = null;
+
   constructor(
     private reservaService: ReservaService,
     private habitacionesService: HabitacionesService
@@ -77,6 +81,7 @@ export class AdminReservasComponent implements OnInit {
     this.cargarReservas();
     this.cargarHabitaciones();
     this.cargarDashboard();
+    this.cargarCRM();
   }
 
   cargarReservas() {
@@ -154,6 +159,21 @@ export class AdminReservasComponent implements OnInit {
     this.cargarReservas();
     this.cargarDashboard();
     this.cargarDisponibilidadMensual();
+    this.cargarCRM();
+  }
+
+  cargarCRM() {
+    this.loadingCRM = true;
+    this.reservaService.obtenerCRMClientes(50).subscribe({
+      next: (res) => {
+        this.crmClientes = res.clientes || [];
+        this.loadingCRM = false;
+      },
+      error: () => {
+        this.loadingCRM = false;
+        this.error = 'Error cargando CRM de clientes';
+      }
+    });
   }
 
   get reservasFiltradas(): Reserva[] {
@@ -199,6 +219,81 @@ export class AdminReservasComponent implements OnInit {
           this.error = 'No se pudo exportar el reporte en CSV';
         }
       });
+  }
+
+  generarQR(reserva: Reserva) {
+    if (!reserva._id) {
+      return;
+    }
+
+    this.reservaService.generarCheckInQR(reserva._id).subscribe({
+      next: (resp) => {
+        this.qrSeleccionado = resp;
+        reserva.checkInEstado = 'generado';
+        reserva.checkInQrToken = resp.token;
+        reserva.digitalKey = resp.digitalKey;
+      },
+      error: (err) => {
+        this.error = err?.error?.mensaje || 'No se pudo generar QR de check-in';
+      }
+    });
+  }
+
+  realizarCheckIn(reserva: Reserva) {
+    const token = reserva.checkInQrToken || this.qrSeleccionado?.token || '';
+    if (!token) {
+      this.error = 'Primero genera QR para esta reserva';
+      return;
+    }
+
+    this.reservaService.procesarCheckIn(token).subscribe({
+      next: () => {
+        reserva.checkInEstado = 'checkin';
+        reserva.checkInAt = new Date();
+      },
+      error: (err) => {
+        this.error = err?.error?.mensaje || 'No se pudo procesar check-in';
+      }
+    });
+  }
+
+  realizarCheckOut(reserva: Reserva) {
+    const token = reserva.checkInQrToken || this.qrSeleccionado?.token || '';
+    if (!token) {
+      this.error = 'No hay token QR disponible para check-out';
+      return;
+    }
+
+    this.reservaService.procesarCheckOut(token).subscribe({
+      next: () => {
+        reserva.checkInEstado = 'checkout';
+        reserva.checkOutAt = new Date();
+      },
+      error: (err) => {
+        this.error = err?.error?.mensaje || 'No se pudo procesar check-out';
+      }
+    });
+  }
+
+  getEstadoCheckInLabel(estado?: string): string {
+    switch (estado) {
+      case 'generado': return 'QR generado';
+      case 'checkin': return 'Check-in realizado';
+      case 'checkout': return 'Check-out realizado';
+      default: return 'Pendiente';
+    }
+  }
+
+  getQrImageUrl(token?: string): string {
+    if (!token) {
+      return '';
+    }
+    const data = encodeURIComponent(`hotel-checkin:${token}`);
+    return `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${data}`;
+  }
+
+  getFidelidadClass(nivel: string): string {
+    return `fidelidad-${nivel}`;
   }
 
   exportarPDF() {
