@@ -1,120 +1,126 @@
 <app-menu></app-menu>
 
-<div class="reinicio-container">
-  <div class="reinicio-card">
-    <div class="header">
-      <h1>🔑 Recuperar Contraseña</h1>
-      <p *ngIf="paso === 1">Ingresa tu email para recibir un enlace de cambio</p>
-      <p *ngIf="paso === 2">Crea una nueva contraseña segura</p>
+<div class="split-login-bg">
+  <div class="split-login-container" [ngClass]="{ 'password-reset-mode': paso === 2 }">
+    <div class="split-login-left">
+      <img src="../../assets/banner.jpg" alt="Imagen recuperar contraseña" />
     </div>
+    <div class="split-login-right">
+      <div class="split-login-header">
+        <img src="../../assets/LOGO.png" alt="Logo" class="split-login-logo">
+        <div class="split-login-title">🔑 Recuperar Contraseña</div>
+        <div class="split-login-desc" *ngIf="paso === 1">Ingresa tu email para recibir un enlace de cambio</div>
+        <div class="split-login-desc" *ngIf="paso === 2">Crea una nueva contraseña segura</div>
+      </div>
 
-    <div *ngIf="mensaje" [ngClass]="'alert alert-' + (tipoMensaje === 'exito' ? 'success' : 'danger')">
-      {{ mensaje }}
-    </div>
+      <div *ngIf="mensaje" [ngClass]="'alert alert-' + (tipoMensaje === 'exito' ? 'success' : 'danger')">
+        {{ mensaje }}
+      </div>
 
-    <!-- PASO 1: Solicitar enlace -->
-    <div *ngIf="paso === 1" [formGroup]="formSolicitud">
-      <div class="form-group">
-        <label for="email">Tu correo electrónico</label>
-        <input 
-          id="email" 
-          type="email" 
-          class="form-input" 
-          formControlName="email"
-          placeholder="ejemplo@email.com"
+      <!-- PASO 1: Solicitar enlace -->
+      <form *ngIf="paso === 1" [formGroup]="formSolicitud" (ngSubmit)="solicitarEnlace()" style="width:100%;">
+        <div class="split-input-group">
+          <label for="email">Tu correo electrónico</label>
+          <input 
+            id="email" 
+            type="email" 
+            class="split-input" 
+            formControlName="email"
+            placeholder="ejemplo@email.com"
+            required
+          >
+        </div>
+
+        <div class="info-box">
+          <h4>Proceso:</h4>
+          <ol>
+            <li>Ingresa tu correo electrónico</li>
+            <li>Haz clic en "Enviar enlace"</li>
+            <li>Recibirás un email con un enlace (válido por 24 horas)</li>
+            <li>Haz clic en ese enlace para cambiar tu contraseña</li>
+          </ol>
+        </div>
+
+        <button 
+          type="submit"
+          class="login-action-btn"
+          [disabled]="!formSolicitud.valid || cargando"
         >
-        <small class="form-text">Se enviará un enlace seguro a este correo</small>
-      </div>
+          {{ cargando ? 'Procesando...' : '📧 Enviar enlace' }}
+        </button>
 
-      <div class="info-box">
-        <h3>Proceso:</h3>
-        <ol>
-          <li>Ingresa tu correo electrónico</li>
-          <li>Haz clic en "Enviar enlace"</li>
-          <li>Recibirás un email con un enlace (válido por 24 horas)</li>
-          <li>Haz clic en ese enlace para cambiar tu contraseña</li>
-        </ol>
-      </div>
+        <div class="volver-link">
+          <a routerLink="/login">← Volver al login</a>
+        </div>
+      </form>
 
-      <button 
-        type="button"
-        class="btn-primary"
-        (click)="solicitarEnlace()"
-        [disabled]="!formSolicitud.valid || cargando"
-      >
-        {{ cargando ? 'Procesando...' : '📧 Enviar enlace' }}
-      </button>
+      <!-- PASO 2: Cambiar contraseña -->
+      <form *ngIf="paso === 2 && mostrarFormulario && tokenValido" [formGroup]="form" (ngSubmit)="cambiar()" style="width:100%;">
+        <div class="split-input-group">
+          <label for="nuevaContrasena">Nueva Contraseña</label>
+          <input 
+            id="nuevaContrasena" 
+            type="password" 
+            class="split-input" 
+            formControlName="nuevaContrasena"
+            placeholder="Mínimo 8 caracteres, mayúsculas, minúsculas y números"
+            required
+          >
+          <small class="form-error" *ngIf="errorContrasena">
+            ❌ {{ errorContrasena }}
+          </small>
+        </div>
 
-      <div class="volver-link">
-        <a routerLink="/login">← Volver al login</a>
-      </div>
-    </div>
+        <div class="split-input-group">
+          <label for="confirmarContrasena">Confirmar Contraseña</label>
+          <input 
+            id="confirmarContrasena" 
+            type="password" 
+            class="split-input" 
+            formControlName="confirmarContrasena"
+            placeholder="Repite tu nueva contraseña"
+            required
+          >
+          <small class="form-error" *ngIf="errorConfirmacion">
+            ❌ {{ errorConfirmacion }}
+          </small>
+        </div>
 
-    <!-- PASO 2: Cambiar contraseña -->
-    <div *ngIf="paso === 2 && mostrarFormulario && tokenValido" [formGroup]="form">
-      <div class="form-group">
-        <label for="nuevaContrasena">Nueva Contraseña</label>
-        <input 
-          id="nuevaContrasena" 
-          type="password" 
-          class="form-input" 
-          formControlName="nuevaContrasena"
-          placeholder="Mínimo 8 caracteres, mayúsculas, minúsculas y números"
+        <div class="requisitos">
+          <h4>Requisitos de contraseña:</h4>
+          <ul>
+            <li [class.cumplido]="tieneLongitudSuficiente(form.get('nuevaContrasena')?.value)">
+              ✓ Mínimo 8 caracteres
+            </li>
+            <li [class.cumplido]="tieneMayuscula(form.get('nuevaContrasena')?.value)">
+              ✓ Al menos una mayúscula
+            </li>
+            <li [class.cumplido]="tieneMinuscula(form.get('nuevaContrasena')?.value)">
+              ✓ Al menos una minúscula
+            </li>
+            <li [class.cumplido]="tieneNumero(form.get('nuevaContrasena')?.value)">
+              ✓ Al menos un número
+            </li>
+          </ul>
+        </div>
+
+        <button 
+          type="submit"
+          class="login-action-btn"
+          [disabled]="!form.valid || cargando"
         >
-        <small class="form-error" *ngIf="errorContrasena">
-          ❌ {{ errorContrasena }}
-        </small>
+          {{ cargando ? 'Actualizando...' : '🔒 Cambiar Contraseña' }}
+        </button>
+      </form>
+
+      <!-- Mensaje de éxito -->
+      <div *ngIf="!mostrarFormulario && tipoMensaje === 'exito'" class="success-message">
+        <h2 *ngIf="paso === 1">✅ Solicitud enviada</h2>
+        <h2 *ngIf="paso === 2">✅ ¡Contraseña actualizada!</h2>
+        <p *ngIf="paso === 1">Revisa tu correo electrónico en los próximos minutos.</p>
+        <p *ngIf="paso === 2">Tu contraseña ha sido cambiada correctamente.</p>
+        <p>Serás redirigido al login en unos momentos...</p>
       </div>
-
-      <div class="form-group">
-        <label for="confirmarContrasena">Confirmar Contraseña</label>
-        <input 
-          id="confirmarContrasena" 
-          type="password" 
-          class="form-input" 
-          formControlName="confirmarContrasena"
-          placeholder="Repite tu nueva contraseña"
-        >
-        <small class="form-error" *ngIf="errorConfirmacion">
-          ❌ {{ errorConfirmacion }}
-        </small>
-      </div>
-
-      <div class="requisitos">
-        <h4>Requisitos de contraseña:</h4>
-        <ul>
-          <li [class.cumplido]="tieneLongitudSuficiente(form.get('nuevaContrasena')?.value)">
-            ✓ Mínimo 8 caracteres
-          </li>
-          <li [class.cumplido]="tieneMayuscula(form.get('nuevaContrasena')?.value)">
-            ✓ Al menos una mayúscula
-          </li>
-          <li [class.cumplido]="tieneMinuscula(form.get('nuevaContrasena')?.value)">
-            ✓ Al menos una minúscula
-          </li>
-          <li [class.cumplido]="tieneNumero(form.get('nuevaContrasena')?.value)">
-            ✓ Al menos un número
-          </li>
-        </ul>
-      </div>
-
-      <button 
-        type="button"
-        class="btn-primary"
-        (click)="cambiar()"
-        [disabled]="!form.valid || cargando"
-      >
-        {{ cargando ? 'Actualizando...' : '🔒 Cambiar Contraseña' }}
-      </button>
-    </div>
-
-    <!-- Mensaje de éxito -->
-    <div *ngIf="!mostrarFormulario && tipoMensaje === 'exito'" class="success-message">
-      <h2 *ngIf="paso === 1">✅ Solicitud enviada</h2>
-      <h2 *ngIf="paso === 2">✅ ¡Contraseña actualizada!</h2>
-      <p *ngIf="paso === 1">Revisa tu correo electrónico en los próximos minutos.</p>
-      <p *ngIf="paso === 2">Tu contraseña ha sido cambiada correctamente.</p>
-      <p>Serás redirigido al login en unos momentos...</p>
     </div>
   </div>
 </div>

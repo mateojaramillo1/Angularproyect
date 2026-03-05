@@ -236,21 +236,19 @@
 	font-size: 1.01rem;
 	margin-bottom: 0.5rem;
 }
-.split-btn-forgot-pwd {
-	display: block;
-	margin: 0.8rem auto;
-	background: #f0ad4e;
-	color: white;
-	border: none;
-	padding: 0.6rem 1.5rem;
-	border-radius: 5px;
-	font-size: 1rem;
-	cursor: pointer;
-	transition: background 0.2s;
-	font-weight: 600;
+.forgot-password-link {
+	text-align: center;
+	margin: 1rem 0;
 }
-.split-btn-forgot-pwd:hover {
-	background: #ec971f;
+.forgot-password-link a {
+	color: #1e90ff;
+	text-decoration: none;
+	font-size: 1.01rem;
+	transition: color 0.2s;
+}
+.forgot-password-link a:hover {
+	color: #005bea;
+	text-decoration: underline;
 }
 .split-login-alert {
 	width: 100%;
