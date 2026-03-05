@@ -13,6 +13,10 @@
     transition: background 0.5s cubic-bezier(.4,0,.2,1);
     padding: 0.75rem 0;
 }
+
+.nav-nike.scrolled {
+    background: linear-gradient(90deg, rgba(0, 21, 255, 0.95) 0%, rgba(17, 36, 179, 0.95) 50%, rgba(0, 140, 255, 0.95) 100%);
+}
 .nav-nike-merged.nav-nike-centered {
     display: flex;
     align-items: center;

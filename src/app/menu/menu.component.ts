@@ -9,6 +9,7 @@ import { AuthService } from '../services/auth.service';
 export class MenuComponent implements OnInit {
 
   public navOpacity: number = 0;
+  public isScrolled: boolean = false;
   public isMobileMenuOpen: boolean = false;
 
   constructor(public auth: AuthService) {}
@@ -20,10 +21,12 @@ export class MenuComponent implements OnInit {
   @HostListener('window:scroll')
   onWindowScroll(): void {
     const maxScroll = 200;
-    const scrollY = Math.min(window.pageYOffset, maxScroll);
+    const currentScroll = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+    const scrollY = Math.min(currentScroll, maxScroll);
     const targetOpacity = Math.min(scrollY / maxScroll, 1);
 
     this.navOpacity = targetOpacity;
+    this.isScrolled = currentScroll > 0;
   }
 
   get navBackground(): string {
