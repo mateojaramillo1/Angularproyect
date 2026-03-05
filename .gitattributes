@@ -1,0 +1,20 @@
+# Auto detect text files and normalize line endings to CRLF (Windows)
+* text=auto
+*.html text eol=crlf
+*.ts text eol=crlf
+*.js text eol=crlf
+*.css text eol=crlf
+*.json text eol=crlf
+*.md text eol=crlf
+*.xml text eol=crlf
+*.yaml text eol=crlf
+*.yml text eol=crlf
+
+# Binaries
+*.ico binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.woff binary
+*.woff2 binary
