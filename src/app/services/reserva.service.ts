@@ -22,6 +22,46 @@ export interface DisponibilidadResponse {
   fechasOcupadas?: { fechainicio: Date; fechafin: Date }[];
 }
 
+export interface DashboardAdminResponse {
+  mensaje: string;
+  kpis: {
+    totalReservas: number;
+    totalPendientes: number;
+    totalAprobadas: number;
+    totalRechazadas: number;
+    totalPagosVerificados: number;
+    ingresosReales: number;
+    ingresosProyectados: number;
+    tasaOcupacionHoy: number;
+  };
+  ocupacionMensual: {
+    periodo: string;
+    reservas: number;
+    ingresosReales: number;
+    ingresosProyectados: number;
+    ocupacionPromedio: number;
+  }[];
+}
+
+export interface DisponibilidadMensualResponse {
+  mensaje: string;
+  anio: number;
+  mes: number;
+  totalDias: number;
+  dias: {
+    dia: number;
+    fecha: string;
+    reservas: number;
+    ocupada: boolean;
+  }[];
+  resumen: {
+    diasOcupados: number;
+    diasLibres: number;
+    porcentajeOcupacion: number;
+    totalReservasMes: number;
+  };
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -57,6 +97,49 @@ export class ReservaService {
       idHabitacion,
       fechainicio,
       fechafin
+    });
+  }
+
+  obtenerDashboardAdmin(desde?: string, hasta?: string): Observable<DashboardAdminResponse> {
+    const params = new URLSearchParams();
+    if (desde) {
+      params.set('desde', desde);
+    }
+    if (hasta) {
+      params.set('hasta', hasta);
+    }
+
+    const qs = params.toString();
+    const url = qs
+      ? `${this.url}/admin/dashboard-reservas?${qs}`
+      : `${this.url}/admin/dashboard-reservas`;
+
+    return this.http.get<DashboardAdminResponse>(url);
+  }
+
+  obtenerDisponibilidadMensual(idHabitacion: string, anio: number, mes: number): Observable<DisponibilidadMensualResponse> {
+    return this.http.get<DisponibilidadMensualResponse>(
+      `${this.url}/admin/disponibilidad-mensual?idHabitacion=${encodeURIComponent(idHabitacion)}&anio=${anio}&mes=${mes}`
+    );
+  }
+
+  exportarReservasCSV(estado: string, pago: string, desde?: string, hasta?: string): Observable<Blob> {
+    const params = new URLSearchParams();
+    if (estado) {
+      params.set('estado', estado);
+    }
+    if (pago) {
+      params.set('pago', pago);
+    }
+    if (desde) {
+      params.set('desde', desde);
+    }
+    if (hasta) {
+      params.set('hasta', hasta);
+    }
+
+    return this.http.get(`${this.url}/admin/exportar-reservas?${params.toString()}`, {
+      responseType: 'blob'
     });
   }
 }

@@ -10,6 +10,95 @@
 
 <div class="admin-reservas-container">
   <h2>📋 Panel de Administración de Reservas</h2>
+
+  <section class="analytics-panel">
+    <div class="analytics-header">
+      <h3>📈 Dashboard Analítico</h3>
+      <div class="analytics-actions">
+        <input type="date" [(ngModel)]="filtroDesde" />
+        <input type="date" [(ngModel)]="filtroHasta" />
+        <button class="btn-outline" (click)="cargarDashboard()">Actualizar Dashboard</button>
+        <button class="btn-export" (click)="exportarExcel()">Exportar Excel (CSV)</button>
+        <button class="btn-export" (click)="exportarPDF()">Exportar PDF</button>
+      </div>
+    </div>
+
+    <div class="analytics-loading" *ngIf="loadingDashboard">Cargando dashboard...</div>
+
+    <div class="kpi-grid" *ngIf="!loadingDashboard">
+      <div class="kpi-card"><span>Total reservas</span><strong>{{ dashboardKpis.totalReservas }}</strong></div>
+      <div class="kpi-card"><span>Aprobadas</span><strong>{{ dashboardKpis.totalAprobadas }}</strong></div>
+      <div class="kpi-card"><span>Pendientes</span><strong>{{ dashboardKpis.totalPendientes }}</strong></div>
+      <div class="kpi-card"><span>Rechazadas</span><strong>{{ dashboardKpis.totalRechazadas }}</strong></div>
+      <div class="kpi-card"><span>Pagos verificados</span><strong>{{ dashboardKpis.totalPagosVerificados }}</strong></div>
+      <div class="kpi-card"><span>Ingresos reales</span><strong>{{ formatearPrecio(dashboardKpis.ingresosReales) }}</strong></div>
+      <div class="kpi-card"><span>Ingresos proyectados</span><strong>{{ formatearPrecio(dashboardKpis.ingresosProyectados) }}</strong></div>
+      <div class="kpi-card"><span>Ocupación hoy</span><strong>{{ dashboardKpis.tasaOcupacionHoy }}%</strong></div>
+    </div>
+
+    <div class="monthly-chart" *ngIf="!loadingDashboard && ocupacionMensual.length">
+      <h4>Ingresos y ocupación (últimos 12 meses)</h4>
+      <div class="chart-scroll">
+        <div class="chart-month" *ngFor="let item of ocupacionMensual">
+          <div class="bars">
+            <div class="bar-real" [style.height.%]="altoBarra(item.ingresosReales)" title="Ingresos reales"></div>
+            <div class="bar-proyectado" [style.height.%]="altoBarra(item.ingresosProyectados)" title="Ingresos proyectados"></div>
+          </div>
+          <div class="month-label">{{ item.periodo }}</div>
+          <div class="month-occupancy">{{ item.ocupacionPromedio }}%</div>
+        </div>
+      </div>
+      <div class="chart-legend">
+        <span><i class="dot real"></i>Reales</span>
+        <span><i class="dot proyectado"></i>Proyectados</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="availability-panel">
+    <div class="availability-header">
+      <h3>📆 Disponibilidad Mensual en Tiempo Real</h3>
+      <div class="availability-filters">
+        <select [(ngModel)]="habitacionSeleccionada" (change)="cargarDisponibilidadMensual()">
+          <option *ngFor="let h of habitaciones" [value]="h._id">{{ h.nombre }}</option>
+        </select>
+        <input type="month" [(ngModel)]="mesCalendario" (change)="cargarDisponibilidadMensual()" />
+        <button class="btn-outline" (click)="cargarDisponibilidadMensual()">Actualizar calendario</button>
+      </div>
+    </div>
+
+    <div class="availability-loading" *ngIf="loadingDisponibilidad">Cargando disponibilidad...</div>
+
+    <div class="availability-resumen" *ngIf="!loadingDisponibilidad">
+      <div class="resumen-item"><span>Días ocupados</span><strong>{{ resumenDisponibilidad.diasOcupados }}</strong></div>
+      <div class="resumen-item"><span>Días libres</span><strong>{{ resumenDisponibilidad.diasLibres }}</strong></div>
+      <div class="resumen-item"><span>Ocupación mensual</span><strong>{{ resumenDisponibilidad.porcentajeOcupacion }}%</strong></div>
+      <div class="resumen-item"><span>Reservas del mes</span><strong>{{ resumenDisponibilidad.totalReservasMes }}</strong></div>
+    </div>
+
+    <div class="calendar-grid" *ngIf="!loadingDisponibilidad">
+      <div class="weekday">Dom</div>
+      <div class="weekday">Lun</div>
+      <div class="weekday">Mar</div>
+      <div class="weekday">Mié</div>
+      <div class="weekday">Jue</div>
+      <div class="weekday">Vie</div>
+      <div class="weekday">Sáb</div>
+
+      <div
+        class="calendar-day"
+        *ngFor="let dia of calendarioDias"
+        [class.placeholder]="dia.esPlaceholder"
+        [class.ocupada]="dia.ocupada && !dia.esPlaceholder"
+        [class.libre]="!dia.ocupada && !dia.esPlaceholder"
+      >
+        <ng-container *ngIf="!dia.esPlaceholder">
+          <span class="day-number">{{ dia.dia }}</span>
+          <span class="day-reservas" *ngIf="dia.reservas > 0">{{ dia.reservas }} res.</span>
+        </ng-container>
+      </div>
+    </div>
+  </section>
   
   <div class="filtros-container">
     <div class="filtro">
@@ -29,7 +118,7 @@
         <option value="pendiente">Sin verificar</option>
       </select>
     </div>
-    <button class="btn-refresh" (click)="cargarReservas()">🔄 Actualizar</button>
+    <button class="btn-refresh" (click)="actualizarPanelCompleto()">🔄 Actualizar</button>
   </div>
 
   <div class="loading-message" *ngIf="loading">Cargando reservas...</div>

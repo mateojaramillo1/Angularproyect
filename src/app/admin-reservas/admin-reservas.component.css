@@ -60,6 +60,238 @@
   text-align: center;
 }
 
+.analytics-panel,
+.availability-panel {
+  margin-bottom: 1.6rem;
+  padding: 1.2rem;
+  border: 1px solid #dbe2ff;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f8faff, #ffffff);
+}
+
+.analytics-header,
+.availability-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+}
+
+.analytics-header h3,
+.availability-header h3 {
+  margin: 0;
+  color: #1124b3;
+}
+
+.analytics-actions,
+.availability-filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.analytics-actions input,
+.availability-filters input,
+.availability-filters select {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #c7d2fe;
+  border-radius: 8px;
+}
+
+.btn-outline,
+.btn-export {
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-outline {
+  background: #e0e7ff;
+  color: #1e3a8a;
+}
+
+.btn-export {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 0.6rem;
+}
+
+.kpi-card {
+  border-radius: 10px;
+  border: 1px solid #c7d2fe;
+  background: #fff;
+  padding: 0.8rem;
+}
+
+.kpi-card span {
+  display: block;
+  font-size: 0.82rem;
+  color: #475569;
+}
+
+.kpi-card strong {
+  display: block;
+  margin-top: 0.2rem;
+  color: #0f172a;
+  font-size: 1.1rem;
+}
+
+.monthly-chart h4 {
+  margin: 1rem 0 0.8rem;
+  color: #1e293b;
+}
+
+.chart-scroll {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(72px, 1fr));
+  gap: 0.5rem;
+  overflow-x: auto;
+}
+
+.chart-month {
+  text-align: center;
+}
+
+.bars {
+  height: 120px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 6px;
+}
+
+.bar-real,
+.bar-proyectado {
+  width: 12px;
+  border-radius: 6px 6px 2px 2px;
+}
+
+.bar-real {
+  background: #16a34a;
+}
+
+.bar-proyectado {
+  background: #2563eb;
+}
+
+.month-label {
+  margin-top: 0.3rem;
+  font-size: 0.72rem;
+  color: #334155;
+}
+
+.month-occupancy {
+  font-size: 0.72rem;
+  color: #0369a1;
+}
+
+.chart-legend {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.dot.real {
+  background: #16a34a;
+}
+
+.dot.proyectado {
+  background: #2563eb;
+}
+
+.availability-resumen {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 0.7rem;
+}
+
+.resumen-item {
+  border: 1px solid #bae6fd;
+  border-radius: 10px;
+  padding: 0.7rem;
+  background: #f0f9ff;
+}
+
+.resumen-item span {
+  display: block;
+  color: #334155;
+  font-size: 0.8rem;
+}
+
+.resumen-item strong {
+  color: #0f172a;
+  font-size: 1rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.35rem;
+}
+
+.weekday {
+  font-weight: 700;
+  text-align: center;
+  color: #1e3a8a;
+  font-size: 0.8rem;
+}
+
+.calendar-day {
+  min-height: 52px;
+  border-radius: 8px;
+  padding: 0.4rem;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+}
+
+.calendar-day.placeholder {
+  background: transparent;
+  border: none;
+}
+
+.calendar-day.ocupada {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.calendar-day.libre {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+
+.day-number {
+  font-weight: 700;
+  display: block;
+  color: #0f172a;
+}
+
+.day-reservas {
+  font-size: 0.72rem;
+  color: #475569;
+}
+
 /* Filtros */
 .filtros-container {
   display: flex;
@@ -409,6 +641,14 @@
   .filtros-container {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+
+  .availability-resumen {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
   }
   
   .reservas-stats {
