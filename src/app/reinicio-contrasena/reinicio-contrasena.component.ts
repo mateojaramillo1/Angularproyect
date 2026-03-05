@@ -179,6 +179,6 @@ export class ReinicioContrasenaComponent implements OnInit {
   }
 
   tieneLongitudSuficiente(valor: string): boolean {
-    return valor && valor.length >= 8;
+    return !!(valor && valor.length >= 8);
   }
 }
