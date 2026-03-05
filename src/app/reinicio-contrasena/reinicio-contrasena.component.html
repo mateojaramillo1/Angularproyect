@@ -83,16 +83,16 @@
       <div class="requisitos">
         <h4>Requisitos de contraseña:</h4>
         <ul>
-          <li [class.cumplido]="form.get('nuevaContrasena')?.value?.length >= 8">
+          <li [class.cumplido]="tieneLongitudSuficiente(form.get('nuevaContrasena')?.value)">
             ✓ Mínimo 8 caracteres
           </li>
-          <li [class.cumplido]="/[A-Z]/.test(form.get('nuevaContrasena')?.value)">
+          <li [class.cumplido]="tieneMayuscula(form.get('nuevaContrasena')?.value)">
             ✓ Al menos una mayúscula
           </li>
-          <li [class.cumplido]="/[a-z]/.test(form.get('nuevaContrasena')?.value)">
+          <li [class.cumplido]="tieneMinuscula(form.get('nuevaContrasena')?.value)">
             ✓ Al menos una minúscula
           </li>
-          <li [class.cumplido]="/\d/.test(form.get('nuevaContrasena')?.value)">
+          <li [class.cumplido]="tieneNumero(form.get('nuevaContrasena')?.value)">
             ✓ Al menos un número
           </li>
         </ul>

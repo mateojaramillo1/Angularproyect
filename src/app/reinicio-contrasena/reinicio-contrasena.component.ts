@@ -165,4 +165,20 @@ export class ReinicioContrasenaComponent implements OnInit {
 
     return '';
   }
+
+  tieneMayuscula(valor: string): boolean {
+    return /[A-Z]/.test(valor);
+  }
+
+  tieneMinuscula(valor: string): boolean {
+    return /[a-z]/.test(valor);
+  }
+
+  tieneNumero(valor: string): boolean {
+    return /\d/.test(valor);
+  }
+
+  tieneLongitudSuficiente(valor: string): boolean {
+    return valor && valor.length >= 8;
+  }
 }
