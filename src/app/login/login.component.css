@@ -87,7 +87,7 @@
 	background: #0a2342;
 	padding-top: 5.5rem;
 	box-sizing: border-box;
-	overflow: hidden;
+	overflow: auto;
 	gap: 0;
 }
 .split-login-bg::before {
