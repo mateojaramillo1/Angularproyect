@@ -317,11 +317,18 @@ export class AdminReservasComponent implements OnInit {
     }
   }
 
-  getQrImageUrl(token?: string): string {
+  getQrImageUrl(token?: string, reservaId?: string, digitalKey?: string): string {
     if (!token) {
       return '';
     }
-    const data = encodeURIComponent(`hotel-checkin:${token}`);
+    // Crear payload JSON que será escaneable
+    const payload = {
+      tipo: 'checkin',
+      token: token,
+      reservaId: reservaId || '',
+      digitalKey: digitalKey || ''
+    };
+    const data = encodeURIComponent(JSON.stringify(payload));
     return `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${data}`;
   }
 

@@ -516,7 +516,7 @@
         </div>
 
         <div class="qr-preview" *ngIf="qrSeleccionado">
-          <img [src]="getQrImageUrl(qrSeleccionado.token)" alt="QR check-in" />
+          <img [src]="getQrImageUrl(qrSeleccionado.token, qrSeleccionado.reservaId, qrSeleccionado.digitalKey)" alt="QR check-in" />
           <div class="qr-meta">
             <div><strong>Reserva:</strong> {{ qrSeleccionado.reservaId }}</div>
             <div><strong>Digital Key:</strong> {{ qrSeleccionado.digitalKey }}</div>
