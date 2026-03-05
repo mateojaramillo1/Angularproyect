@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -6,26 +6,44 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent implements OnInit, OnDestroy {
 
   public navOpacity: number = 0;
   public isScrolled: boolean = false;
   public isMobileMenuOpen: boolean = false;
 
+  private readonly onAnyScroll = (event: Event): void => {
+    this.updateNavFromEvent(event);
+  };
+
   constructor(public auth: AuthService) {}
 
   ngOnInit(): void {
-    this.onWindowScroll();
+    window.addEventListener('scroll', this.onAnyScroll, true);
+    this.updateNavFromEvent();
   }
 
-  @HostListener('window:scroll')
-  onWindowScroll(): void {
+  ngOnDestroy(): void {
+    window.removeEventListener('scroll', this.onAnyScroll, true);
+  }
+
+  private updateNavFromEvent(event?: Event): void {
     const maxScroll = 200;
-    const currentScroll = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+    const target = event?.target as HTMLElement | Document | null;
+
+    let currentScroll = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+    if (target && 'scrollTop' in target) {
+      const targetScrollTop = Number((target as HTMLElement).scrollTop || 0);
+      if (targetScrollTop > currentScroll) {
+        currentScroll = targetScrollTop;
+      }
+    }
+
     const scrollY = Math.min(currentScroll, maxScroll);
     const targetOpacity = Math.min(scrollY / maxScroll, 1);
+    const visibleOpacity = currentScroll > 0 ? Math.max(targetOpacity, 0.92) : 0;
 
-    this.navOpacity = targetOpacity;
+    this.navOpacity = visibleOpacity;
     this.isScrolled = currentScroll > 0;
   }
 
