@@ -326,7 +326,6 @@ export class AdminReservasComponent implements OnInit {
     const data = encodeURIComponent(publicCheckinUrl);
     return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data}`;
   }
-  }
 
   getFidelidadClass(nivel: string): string {
     return `fidelidad-${nivel}`;
