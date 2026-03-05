@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CRMCliente, CheckInQrResponse, ReservaService } from '../services/reserva.service';
 import { Reserva } from '../interfaces/reserva';
 import { HabitacionesService } from '../services/habitaciones.service';
+import jsQR from 'jsqr';
 
 interface DashboardKpis {
   totalReservas: number;
@@ -71,6 +72,35 @@ export class AdminReservasComponent implements OnInit {
   crmClientes: CRMCliente[] = [];
   loadingCRM = false;
   qrSeleccionado: CheckInQrResponse | null = null;
+
+  // Marketing automatizado
+  mostrarPanelMarketing = false;
+  estadisticasMarketing = {
+    total: 0,
+    platino: 0,
+    oro: 0,
+    plata: 0,
+    bronce: 0,
+    inactivos: 0,
+    nuevos: 0
+  };
+  segmentoSeleccionado = 'oro';
+  tipoCampaniaSeleccionada = 'descuento';
+  asuntoCampania = '';
+  descuentoCampania = 15;
+  mensajePersonalizado = '';
+  loadingMarketing = false;
+  vistaPreviaHTML = '';
+  clientesSegmento: any[] = [];
+
+  // Lector de QR por cámara
+  mostrarCamaraQR = false;
+  videoElement: HTMLVideoElement | null = null;
+  canvasElement: HTMLCanvasElement | null = null;
+  canvasContext: CanvasRenderingContext2D | null = null;
+  escaneandoQR = false;
+  qrDetectado = '';
+  stream: MediaStream | null = null;
 
   constructor(
     private reservaService: ReservaService,
@@ -441,5 +471,278 @@ export class AdminReservasComponent implements OnInit {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     }).format(precio);
+  }
+
+  // Marketing automatizado
+  togglePanelMarketing() {
+    this.mostrarPanelMarketing = !this.mostrarPanelMarketing;
+    if (this.mostrarPanelMarketing && this.estadisticasMarketing.total === 0) {
+      this.cargarEstadisticasMarketing();
+    }
+  }
+
+  cargarEstadisticasMarketing() {
+    this.loadingMarketing = true;
+    this.reservaService.obtenerEstadisticasMarketing().subscribe({
+      next: (response) => {
+        this.estadisticasMarketing = response.estadisticas;
+        this.loadingMarketing = false;
+      },
+      error: (error) => {
+        console.error('Error cargando estadísticas de marketing:', error);
+        this.loadingMarketing = false;
+      }
+    });
+  }
+
+  cargarClientesSegmento() {
+    this.loadingMarketing = true;
+    this.reservaService.obtenerClientesSegmento(this.segmentoSeleccionado).subscribe({
+      next: (response) => {
+        this.clientesSegmento = response.clientes;
+        this.loadingMarketing = false;
+      },
+      error: (error) => {
+        console.error('Error cargando clientes del segmento:', error);
+        this.loadingMarketing = false;
+      }
+    });
+  }
+
+  generarVistaPrevia() {
+    if (!this.tipoCampaniaSeleccionada) {
+      alert('Selecciona un tipo de campaña');
+      return;
+    }
+
+    const opciones: any = {};
+    
+    if (this.tipoCampaniaSeleccionada === 'descuento' || this.tipoCampaniaSeleccionada === 'reactivacion') {
+      opciones.descuento = this.descuentoCampania;
+    }
+    
+    if (this.tipoCampaniaSeleccionada === 'personalizado' && this.mensajePersonalizado) {
+      opciones.mensajePersonalizado = this.mensajePersonalizado;
+    }
+
+    this.loadingMarketing = true;
+    this.reservaService.obtenerVistaPreviaMarketing(
+      this.segmentoSeleccionado,
+      this.tipoCampaniaSeleccionada,
+      opciones
+    ).subscribe({
+      next: (response) => {
+        this.vistaPreviaHTML = response.htmlPreview;
+        this.loadingMarketing = false;
+        
+        // Abrir en nueva ventana
+        const ventana = window.open('', '_blank', 'width=800,height=600');
+        if (ventana) {
+          ventana.document.write(this.vistaPreviaHTML);
+          ventana.document.close();
+        }
+      },
+      error: (error) => {
+        console.error('Error generando vista previa:', error);
+        alert('Error generando vista previa');
+        this.loadingMarketing = false;
+      }
+    });
+  }
+
+  enviarCampania() {
+    if (!this.asuntoCampania) {
+      alert('El asunto es requerido');
+      return;
+    }
+
+    if (!confirm(`¿Estás seguro de enviar esta campaña a todos los clientes del segmento "${this.segmentoSeleccionado}"?`)) {
+      return;
+    }
+
+    const opciones: any = {};
+    
+    if (this.tipoCampaniaSeleccionada === 'descuento' || this.tipoCampaniaSeleccionada === 'reactivacion') {
+      opciones.descuento = this.descuentoCampania;
+    }
+    
+    if (this.tipoCampaniaSeleccionada === 'personalizado' && this.mensajePersonalizado) {
+      opciones.mensajePersonalizado = this.mensajePersonalizado;
+    }
+
+    this.loadingMarketing = true;
+    this.reservaService.enviarCampaniaMarketing(
+      this.segmentoSeleccionado,
+      this.asuntoCampania,
+      this.tipoCampaniaSeleccionada,
+      opciones
+    ).subscribe({
+      next: (response) => {
+        this.loadingMarketing = false;
+        const resultado = response.resultado;
+        alert(`Campaña enviada:\n✅ Enviados: ${resultado.enviados}\n❌ Fallos: ${resultado.fallos}\n📊 Total: ${resultado.total}`);
+        
+        // Resetear campos
+        this.asuntoCampania = '';
+        this.mensajePersonalizado = '';
+      },
+      error: (error) => {
+        console.error('Error enviando campaña:', error);
+        alert('Error enviando campaña');
+        this.loadingMarketing = false;
+      }
+    });
+  }
+
+  getNombreSegmento(segmento: string): string {
+    const nombres: any = {
+      'oro': 'Clientes Oro',
+      'platino': 'Clientes Platino',
+      'plata': 'Clientes Plata',
+      'bronce': 'Clientes Bronce',
+      'inactivos': 'Clientes Inactivos (>6 meses)',
+      'nuevos': 'Clientes Nuevos (1-2 reservas)',
+      'todos': 'Todos los Clientes'
+    };
+    return nombres[segmento] || segmento;
+  }
+
+  getTipoCampaniaDescripcion(tipo: string): string {
+    const descripciones: any = {
+      descuento: 'Ofrece descuento exclusivo según nivel de fidelidad',
+      reactivacion: 'Campana especial para reactivar clientes inactivos',
+      agradecimiento: 'Mensaje de agradecimiento por su lealtad',
+      personalizado: 'Mensaje personalizado (escribe tu propio contenido)'
+    };
+    return descripciones[tipo] || '';
+  }
+
+  abrirCamaraQR() {
+    this.mostrarCamaraQR = true;
+    this.qrDetectado = '';
+    setTimeout(() => this.iniciarCamara(), 100);
+  }
+
+  cerrarCamaraQR() {
+    this.mostrarCamaraQR = false;
+    this.detenerCamara();
+  }
+
+  async iniciarCamara() {
+    try {
+      this.videoElement = document.getElementById('qr-video') as HTMLVideoElement | null;
+      this.canvasElement = document.getElementById('qr-canvas') as HTMLCanvasElement | null;
+
+      if (!this.videoElement || !this.canvasElement) {
+        return;
+      }
+
+      this.canvasContext = this.canvasElement.getContext('2d', { willReadFrequently: true });
+      if (!this.canvasContext) {
+        return;
+      }
+
+      this.stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' }
+      });
+
+      this.videoElement.srcObject = this.stream;
+      this.videoElement.setAttribute('playsinline', 'true');
+      await this.videoElement.play();
+
+      this.escaneandoQR = true;
+      requestAnimationFrame(() => this.escanearFrame());
+    } catch (error) {
+      console.error('Error accediendo a la camara:', error);
+      alert('No se pudo acceder a la camara. Verifica permisos.');
+    }
+  }
+
+  detenerCamara() {
+    this.escaneandoQR = false;
+
+    if (this.stream) {
+      this.stream.getTracks().forEach(track => track.stop());
+      this.stream = null;
+    }
+
+    if (this.videoElement) {
+      this.videoElement.srcObject = null;
+    }
+  }
+
+  escanearFrame() {
+    if (!this.escaneandoQR || !this.videoElement || !this.canvasElement || !this.canvasContext) {
+      return;
+    }
+
+    if (this.videoElement.readyState === this.videoElement.HAVE_ENOUGH_DATA) {
+      this.canvasElement.height = this.videoElement.videoHeight;
+      this.canvasElement.width = this.videoElement.videoWidth;
+      this.canvasContext.drawImage(this.videoElement, 0, 0, this.canvasElement.width, this.canvasElement.height);
+
+      const imageData = this.canvasContext.getImageData(0, 0, this.canvasElement.width, this.canvasElement.height);
+      const code = jsQR(imageData.data, imageData.width, imageData.height, {
+        inversionAttempts: 'dontInvert'
+      });
+
+      if (code?.data) {
+        this.qrDetectado = code.data;
+        this.procesarQRDetectado(code.data);
+        return;
+      }
+    }
+
+    requestAnimationFrame(() => this.escanearFrame());
+  }
+
+  procesarQRDetectado(qrData: string) {
+    try {
+      const data = JSON.parse(qrData);
+
+      if (data.tipo === 'checkin' && data.token) {
+        const confirmar = confirm(
+          `QR Detectado:\n\nReserva ID: ${data.reservaId || 'N/A'}\nClave Digital: ${data.digitalKey || 'N/A'}\n\nProcesar CHECK-IN?`
+        );
+
+        if (confirmar) {
+          this.procesarCheckInDesdeQR(data.token);
+        } else {
+          this.qrDetectado = '';
+          requestAnimationFrame(() => this.escanearFrame());
+        }
+      } else {
+        alert('QR no valido para check-in');
+        this.qrDetectado = '';
+        requestAnimationFrame(() => this.escanearFrame());
+      }
+    } catch {
+      alert('QR no valido o corrupto');
+      this.qrDetectado = '';
+      requestAnimationFrame(() => this.escanearFrame());
+    }
+  }
+
+  procesarCheckInDesdeQR(token: string) {
+    this.detenerCamara();
+    this.loading = true;
+
+    this.reservaService.procesarCheckIn(token).subscribe({
+      next: (response) => {
+        this.loading = false;
+        alert(`OK ${response.mensaje}\n\n${response.instrucciones || ''}`);
+        this.cerrarCamaraQR();
+        this.cargarReservas();
+      },
+      error: (error) => {
+        this.loading = false;
+        this.error = error.error?.mensaje || 'Error procesando check-in';
+        alert(this.error);
+        setTimeout(() => {
+          this.qrDetectado = '';
+          this.iniciarCamara();
+        }, 1200);
+      }
+    });
   }
 }

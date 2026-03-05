@@ -85,6 +85,60 @@ export interface CRMCliente {
   descuentoSugerido: number;
 }
 
+export interface EstadisticasMarketingResponse {
+  exito: boolean;
+  estadisticas: {
+    total: number;
+    platino: number;
+    oro: number;
+    plata: number;
+    bronce: number;
+    inactivos: number;
+    nuevos: number;
+  };
+}
+
+export interface ClienteMarketing {
+  _id: string;
+  nombre: string;
+  apellido: string;
+  correo: string;
+  telefono: string;
+  totalReservas: number;
+  gastoTotal: number;
+  ultimaReserva: string | null;
+  diasDesdeUltima: number;
+  nivel: 'bronce' | 'plata' | 'oro' | 'platino';
+}
+
+export interface ClientesSegmentoResponse {
+  exito: boolean;
+  segmento: string;
+  total: number;
+  clientes: ClienteMarketing[];
+}
+
+export interface EnviarCampaniaResponse {
+  exito: boolean;
+  mensaje: string;
+  resultado: {
+    exito: boolean;
+    enviados: number;
+    fallos: number;
+    total: number;
+  };
+}
+
+export interface VistaPreviaResponse {
+  exito: boolean;
+  htmlPreview: string;
+  clienteEjemplo: {
+    nombre: string;
+    nivel: string;
+    totalReservas: number;
+  };
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -180,5 +234,40 @@ export class ReservaService {
 
   obtenerCRMClientes(limite: number = 40): Observable<{ mensaje: string; clientes: CRMCliente[] }> {
     return this.http.get<{ mensaje: string; clientes: CRMCliente[] }>(`${this.url}/admin/crm-clientes?limite=${limite}`);
+  }
+
+  // Marketing automatizado por segmentos CRM
+  obtenerEstadisticasMarketing(): Observable<EstadisticasMarketingResponse> {
+    return this.http.get<EstadisticasMarketingResponse>(`${this.url}/admin/marketing/estadisticas`);
+  }
+
+  obtenerClientesSegmento(segmento: string): Observable<ClientesSegmentoResponse> {
+    return this.http.get<ClientesSegmentoResponse>(`${this.url}/admin/marketing/segmento/${segmento}`);
+  }
+
+  enviarCampaniaMarketing(
+    segmento: string,
+    asunto: string,
+    tipoCampania: string,
+    opciones?: any
+  ): Observable<EnviarCampaniaResponse> {
+    return this.http.post<EnviarCampaniaResponse>(`${this.url}/admin/marketing/enviar-campania`, {
+      segmento,
+      asunto,
+      tipoCampania,
+      opciones
+    });
+  }
+
+  obtenerVistaPreviaMarketing(
+    segmento: string,
+    tipoCampania: string,
+    opciones?: any
+  ): Observable<VistaPreviaResponse> {
+    return this.http.post<VistaPreviaResponse>(`${this.url}/admin/marketing/vista-previa`, {
+      segmento,
+      tipoCampania,
+      opciones
+    });
   }
 }

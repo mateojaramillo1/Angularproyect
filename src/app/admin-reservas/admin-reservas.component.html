@@ -139,10 +139,155 @@
     </div>
   </section>
 
+  <!-- Panel de Marketing Automatizado -->
+  <section class="marketing-panel">
+    <div class="marketing-header">
+      <h3>📧 Marketing Automatizado por Segmentos CRM</h3>
+      <button (click)="togglePanelMarketing()" class="btn-toggle-marketing">
+        {{ mostrarPanelMarketing ? '▼ Ocultar' : '▶ Mostrar' }} Panel de Marketing
+      </button>
+    </div>
+
+    <div *ngIf="mostrarPanelMarketing" class="marketing-content">
+      <!-- Estadísticas de segmentos -->
+      <div class="marketing-stats">
+        <div class="stat-card">
+          <div class="stat-label">Total Clientes</div>
+          <div class="stat-value">{{ estadisticasMarketing.total }}</div>
+        </div>
+        <div class="stat-card platino-card">
+          <div class="stat-label">💎 Platino</div>
+          <div class="stat-value">{{ estadisticasMarketing.platino }}</div>
+        </div>
+        <div class="stat-card oro-card">
+          <div class="stat-label">🏆 Oro</div>
+          <div class="stat-value">{{ estadisticasMarketing.oro }}</div>
+        </div>
+        <div class="stat-card plata-card">
+          <div class="stat-label">⭐ Plata</div>
+          <div class="stat-value">{{ estadisticasMarketing.plata }}</div>
+        </div>
+        <div class="stat-card bronce-card">
+          <div class="stat-label">🥉 Bronce</div>
+          <div class="stat-value">{{ estadisticasMarketing.bronce }}</div>
+        </div>
+        <div class="stat-card inactivos-card">
+          <div class="stat-label">💤 Inactivos</div>
+          <div class="stat-value">{{ estadisticasMarketing.inactivos }}</div>
+        </div>
+        <div class="stat-card nuevos-card">
+          <div class="stat-label">🆕 Nuevos</div>
+          <div class="stat-value">{{ estadisticasMarketing.nuevos }}</div>
+        </div>
+      </div>
+
+      <!-- Formulario de campaña -->
+      <div class="campania-form">
+        <h4>Crear y Enviar Campaña</h4>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>Segmento de clientes</label>
+            <select [(ngModel)]="segmentoSeleccionado" (ngModelChange)="cargarClientesSegmento()" class="form-control">
+              <option value="platino">💎 Platino (10+ reservas)</option>
+              <option value="oro">🏆 Oro (6-9 reservas)</option>
+              <option value="plata">⭐ Plata (3-5 reservas)</option>
+              <option value="bronce">🥉 Bronce (1-2 reservas)</option>
+              <option value="inactivos">💤 Inactivos (>6 meses sin reservar)</option>
+              <option value="nuevos">🆕 Nuevos (1-2 reservas)</option>
+              <option value="todos">📊 Todos los clientes</option>
+            </select>
+            <small *ngIf="clientesSegmento.length > 0">{{ clientesSegmento.length }} cliente(s) en este segmento</small>
+          </div>
+
+          <div class="form-group">
+            <label>Tipo de campaña</label>
+            <select [(ngModel)]="tipoCampaniaSeleccionada" class="form-control">
+              <option value="descuento">🎁 Descuento exclusivo</option>
+              <option value="reactivacion">💙 Reactivación</option>
+              <option value="agradecimiento">❤️ Agradecimiento</option>
+              <option value="personalizado">✍️ Mensaje personalizado</option>
+            </select>
+            <small>{{ getTipoCampaniaDescripcion(tipoCampaniaSeleccionada) }}</small>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group full-width">
+            <label>Asunto del correo</label>
+            <input 
+              type="text" 
+              [(ngModel)]="asuntoCampania" 
+              placeholder="Ej: ¡Oferta exclusiva para ti en Paradisus Cancún!" 
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        <div class="form-row" *ngIf="tipoCampaniaSeleccionada === 'descuento' || tipoCampaniaSeleccionada === 'reactivacion'">
+          <div class="form-group">
+            <label>Porcentaje de descuento (%)</label>
+            <input 
+              type="number" 
+              [(ngModel)]="descuentoCampania" 
+              min="5" 
+              max="50" 
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        <div class="form-row" *ngIf="tipoCampaniaSeleccionada === 'personalizado'">
+          <div class="form-group full-width">
+            <label>Mensaje personalizado (HTML permitido)</label>
+            <textarea 
+              [(ngModel)]="mensajePersonalizado" 
+              rows="6" 
+              placeholder="Escribe tu mensaje aquí. Puedes usar HTML: <p>, <strong>, <em>, etc."
+              class="form-control"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button 
+            (click)="generarVistaPrevia()" 
+            class="btn-preview"
+            [disabled]="loadingMarketing"
+          >
+            👁️ Vista Previa
+          </button>
+          <button 
+            (click)="enviarCampania()" 
+            class="btn-enviar-campania"
+            [disabled]="loadingMarketing || !asuntoCampania"
+          >
+            {{ loadingMarketing ? '⏳ Enviando...' : '📧 Enviar Campaña' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Instrucciones -->
+      <div class="marketing-tips">
+        <h4>💡 Consejos de Marketing</h4>
+        <ul>
+          <li><strong>Clientes Oro/Platino:</strong> Usa campañas de descuento y agradecimiento para mantener su lealtad.</li>
+          <li><strong>Clientes Inactivos:</strong> Usa campañas de reactivación con descuentos especiales (20-30%).</li>
+          <li><strong>Clientes Nuevos:</strong> Ofréceles incentivos para su segunda reserva y fomenta la fidelización.</li>
+          <li><strong>Asunto atractivo:</strong> El asunto del correo es clave. Sé claro y ofrece valor inmediato.</li>
+          <li><strong>Vista previa:</strong> Siempre revisa la vista previa antes de enviar a todos.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <section class="checkin-panel">
     <div class="checkin-header">
       <h3>🔐 Check-in / Check-out digital</h3>
-      <p>Genera QR por reserva aprobada y procesa ingreso/salida en recepción.</p>
+       <p>Genera QR por reserva aprobada y procesa ingreso/salida en recepción.</p>
+       <button (click)="abrirCamaraQR()" class="btn-escanear-qr">
+         📷 Escanear QR con Cámara
+       </button>
     </div>
 
     <div class="qr-preview" *ngIf="qrSeleccionado">
@@ -293,6 +438,34 @@
 
   <div class="no-reservas" *ngIf="!loading && !reservasFiltradas.length">
     <p>No hay reservas que coincidan con los filtros seleccionados.</p>
+
+    <!-- Modal de Cámara QR -->
+    <div class="qr-camera-overlay" *ngIf="mostrarCamaraQR">
+      <div class="qr-camera-modal">
+        <div class="qr-camera-header">
+          <h3>📷 Escanear QR de Check-in</h3>
+          <button (click)="cerrarCamaraQR()" class="btn-cerrar-camara">✖</button>
+        </div>
+      
+        <div class="qr-camera-body">
+          <div class="video-container">
+            <video id="qr-video" autoplay playsinline></video>
+            <canvas id="qr-canvas" hidden></canvas>
+            <div class="scan-region"></div>
+          </div>
+        
+          <div class="qr-status">
+            <p *ngIf="!qrDetectado && escaneandoQR">🔍 Buscando código QR...</p>
+            <p *ngIf="qrDetectado" class="qr-detectado">✅ QR Detectado!</p>
+          </div>
+        
+          <div class="qr-instructions">
+            <p>Coloca el código QR dentro del marco</p>
+            <p>El escaneo se realizará automáticamente</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 </div>
